@@ -1,0 +1,257 @@
+name: QWERTZcore
+version: '1.0'
+main: app.qwertz.qwertzcore.QWERTZcore
+api-version: '1.19'
+load: STARTUP
+authors: [ QWERTZ_EXE ]
+description: All in one event core!
+website: https://qwertz.app
+softdepend: [LuckPerms]
+commands:
+  core:
+    description: Displays information about QWERTZ Core
+    aliases: [qwertzcore]
+    usage: /<command>
+  timer:
+    description: Starts or cancels a countdown timer
+    usage: /<command> <seconds|cancel>
+    permission: qwertzcore.host.timer
+  gmc:
+    description: Set gamemode to creative
+    usage: /<command>
+    permission: qwertzcore.gamemode.creative
+  gms:
+    description: Set gamemode to survival
+    usage: /<command>
+    permission: qwertzcore.gamemode.survival
+  gmsp:
+    description: Set gamemode to spectator
+    usage: /<command>
+    permission: qwertzcore.gamemode.spectator
+  gma:
+    description: Set gamemode to adventure
+    usage: /<command>
+    permission: qwertzcore.gamemode.adventure
+  gm:
+    description: Set gamemode
+    usage: /<command> <creative|survival|adventure|spectator>
+    permission: qwertzcore.gamemode
+  chatrevive:
+    description: Start a chat revival game
+    usage: /<command> <math|typer|guess> [max]
+    permission: qwertzcore.host.revival
+  revive:
+    description: Revive a player
+    usage: /<command> <player>
+    permission: qwertzcore.host.revive
+  unrevive:
+    description: Mark a player as dead
+    usage: /<command> <player>
+    permission: qwertzcore.host.unrevive
+  reviveall:
+    description: Revive all players
+    usage: /<command>
+    permission: qwertzcore.host.reviveall
+  listalive:
+    description: List all alive players
+    usage: /<command>
+    permission: qwertzcore.player.listalive
+  listdead:
+    description: List all dead players
+    usage: /<command>
+    permission: qwertzcore.player.listdead
+  givedead:
+    description: Give an item to all dead players
+    usage: /<command> <item> [amount] [data]
+    permission: qwertzcore.host.givedead
+  givealive:
+    description: Give an item to all alive players
+    usage: /<command> <item> [amount] [data]
+    permission: qwertzcore.host.givealive
+  tpalive:
+    description: Teleport all alive players to you
+    usage: /<command>
+    permission: qwertzcore.host.tpalive
+  tpdead:
+    description: Teleport all dead players to you
+    usage: /<command>
+    permission: qwertzcore.host.tpdead
+  config:
+    description: Edit configuration values
+    usage: /config <key> <value>
+    permission: qwertzcore.config
+  spawn:
+    description: Teleport to spawn location
+    usage: /spawn
+    permission: qwertzcore.player.spawn
+  clearalive:
+    description: Clears the inventory of all alive players
+    usage: /clearalive
+    permission: qwertzcore.host.clearalive
+  cleardead:
+    description: Clears the inventory of all dead players
+    usage: /cleardead
+    permission: qwertzcore.host.cleardead
+  revivelast:
+    description: Revives all players who died in the last specified number of seconds
+    usage: /revivelast [seconds]
+    permission: qwertzcore.host.revivelast
+  hide:
+    description: Hide other players based on their status
+    usage: /hide <host|staff|all|off>
+    permission: qwertzcore.player.hide
+  eventcountdown:
+    description: Start a countdown for the event
+    usage: /eventcountdown <time|cancel>
+    permission: qwertzcore.host.eventcountdown
+  addwin:
+    description: Add a win to a player's record
+    usage: /addwin <player>
+    permission: qwertzcore.database.addwin
+  userevive:
+    description: Request to use a revive token
+    usage: /userevive
+    permission: qwertzcore.player.userevive
+  reviveaccept:
+    description: Accept a player's revive request
+    usage: /reviveaccept <player>
+    permission: qwertzcore.host.reviveaccept
+  revivedeny:
+    description: Deny a player's revive request
+    usage: /revivedeny <player>
+    permission: qwertzcore.host.revivedeny
+  addrevive:
+    description: Add a revive token to a player
+    usage: /addrevive <player>
+    permission: qwertzcore.host.addrevive
+  removerevive:
+    description: Remove a revive token from a player
+    usage: /removerevive <player>
+    permission: qwertzcore.host.removerevive
+  discord:
+    description: Get the Discord server link
+    usage: /discord
+    aliases: [disc, dc]
+    permission: qwertzcore.player.discord
+  healalive:
+    description: Heal all alive players
+    usage: /healalive
+    permission: qwertzcore.host.healalive
+  healdead:
+    description: Heal all dead players
+    usage: /healdead
+    permission: qwertzcore.host.healdead
+  mutechat:
+    description: Mute the chat for all players without bypass permission
+    usage: /mutechat
+    permission: qwertzcore.host.mutechat
+  unmutechat:
+    description: Unmute the chat for all players
+    usage: /unmutechat
+    permission: qwertzcore.host.unmutechat
+permissions:
+  qwertzcore.host.timer:
+    description: Allows the user to start and cancel timers
+    default: op
+  qwertzcore.gamemode.creative:
+    description: Allows the user to set their gamemode to creative
+    default: op
+  qwertzcore.gamemode.survival:
+    description: Allows the user to set their gamemode to survival
+    default: op
+  qwertzcore.gamemode.spectator:
+    description: Allows the user to set their gamemode to spectator
+    default: op
+  qwertzcore.gamemode.adventure:
+    description: Allows the user to set their gamemode to adventure
+    default: op
+  qwertzcore.gamemode:
+    description: Allows the user to set their gamemode using the general command
+    default: op
+  qwertzcore.host.revival:
+    description: Allows the user to start revivals
+    default: op
+  qwertzcore.host.revive:
+    description: Allows the user to revive someone
+    default: op
+  qwertzcore.host.unrevive:
+    description: Allows the user to unrevive someone
+    default: op
+  qwertzcore.host.reviveall:
+    description: Allows the user to revive all players
+    default: op
+  qwertzcore.host.listalive:
+    description: Allows the user to list alive players
+    default: op
+  qwertzcore.host.listdead:
+    description: Allows the user to list dead players
+    default: op
+  qwertzcore.host.givedead:
+    description: Allows the user to give an item to all dead players
+    default: op
+  qwertzcore.host.givealive:
+    description: Allows the user to give an item to all alive players
+    default: op
+  qwertzcore.host.tpalive:
+    description: Allows the user to teleport all alive players to them
+    default: op
+  qwertzcore.host.tpdead:
+    description: Allows the user to teleport all dead players to them
+    default: op
+  qwertzcore.config:
+    description: Allows the user to edit the QWERTZ Core config
+    default: op
+  qwertzcore.player.spawn:
+    description: Allows the user to teleport to spawn
+    default: true
+  qwertzcore.host.clearalive:
+    description: Allows the user to clear the inventory of all alive players
+    default: op
+  qwertzcore.host.cleardead:
+    description: Allows the user to clear the inventory of all dead players
+    default: op
+  qwertzcore.host.revivelast:
+    description: Allows the user to revive all players who died recently
+    default: op
+  qwertzcore.player.hide:
+    description: Allows the player to hide specific groups for them
+    default: true
+  qwertzcore.host.eventcountdown:
+    description: Allows the user to start the event countdown
+    default: op
+  qwertzcore.database.addwin:
+    description: Allows the user to add a win to someone
+    default: op
+  qwertzcore.player.userevive:
+    description: Allows the player to use a revive token
+    default: true
+  qwertzcore.host.reviveaccept:
+    description: Allows the player to accept revive token requests
+    default: op
+  qwertzcore.host.revivedeny:
+    description: Allows the player to deny revive token requests
+    default: op
+  qwertzcore.host.addrevive:
+    description: Allows the player to give someone a revive token
+    default: op
+  qwertzcore.host.removerevive:
+    description: Allows the player to remove a revive token from someone
+    default: op
+  qwertzcore.player.discord:
+    description: Allows the player to join the discord
+    default: true
+  qwertzcore.host.healalive:
+    description: Allows the player to heal alive players
+    default: op
+  qwertzcore.host.healdead:
+    description: Allows the player to heal dead players
+    default: op
+  qwertzcore.host.mutechat:
+    description: Allows the player to mute the chat
+    default: op
+  qwertzcore.host.unmutechat:
+    description: Allows the player to unmute the chat
+    default: op
+  qwertzcore.chat.bypass:
+    description: Allows the player to bypass a muted chat
+    default: op
