@@ -61,7 +61,6 @@ public final class QWERTZcore extends JavaPlugin {
         this.chatManager = new ChatManager(this);
         this.databaseManager = new DatabaseManager(this);
         this.messageManager = new MessageManager(this);
-        this.getCommand("addwin").setExecutor(new AddWinCommand(this));
 
         registerCommands();
         registerListeners();
@@ -163,6 +162,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("revivedeny").setExecutor(reviveCommands);
         this.getCommand("addrevive").setExecutor(reviveCommands);
         this.getCommand("removerevive").setExecutor(reviveCommands);
+        this.getCommand("revives").setExecutor(reviveCommands);
         DiscordCommand discordCommand = new DiscordCommand(this);
         this.getCommand("dc").setExecutor(discordCommand);
         this.getCommand("disc").setExecutor(discordCommand);
@@ -177,6 +177,10 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("message").setExecutor(messageCommands);
         this.getCommand("reply").setExecutor(messageCommands);
         this.getCommand("messagetoggle").setExecutor(messageCommands);
+        WinCommands winCommands = new WinCommands(this);
+        this.getCommand("addwin").setExecutor(winCommands);
+        this.getCommand("removewin").setExecutor(winCommands);
+        this.getCommand("wins").setExecutor(winCommands);
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand), this);

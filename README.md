@@ -33,6 +33,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/mutechat` - Mute the chat
 - `/unmutechat` - Unmute the chat
 - `/ad <platform>` - Broadcast an advertisement
+- `/wins [player]` - Check the wins of a player
+- `/revives [player]` - Check the revive tokens of a player
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
 
 ### Event Management
@@ -78,6 +80,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 ### Database Management
 
 - `/addwin <player>` - Add a win to a player's record
+- `/removewin <player>` - Remove a win from a player's record
 
 ## Permissions
 
@@ -124,6 +127,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.player.hide` - Use hide command
 - `qwertzcore.player.discord` - Use discord command
 - `qwertzcore.player.userevive` - Use revive tokens
+- `qwertzcore.player.checkrevives` - Check revives
+- `qwertzcore.player.checkwins` - Check wins
 - `qwertzcore.player.message` - Private message and reply to others
 - `qwertzcore.player.togglemessage` - Toggle incoming private messages
 
@@ -141,6 +146,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.config.setad` - Set an advertisement
 - `qwertzcore.chat.bypass` - Bypass a muted chat
 - `qwertzcore.database.addwin` - Add wins to players' records
+- `qwertzcore.database.removewin` - Remove wins from players' records
 
 # Links
 [Modrinth](https://modrinth.com/plugin/qwertz-core/) | [bStats](https://bstats.org/plugin/bukkit/QWERTZ%20Core/23512) | [GitHub](https://github.com/QWERTZexe/QWERTZ-Core)

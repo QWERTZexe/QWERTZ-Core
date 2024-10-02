@@ -48,8 +48,31 @@ public class ReviveTokenCommands implements CommandExecutor {
                 return handleAddRevive(sender, args);
             case "removerevive":
                 return handleRemoveRevive(sender, args);
+            case "revives":
+                return handleRevivals(sender, args);
         }
         return false;
+    }
+
+    private boolean handleRevivals(CommandSender sender, String[] args) {
+        Player target;
+        if (args.length == 0 && sender instanceof Player) {
+            target = (Player) sender;
+        } else if (args.length == 1) {
+            target = Bukkit.getPlayer(args[0]);
+            if (target == null) {
+                sender.sendMessage(ChatColor.RED + "Player not found.");
+                return true;
+            }
+        } else {
+            sender.sendMessage(ChatColor.RED + "Usage: /revives [player]");
+            return true;
+        }
+
+        int reviveTokens = plugin.getDatabaseManager().getReviveTokens(target.getUniqueId());
+        sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + target.getName() + ChatColor.GREEN + " has " + reviveTokens + " revival tokens.");
+
+        return true;
     }
 
     private boolean handleUseRevive(CommandSender sender) {

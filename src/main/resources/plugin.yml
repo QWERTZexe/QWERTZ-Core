@@ -112,6 +112,14 @@ commands:
     description: Add a win to a player's record
     usage: /addwin <player>
     permission: qwertzcore.database.addwin
+  removewin:
+    description: Remove a win from a player's record
+    usage: /removewin <player>
+    permission: qwertzcore.database.removewin
+  wins:
+    description: Check the number of wins a player has
+    usage: /wins [player]
+    permission: qwertzcore.player.checkwins
   userevive:
     description: Request to use a revive token
     usage: /userevive
@@ -132,6 +140,10 @@ commands:
     description: Remove a revive token from a player
     usage: /removerevive <player>
     permission: qwertzcore.host.removerevive
+  revives:
+    description: Check the number of revival tokens a player has
+    usage: /revives [player]
+    permission: qwertzcore.player.checkrevives
   discord:
     description: Get the Discord server link
     usage: /discord
@@ -252,6 +264,12 @@ permissions:
   qwertzcore.database.addwin:
     description: Allows the user to add a win to someone
     default: op
+  qwertzcore.database.removewin:
+    description: Allows the user to remove a win from someone
+    default: op
+  qwertzcore.player.checkwins:
+    description: Allows the player to see someones wins
+    default: true
   qwertzcore.player.userevive:
     description: Allows the player to use a revive token
     default: true
@@ -267,6 +285,9 @@ permissions:
   qwertzcore.host.removerevive:
     description: Allows the player to remove a revive token from someone
     default: op
+  qwertzcore.player.checkrevives:
+    description: Allows the player to see someones revival tokens
+    default: true
   qwertzcore.player.discord:
     description: Allows the player to join the discord
     default: true

@@ -73,6 +73,11 @@ public class DatabaseManager {
         playerData.addWin();
         saveDatabase();
     }
+    public void removeWin(UUID playerUUID) {
+        PlayerData playerData = getPlayerData(playerUUID);
+        playerData.removeWin();
+        saveDatabase();
+    }
 
     public int getReviveTokens(UUID playerUUID) {
         PlayerData playerData = getPlayerData(playerUUID);
@@ -137,6 +142,10 @@ public class DatabaseManager {
 
         public void addWin() {
             this.wins++;
+        }
+
+        public void removeWin() {
+            this.wins--;
         }
 
         public int getReviveTokens() {
