@@ -131,6 +131,15 @@ public class ConfigManager {
         if (!config.containsKey("chat")) {
             config.put("chat", true);
         }
+        if (!config.containsKey("doScoreboard")) {
+            config.put("doScoreboard", true);
+        }
+        if (!config.containsKey("doTabList")) {
+            config.put("doTabList", true);
+        }
+        if (!config.containsKey("doChat")) {
+            config.put("doChat", true);
+        }
     }
 
 
@@ -222,7 +231,17 @@ public class ConfigManager {
     public boolean getScoreboardUpperCase() {
         return (boolean) config.getOrDefault("scoreboardUpperCase", true);
     }
+    public boolean getScoreBoard() {
+        return (boolean) config.getOrDefault("doScoreboard", true);
+    }
 
+    public boolean getTabList() {
+        return (boolean) config.getOrDefault("doTabList", true);
+    }
+
+    public boolean getChatFormatting() {
+        return (boolean) config.getOrDefault("doChat", true);
+    }
     public String getFont() {
         return (String) config.getOrDefault("font", "modern");
     }

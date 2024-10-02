@@ -41,13 +41,15 @@ public class ScoreboardManager {
     }
 
     public void setScoreboard(Player player) {
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective obj = board.registerNewObjective("qwertzcore", "dummy", ChatColor.GOLD + plugin.getConfigManager().getServerName());
-        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+        if (plugin.getConfigManager().getScoreBoard()) {
+            Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+            Objective obj = board.registerNewObjective("qwertzcore", "dummy", ChatColor.GOLD + plugin.getConfigManager().getServerName());
+            obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        updateScoreboard(player, board, obj);
-        player.setScoreboard(board);
-        playerScoreboards.put(player.getUniqueId(), board);
+            updateScoreboard(player, board, obj);
+            player.setScoreboard(board);
+            playerScoreboards.put(player.getUniqueId(), board);
+        }
     }
 
     private void updateScoreboard(Player player, Scoreboard board, Objective obj) {

@@ -36,31 +36,33 @@ public class ChatManager implements Listener {
             event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Chat is disabled!");
             return;
         }
+        if (plugin.getConfigManager().getChatFormatting()) {
+            event.setCancelled(true);
 
-        event.setCancelled(true);
+            Player player = event.getPlayer();
+            String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
+            String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
+            String message = event.getMessage();
+            String formattedMessage;
 
-        Player player = event.getPlayer();
-        String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
-        String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
-        String message = event.getMessage();
-        String formattedMessage;
+            if (prefix.isEmpty()) {
+                formattedMessage = String.format("%s%s%s: %s",
+                        prefix,
+                        player.getName(),
+                        suffix,
+                        ChatColor.WHITE + message
+                );
+            } else {
+                formattedMessage = String.format("%s %s%s: %s",
+                        prefix,
+                        player.getName(),
+                        suffix,
+                        ChatColor.WHITE + message
+                );
+            }
 
-        if (prefix.isEmpty()) {
-            formattedMessage = String.format("%s%s%s: %s",
-                    prefix,
-                    player.getName(),
-                    suffix,
-                    ChatColor.WHITE + message
-            );
-        } else {
-            formattedMessage = String.format("%s %s%s: %s",
-                    prefix,
-                    player.getName(),
-                    suffix,
-                    ChatColor.WHITE + message
-            );
+
+            plugin.getServer().broadcastMessage(formattedMessage);
         }
-
-        plugin.getServer().broadcastMessage(formattedMessage);
     }
 }

@@ -32,6 +32,8 @@ public class TablistManager {
     }
 
     public void updateTablist(Player player) {
+
+        if (plugin.getConfigManager().getTabList()) {
         String header = ChatColor.GOLD + "" + ChatColor.BOLD + plugin.getConfigManager().getServerName() + "\n\n" +
                 ChatColor.YELLOW + "Event: " + plugin.getConfigManager().getEventName() + "\n" +
                 ChatColor.AQUA + "Players: " + Bukkit.getOnlinePlayers().size() + "\n";
@@ -41,6 +43,7 @@ public class TablistManager {
         player.setPlayerListHeaderFooter(header, footer);
 
         updatePlayerListName(player);
+        }
     }
 
     private void updatePlayerListName(Player player) {
