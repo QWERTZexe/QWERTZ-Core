@@ -170,7 +170,7 @@ commands:
   messagetoggle:
     description: Toggle private messages on or off
     usage: /messagetoggle
-    aliases: [msgtoggle]
+    aliases: [msgtoggle, togglemsgs]
     permission: qwertzcore.player.togglemessage
 permissions:
   qwertzcore.host.timer:

@@ -49,6 +49,7 @@ public class MessageCommands implements CommandExecutor {
                 return handleReplyCommand(player, args);
             case "messagetoggle":
             case "msgtoggle":
+            case "togglemsgs":
                 return handleMessageToggleCommand(player);
         }
 
@@ -102,7 +103,7 @@ public class MessageCommands implements CommandExecutor {
     private boolean handleMessageToggleCommand(Player player) {
         plugin.getMessageManager().toggleMessages(player);
         boolean enabled = plugin.getMessageManager().canReceiveMessages(player);
-        player.sendMessage(ChatColor.GREEN + "Private messages have been " + (enabled ? "enabled" : "disabled") + ".");
+        player.sendMessage(QWERTZcore.CORE_ICON + (enabled ? ChatColor.GREEN : ChatColor.RED) + " Private messages have been " + (enabled ? "enabled" : "disabled") + "!");
         return true;
     }
 
