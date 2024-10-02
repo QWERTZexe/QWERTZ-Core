@@ -24,10 +24,16 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 
 - `/core` - Displays information about QWERTZ Core
 - `/config <key> <value>` - Edit configuration values
+- `/hide <host|staff|all|off>` - Hide other players based on their rank
 - `/spawn` - Teleport to spawn location
 - `/discord` - Displays the discord invite set in the config
+- `/message <player> <message>` - Private messages a player
+- `/reply <message>` - Reply to the last player who messaged you
+- `/togglemessage` - Toggles incoming private messages
 - `/mutechat` - Mute the chat
 - `/unmutechat` - Unmute the chat
+- `/ad <platform>` - Broadcast an advertisement
+- `/setad <platform> <advertisement>` - Set an advertisement for a platform
 
 ### Event Management
 
@@ -63,11 +69,11 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/givealive <item> [amount] [data]` - Give an item to all alive players
 - `/tpalive` - Teleport all alive players to you
 - `/tpdead` - Teleport all dead players to you
+- `/tphere <player>` - Teleport the selected player to you
 - `/clearalive` - Clears the inventory of all alive players
 - `/cleardead` - Clears the inventory of all dead players
 - `/healalive` - Heals all alive players
 - `/healdead` - Heals all dead players
-- `/hide <host|staff|all|off>` - Hide other players based on their rank
 
 ### Database Management
 
@@ -97,6 +103,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.givealive` - Give items to alive players
 - `qwertzcore.host.tpalive` - Teleport alive players
 - `qwertzcore.host.tpdead` - Teleport dead players
+- `qwertzcore.host.tphere` - Teleport a player
 - `qwertzcore.host.clearalive` - Clear alive players' inventories
 - `qwertzcore.host.cleardead` - Clear dead players' inventories
 - `qwertzcore.host.healalive` - Heals alive players
@@ -109,6 +116,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.removerevive` - Remove revive tokens
 - `qwertzcore.host.mutechat` - Mute the chat
 - `qwertzcore.host.unmutechat` - Unmute the chat
+- `qwertzcore.host.ad` - Broadcast an advertisement
 
 #### Player Permissions
 
@@ -116,6 +124,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.player.hide` - Use hide command
 - `qwertzcore.player.discord` - Use discord command
 - `qwertzcore.player.userevive` - Use revive tokens
+- `qwertzcore.player.message` - Private message and reply to others
+- `qwertzcore.player.togglemessage` - Toggle incoming private messages
 
 #### Gamemode Permissions
 
@@ -128,6 +138,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 #### Other Permissions
 
 - `qwertzcore.config` - Edit plugin configuration
+- `qwertzcore.config.setad` - Set an advertisement
 - `qwertzcore.chat.bypass` - Bypass a muted chat
 - `qwertzcore.database.addwin` - Add wins to players' records
 

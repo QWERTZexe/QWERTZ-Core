@@ -60,6 +60,8 @@ public class EventCommands implements CommandExecutor {
                 return handleTeleport(sender, false);
             case "tpdead":
                 return handleTeleport(sender, true);
+            case "tphere":
+                return handleTpHere(sender, args);
             case "revivelast":
                 return handleReviveLast(sender, args);
             case "healalive":
@@ -242,7 +244,46 @@ public class EventCommands implements CommandExecutor {
 
         return true;
     }
+    private boolean handleTpHere(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            return true;
+        }
 
+        if (args.length != 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: /tphere <player>");
+            return true;
+        }
+
+        Player commandSender = (Player) sender;
+        Player targetPlayer = Bukkit.getPlayer(args[0]);
+
+        if (targetPlayer == null) {
+            sender.sendMessage(ChatColor.RED + "Player not found.");
+            return true;
+        }
+
+        if (targetPlayer == commandSender) {
+            sender.sendMessage(ChatColor.RED + "You can't teleport yourself to yourself!");
+            return true;
+        }
+
+        targetPlayer.teleport(commandSender.getLocation());
+
+        String message = String.format("%s %s%s %shas been teleported to you!",
+                QWERTZcore.CORE_ICON,
+                ChatColor.YELLOW, targetPlayer.getName(),
+                ChatColor.GREEN);
+
+        commandSender.sendMessage(message);
+        String targetmessage = String.format("%s %sYou have been teleported to %s%s%s!",
+                QWERTZcore.CORE_ICON,
+                ChatColor.GREEN,
+                ChatColor.YELLOW, commandSender.getName(), ChatColor.GREEN);
+        targetPlayer.sendMessage(targetmessage);
+
+        return true;
+    }
     private boolean handleReviveLast(CommandSender sender, String[] args) {
         int seconds = 30; // Default to 30 seconds if no argument is provided
 

@@ -76,6 +76,10 @@ commands:
     description: Teleport all dead players to you
     usage: /<command>
     permission: qwertzcore.host.tpdead
+  tphere:
+    description: Teleport the selected player to you
+    usage: /<command> <player>
+    permission: qwertzcore.host.tphere
   config:
     description: Edit configuration values
     usage: /config <key> <value>
@@ -220,6 +224,9 @@ permissions:
     default: op
   qwertzcore.host.tpdead:
     description: Allows the user to teleport all dead players to them
+    default: op
+  qwertzcore.host.tphere:
+    description: Allows the user to teleport a player to them
     default: op
   qwertzcore.config:
     description: Allows the user to edit the QWERTZ Core config

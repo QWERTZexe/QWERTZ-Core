@@ -144,6 +144,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("givealive").setExecutor(eventCommands);
         getCommand("tpalive").setExecutor(eventCommands);
         getCommand("tpdead").setExecutor(eventCommands);
+        getCommand("tphere").setExecutor(eventCommands);
         getCommand("revivelast").setExecutor(eventCommands);
         getCommand("healalive").setExecutor(eventCommands);
         getCommand("healdead").setExecutor(eventCommands);
