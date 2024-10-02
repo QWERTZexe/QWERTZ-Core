@@ -110,6 +110,24 @@ public class ConfigManager {
         if (!config.containsKey("discord")) {
             config.put("discord", QWERTZcore.DISCORD_LINK);
         }
+        if (!config.containsKey("youtube")) {
+            config.put("youtube", "https://youtube.com/");
+        }
+        if (!config.containsKey("store")) {
+            config.put("store", "https://yourstore.com/");
+        }
+        if (!config.containsKey("tiktok")) {
+            config.put("tiktok", "https://tiktok.com/");
+        }
+        if (!config.containsKey("twitch")) {
+            config.put("twitch", "https://twitch.tv/");
+        }
+        if (!config.containsKey("website")) {
+            config.put("website", QWERTZcore.WEBSITE);
+        }
+        if (!config.containsKey("other")) {
+            config.put("other", "https://example.com/");
+        }
         if (!config.containsKey("chat")) {
             config.put("chat", true);
         }

@@ -45,9 +45,23 @@ public class DiscordCommand implements CommandExecutor {
         TextComponent message = new TextComponent(QWERTZcore.CORE_ICON + " ");
 
         TextComponent clickHere = new TextComponent("CLICK HERE TO JOIN OUR DISCORD!");
+
+        // Split the message into text and link parts
+        String[] parts = discordLink.split(" ");
+        StringBuilder messageBuilder = new StringBuilder();
+
+        // Assume the last part is the URL
+        String link = parts[parts.length - 1];
+
+        // Check if the last part is a valid URL
+        if (!link.startsWith("http://") && !link.startsWith("https://")) {
+            sender.sendMessage(ChatColor.RED + "The last part of your advertisement must be a valid URL.");
+            return true;
+        }
+
         clickHere.setColor(ChatColor.AQUA);
         clickHere.setBold(true);
-        clickHere.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordLink));
+        clickHere.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
         clickHere.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 new ComponentBuilder("Click to join our Discord server!").create()));
 

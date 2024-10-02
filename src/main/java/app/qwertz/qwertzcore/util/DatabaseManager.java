@@ -102,6 +102,17 @@ public class DatabaseManager {
         return playerData.getReviveRequestCooldown();
     }
 
+    // New methods for message toggle functionality
+    public boolean isMessageToggleEnabled(UUID playerUUID) {
+        PlayerData playerData = getPlayerData(playerUUID);
+        return playerData.isMessageToggleEnabled();
+    }
+
+    public void setMessageToggleEnabled(UUID playerUUID, boolean enabled) {
+        PlayerData playerData = getPlayerData(playerUUID);
+        playerData.setMessageToggleEnabled(enabled);
+        saveDatabase();
+    }
     private PlayerData getPlayerData(UUID playerUUID) {
         String uuidString = playerUUID.toString();
         return database.computeIfAbsent(uuidString, k -> new PlayerData());
@@ -111,11 +122,13 @@ public class DatabaseManager {
         private int wins;
         private int reviveTokens;
         private long reviveRequestCooldown;
+        private boolean messageToggleEnabled;
 
         public PlayerData() {
             this.wins = 0;
             this.reviveTokens = 0;
             this.reviveRequestCooldown = 0;
+            this.messageToggleEnabled = true;
         }
 
         public int getWins() {
@@ -144,6 +157,13 @@ public class DatabaseManager {
 
         public void setReviveRequestCooldown(long cooldownEndTime) {
             this.reviveRequestCooldown = cooldownEndTime;
+        }
+        public boolean isMessageToggleEnabled() {
+            return messageToggleEnabled;
+        }
+
+        public void setMessageToggleEnabled(boolean messageToggleEnabled) {
+            this.messageToggleEnabled = messageToggleEnabled;
         }
     }
 }

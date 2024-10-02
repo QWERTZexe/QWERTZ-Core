@@ -149,6 +149,29 @@ commands:
     description: Unmute the chat for all players
     usage: /unmutechat
     permission: qwertzcore.host.unmutechat
+  ad:
+    description: Broadcast an advertisement
+    usage: /ad <platform>
+    permission: qwertzcore.host.ad
+  setad:
+    description: Set an advertisement for a platform
+    usage: /setad <platform> <message>
+    permission: qwertzcore.host.setad
+  message:
+    description: Send a private message to a player
+    usage: /message <player> <message>
+    aliases: [msg, tell, w]
+    permission: qwertzcore.player.message
+  reply:
+    description: Reply to the last player who messaged you
+    usage: /reply <message>
+    aliases: [r]
+    permission: qwertzcore.player.message
+  messagetoggle:
+    description: Toggle private messages on or off
+    usage: /messagetoggle
+    aliases: [msgtoggle]
+    permission: qwertzcore.player.togglemessage
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -255,3 +278,15 @@ permissions:
   qwertzcore.chat.bypass:
     description: Allows the player to bypass a muted chat
     default: op
+  qwertzcore.host.ad:
+    description: Allows the player broadcast an advertisement
+    default: op
+  qwertzcore.config.setad:
+    description: Allows the player to set an advertisement link
+    default: op
+  qwertzcore.player.message:
+    description: Allows the player to private message and reply to other players
+    default: true
+  qwertzcore.player.togglemessage:
+    description: Allows the player to toggle private messages towards him on or off
+    default: true
