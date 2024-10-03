@@ -16,7 +16,7 @@ package app.qwertz.qwertzcore;
 
 import app.qwertz.qwertzcore.bstats.Metrics;
 import app.qwertz.qwertzcore.commands.*;
-import app.qwertz.qwertzcore.commands.tab.ConfigTabCompleter;
+import app.qwertz.qwertzcore.commands.tab.*;
 import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
 import org.bukkit.Bukkit;
@@ -134,12 +134,15 @@ public final class QWERTZcore extends JavaPlugin {
     private void registerCommands() {
         getCommand("core").setExecutor(new CoreCommand());
         getCommand("timer").setExecutor(new TimerCommand(this));
+        getCommand("timer").setTabCompleter(new TimerTabCompleter());
         getCommand("gmc").setExecutor(new GamemodeCommand(this));
         getCommand("gms").setExecutor(new GamemodeCommand(this));
         getCommand("gmsp").setExecutor(new GamemodeCommand(this));
         getCommand("gma").setExecutor(new GamemodeCommand(this));
         getCommand("gm").setExecutor(new GamemodeCommand(this));
+        getCommand("gm").setTabCompleter(new GameModeTabCompleter());
         getCommand("chatrevive").setExecutor(new ChatReviveCommand(this));
+        getCommand("chatrevive").setTabCompleter(new ChatReviveTabCompleter());
         EventCommands eventCommands = new EventCommands(this, eventManager);
         getCommand("revive").setExecutor(eventCommands);
         getCommand("unrevive").setExecutor(eventCommands);
@@ -148,10 +151,13 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("listdead").setExecutor(eventCommands);
         getCommand("givedead").setExecutor(eventCommands);
         getCommand("givealive").setExecutor(eventCommands);
+        getCommand("givedead").setTabCompleter(new GiveCommandTabCompleter());
+        getCommand("givealive").setTabCompleter(new GiveCommandTabCompleter());
         getCommand("tpalive").setExecutor(eventCommands);
         getCommand("tpdead").setExecutor(eventCommands);
         getCommand("tphere").setExecutor(eventCommands);
-        getCommand("revivelast").setExecutor(eventCommands);
+        getCommand("revivelast").setExecutor(eventCommands);;
+        getCommand("revivelast").setTabCompleter(new ReviveLastTabCompleter());
         getCommand("healalive").setExecutor(eventCommands);
         getCommand("healdead").setExecutor(eventCommands);
         getCommand("config").setExecutor(new ConfigCommand(this));
@@ -161,8 +167,10 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("cleardead").setExecutor(clearInventoryCommand);
         hideCommand = new HideCommand(this);
         getCommand("hide").setExecutor(hideCommand);
+        getCommand("hide").setTabCompleter(new HideTabCompleter());
         eventCountdownCommand = new EventCountdownCommand(this);
         this.getCommand("eventcountdown").setExecutor(eventCountdownCommand);
+        getCommand("eventcountdown").setTabCompleter(new TimerTabCompleter());
         ReviveTokenCommands reviveCommands = new ReviveTokenCommands(this);
         this.getCommand("userevive").setExecutor(reviveCommands);
         this.getCommand("reviveaccept").setExecutor(reviveCommands);
@@ -180,6 +188,9 @@ public final class QWERTZcore extends JavaPlugin {
         AdvertisementCommand adCommand = new AdvertisementCommand(this);
         this.getCommand("ad").setExecutor(adCommand);
         this.getCommand("setad").setExecutor(adCommand);
+        AdTabCompleter adTabCompleter = new AdTabCompleter();
+        this.getCommand("ad").setTabCompleter(adTabCompleter);
+        this.getCommand("setad").setTabCompleter(adTabCompleter);
         MessageCommands messageCommands = new MessageCommands(this);
         this.getCommand("message").setExecutor(messageCommands);
         this.getCommand("reply").setExecutor(messageCommands);
@@ -193,6 +204,10 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("warp").setExecutor(warpCommands);
         this.getCommand("delwarp").setExecutor(warpCommands);
         this.getCommand("warps").setExecutor(warpCommands);
+        WarpTabCompleter warpTabCompleter = new WarpTabCompleter(this);
+        this.getCommand("setwarp").setTabCompleter(warpTabCompleter);
+        this.getCommand("warp").setTabCompleter(warpTabCompleter);
+        this.getCommand("delwarp").setTabCompleter(warpTabCompleter);
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand), this);
