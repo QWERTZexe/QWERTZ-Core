@@ -33,20 +33,17 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        eventManager.handlePlayerDeath(player);
+        eventManager.handlePlayerDeath(player, false);
     }
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
         if (configManager.getTpOnDeath()) {
-            // Check if the player has a bed spawn point
-            if (player.getBedSpawnLocation() != null) {
-                // Teleport them to the configured spawn location
-                Location spawnLocation = configManager.getSpawnLocation();
-                if (spawnLocation != null) {
-                    event.setRespawnLocation(spawnLocation);
-                }
+            // Teleport them to the configured spawn location
+            Location spawnLocation = configManager.getSpawnLocation();
+            if (spawnLocation != null) {
+                event.setRespawnLocation(spawnLocation);
             }
         }
     }
