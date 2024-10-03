@@ -14,21 +14,40 @@
 
 package app.qwertz.qwertzcore.util;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerDeathListener implements Listener {
     private final EventManager eventManager;
+    private final ConfigManager configManager;
 
-    public PlayerDeathListener(EventManager eventManager) {
+    public PlayerDeathListener(EventManager eventManager, ConfigManager configManager) {
         this.eventManager = eventManager;
+        this.configManager = configManager;
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         eventManager.handlePlayerDeath(player);
+    }
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+
+        if (configManager.getTpOnDeath()) {
+            // Check if the player has a bed spawn point
+            if (player.getBedSpawnLocation() != null) {
+                // Teleport them to the configured spawn location
+                Location spawnLocation = configManager.getSpawnLocation();
+                if (spawnLocation != null) {
+                    event.setRespawnLocation(spawnLocation);
+                }
+            }
+        }
     }
 }
