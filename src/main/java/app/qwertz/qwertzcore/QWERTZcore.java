@@ -28,7 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.GREEN + "❇" + ChatColor.RESET;
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.1";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";

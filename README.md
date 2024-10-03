@@ -4,7 +4,7 @@
 
 QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It provides a comprehensive set of tools for hosts and administrators to manage events, player statuses, and game mechanics.
 
-**Newest version:** 1.0
+**Newest version:** 1.1
 **Author:** QWERTZ_EXE
 **Website:** https://qwertz.app
 
