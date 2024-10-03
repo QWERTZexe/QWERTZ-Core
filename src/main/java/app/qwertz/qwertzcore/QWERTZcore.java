@@ -188,6 +188,11 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("addwin").setExecutor(winCommands);
         this.getCommand("removewin").setExecutor(winCommands);
         this.getCommand("wins").setExecutor(winCommands);
+        WarpCommands warpCommands = new WarpCommands(this);
+        this.getCommand("setwarp").setExecutor(warpCommands);
+        this.getCommand("warp").setExecutor(warpCommands);
+        this.getCommand("delwarp").setExecutor(warpCommands);
+        this.getCommand("warps").setExecutor(warpCommands);
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand), this);

@@ -188,6 +188,22 @@ commands:
     usage: /messagetoggle
     aliases: [msgtoggle, togglemsgs]
     permission: qwertzcore.player.togglemessage
+  setwarp:
+    description: Set a warp at your current location
+    usage: /setwarp <name>
+    permission: qwertzcore.config.setwarp
+  warp:
+    description: Teleport to a warp
+    usage: /warp <name>
+    permission: qwertzcore.player.warp
+  delwarp:
+    description: Delete a warp
+    usage: /delwarp <name>
+    permission: qwertzcore.config.delwarp
+  warps:
+    description: List all available warps
+    usage: /warps
+    permission: qwertzcore.player.listwarps
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -317,4 +333,16 @@ permissions:
     default: true
   qwertzcore.player.togglemessage:
     description: Allows the player to toggle private messages towards him on or off
+    default: true
+  qwertzcore.config.setwarp:
+    description: Allows the player to create a warp
+    default: op
+  qwertzcore.config.delwarp:
+    description: Allows the player to delete a warp
+    default: op
+  qwertzcore.player.listwarps:
+    description: Allows the player list all warps
+    default: true
+  qwertzcore.player.warp:
+    description: Allows the player to use warps
     default: true

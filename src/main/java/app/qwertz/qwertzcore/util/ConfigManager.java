@@ -111,22 +111,22 @@ public class ConfigManager {
             config.put("discord", QWERTZcore.DISCORD_LINK);
         }
         if (!config.containsKey("youtube")) {
-            config.put("youtube", "https://youtube.com/");
+            config.put("youtube", "https://youtube.com");
         }
         if (!config.containsKey("store")) {
-            config.put("store", "https://yourstore.com/");
+            config.put("store", "https://yourstore.com");
         }
         if (!config.containsKey("tiktok")) {
-            config.put("tiktok", "https://tiktok.com/");
+            config.put("tiktok", "https://tiktok.com");
         }
         if (!config.containsKey("twitch")) {
-            config.put("twitch", "https://twitch.tv/");
+            config.put("twitch", "https://twitch.tv");
         }
         if (!config.containsKey("website")) {
             config.put("website", QWERTZcore.WEBSITE);
         }
         if (!config.containsKey("other")) {
-            config.put("other", "https://example.com/");
+            config.put("other", "https://example.com");
         }
         if (!config.containsKey("chat")) {
             config.put("chat", true);
@@ -139,6 +139,9 @@ public class ConfigManager {
         }
         if (!config.containsKey("doChat")) {
             config.put("doChat", true);
+        }
+        if (!config.containsKey("warps")) {
+            config.put("warps", new HashMap<String, Map<String, Object>>());
         }
     }
 
@@ -210,6 +213,47 @@ public class ConfigManager {
         config.put(key, value);
     }
 
+    public void addWarp(String name, Location location) {
+        Map<String, Object> warpMap = new HashMap<>();
+        warpMap.put("world", location.getWorld().getName());
+        warpMap.put("x", location.getX());
+        warpMap.put("y", location.getY());
+        warpMap.put("z", location.getZ());
+        warpMap.put("yaw", location.getYaw());
+        warpMap.put("pitch", location.getPitch());
+
+        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
+        warps.put(name, warpMap);
+        config.put("warps", warps);
+        saveConfig();
+    }
+
+    public void removeWarp(String name) {
+        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
+        warps.remove(name);
+        config.put("warps", warps);
+        saveConfig();
+    }
+
+    public Location getWarp(String name) {
+        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
+        Map<String, Object> warpMap = warps.get(name);
+        if (warpMap != null) {
+            World world = Bukkit.getWorld((String) warpMap.get("world"));
+            double x = ((Number) warpMap.get("x")).doubleValue();
+            double y = ((Number) warpMap.get("y")).doubleValue();
+            double z = ((Number) warpMap.get("z")).doubleValue();
+            float yaw = ((Number) warpMap.get("yaw")).floatValue();
+            float pitch = ((Number) warpMap.get("pitch")).floatValue();
+            return new Location(world, x, y, z, yaw, pitch);
+        }
+        return null;
+    }
+
+    public Set<String> getWarpNames() {
+        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
+        return warps.keySet();
+    }
     public String getServerName() {
         return (String) config.getOrDefault("server", "My Server");
     }

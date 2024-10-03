@@ -37,6 +37,10 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/ad <platform>` - Broadcast an advertisement
 - `/wins [player]` - Check the wins of a player
 - `/revives [player]` - Check the revive tokens of a player
+- `/warp <warp>` - Warp to a warp
+- `/warps` - List all available warps
+- `/setwarp <warp>` - Create a warp
+- `/delwarp <warp>` - Delete a warp
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
 
 ### Event Management
@@ -92,6 +96,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.staff.*` - All staff permissions
 - `qwertzcore.player.*` - All player permissions
 - `qwertzcore.gamemode.*` - All gamemode permissions
+- `qwertzcore.config.*` - All config permissions
+- `qwertzcore.database.*` - All database permissions
 
 ### Specific Permissions
 
@@ -133,6 +139,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.player.checkwins` - Check wins
 - `qwertzcore.player.message` - Private message and reply to others
 - `qwertzcore.player.togglemessage` - Toggle incoming private messages
+- `qwertzcore.player.listwarps` - List all available warps
+- `qwertzcore.player.warp` - Use warps
 
 #### Gamemode Permissions
 
@@ -142,13 +150,21 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.gamemode.adventure` - Use adventure mode
 - `qwertzcore.gamemode` - Use general gamemode command
 
-#### Other Permissions
+#### Config Permissions
 
 - `qwertzcore.config` - Edit plugin configuration
 - `qwertzcore.config.setad` - Set an advertisement
-- `qwertzcore.chat.bypass` - Bypass a muted chat
+- `qwertzcore.config.setwarp` - Set a warp
+- `qwertzcore.config.delwarp` - Delete a warp
+
+#### Database Permissions
+
 - `qwertzcore.database.addwin` - Add wins to players' records
 - `qwertzcore.database.removewin` - Remove wins from players' records
+
+#### Other Permissions
+
+- `qwertzcore.chat.bypass` - Bypass a muted chat
 
 ## Placeholders
 
