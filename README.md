@@ -15,7 +15,9 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - Gamemode management
 - Inventory management for alive/dead players
 - Player visibility controls
-- Configuration management
+- A lot of Configuration options
+- Optional Luckperms features
+- Placeholder API support
 - Database for tracking wins and revive tokens
 
 ## Commands
@@ -147,6 +149,18 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.chat.bypass` - Bypass a muted chat
 - `qwertzcore.database.addwin` - Add wins to players' records
 - `qwertzcore.database.removewin` - Remove wins from players' records
+
+## Placeholders
+
+- `%qwertzcore_alive%` - Amount of alive players
+- `%qwertzcore_dead%` - Amount of dead players
+- `%qwertzcore_isalive%` - "true" if the player is alive, else "false"
+- `%qwertzcore_isdead%` - "true" if the player is dead, else "false"
+- `%qwertzcore_revives%` - Amount of revives the player has
+- `%qwertzcore_wins%` - Amount of wins the player has
+- `%qwertzcore_server%` - Server name configured in the config
+- `%qwertzcore_event%` - Current event
+- `%qwertzcore_startingin%` - Formatted string displaying the time until the event starts
 
 # Links
 [Modrinth](https://modrinth.com/plugin/qwertz-core/) | [bStats](https://bstats.org/plugin/bukkit/QWERTZ%20Core/23512) | [GitHub](https://github.com/QWERTZexe/QWERTZ-Core)

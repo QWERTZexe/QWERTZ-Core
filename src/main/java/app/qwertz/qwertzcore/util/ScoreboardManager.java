@@ -29,7 +29,7 @@ public class ScoreboardManager {
     private final EventManager eventManager;
     private final ConfigManager configManager;
     private final Map<UUID, Scoreboard> playerScoreboards;
-    private String eventcountdown;
+    public String eventcountdown;
 
     public ScoreboardManager(QWERTZcore plugin, EventManager eventManager, ConfigManager configManager) {
         this.plugin = plugin;

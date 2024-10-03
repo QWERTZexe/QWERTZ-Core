@@ -17,6 +17,7 @@ package app.qwertz.qwertzcore;
 import app.qwertz.qwertzcore.bstats.Metrics;
 import app.qwertz.qwertzcore.commands.*;
 import app.qwertz.qwertzcore.commands.tab.ConfigTabCompleter;
+import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -52,9 +53,15 @@ public final class QWERTZcore extends JavaPlugin {
         this.eventManager = new EventManager(this);
         this.rankManager = new RankManager(this);
         if (rankManager.isUsingLuckPerms()) {
-            getLogger().info("LuckPerms found and hooked successfully.");
+            getLogger().info("[EXTENSION] LuckPerms found and hooked successfully.");
         } else {
-            getLogger().warning("LuckPerms not found. Using default rank system.");
+            getLogger().warning("[EXTENSION] LuckPerms not found. Using default rank system.");
+        }
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            getLogger().info("[EXTENSION] PlaceholderAPI found and added placeholders successfully.");
+            new Placeholders(this).register();
+        } else {
+            getLogger().warning("[EXTENSION] PlaceholderAPI not found. No placeholders will be provided.");
         }
         this.scoreboardManager = new ScoreboardManager(this, eventManager, configManager);
         this.tablistManager = new TablistManager(this);
@@ -184,7 +191,7 @@ public final class QWERTZcore extends JavaPlugin {
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
     }
     public EventManager getEventManager() {
         return eventManager;
