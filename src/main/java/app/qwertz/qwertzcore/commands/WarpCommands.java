@@ -55,6 +55,7 @@ public class WarpCommands implements CommandExecutor {
             case "delwarp":
                 return handleDelWarp(player, args);
             case "warps":
+            case "listwarps":
                 return handleWarps(player);
             default:
                 return false;

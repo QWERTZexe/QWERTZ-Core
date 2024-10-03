@@ -203,6 +203,7 @@ commands:
   warps:
     description: List all available warps
     usage: /warps
+    aliases: [listwarps]
     permission: qwertzcore.player.listwarps
 permissions:
   qwertzcore.host.timer:
