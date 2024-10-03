@@ -347,3 +347,9 @@ permissions:
   qwertzcore.player.warp:
     description: Allows the player to use warps
     default: true
+  qwertzcore.chat.bypasstm:
+    description: Allows the player to bypass the disabled vanilla commands /tm and /teammsg
+    default: op
+  qwertzcore.chat.bypassme:
+    description: Allows the player to bypass the disabled vanilla command /me
+    default: op

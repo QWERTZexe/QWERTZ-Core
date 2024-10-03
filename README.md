@@ -165,6 +165,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 #### Other Permissions
 
 - `qwertzcore.chat.bypass` - Bypass a muted chat
+- `qwertzcore.chat.bypasstm` - Bypass the disabled vanilla commands /tm and /teammsg
+- `qwertzcore.chat.bypassme` - Bypass the disabled vanilla command /me
 
 ## Placeholders
 
