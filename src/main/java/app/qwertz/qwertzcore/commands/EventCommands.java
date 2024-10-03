@@ -57,9 +57,11 @@ public class EventCommands implements CommandExecutor {
             case "givealive":
                 return handleGive(sender, args, false);
             case "tpalive":
-                return handleTeleport(sender, false);
+                return handleTeleport(sender, false, true);
             case "tpdead":
-                return handleTeleport(sender, true);
+                return handleTeleport(sender, true, true);
+            case "tpall":
+                return handleTeleport(sender, true, false);
             case "tphere":
                 return handleTpHere(sender, args);
             case "revivelast":
@@ -208,7 +210,7 @@ public class EventCommands implements CommandExecutor {
         return true;
     }
 
-    private boolean handleTeleport(CommandSender sender, boolean isDead) {
+    private boolean handleTeleport(CommandSender sender, boolean isDead, boolean filter) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "This command can only be executed by a player!");
             return true;
@@ -219,7 +221,12 @@ public class EventCommands implements CommandExecutor {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player != executor) {
-                if ((isDead && eventManager.isPlayerDead(player)) || (!isDead && eventManager.isPlayerAlive(player))) {
+                if (filter) {
+                    if ((isDead && eventManager.isPlayerDead(player)) || (!isDead && eventManager.isPlayerAlive(player))) {
+                        player.teleport(executor.getLocation());
+                        teleportedCount++;
+                    }
+                } else {
                     player.teleport(executor.getLocation());
                     teleportedCount++;
                 }
@@ -228,18 +235,25 @@ public class EventCommands implements CommandExecutor {
 
         String playerType = isDead ? "dead" : "alive";
         ChatColor playerTypeColor = isDead ? ChatColor.RED : ChatColor.GREEN;
+        String broadcastMessage = "";
+        if (filter) {
+            // Broadcast a message to all players
+            broadcastMessage = String.format("%s %s%s %steleported all %s%s %splayers to their location!",
+                    QWERTZcore.CORE_ICON,
+                    ChatColor.YELLOW,
+                    executor.getName(),
+                    ChatColor.GREEN,
+                    playerTypeColor,
+                    playerType,
+                    ChatColor.GREEN);
 
-
-        // Broadcast a message to all players
-        String broadcastMessage = String.format("%s %s%s %steleported all %s%s %splayers to their location!",
-                QWERTZcore.CORE_ICON,
-                ChatColor.YELLOW,
-                executor.getName(),
-                ChatColor.GREEN,
-                playerTypeColor,
-                playerType,
-                ChatColor.GREEN);
-
+        } else {
+            broadcastMessage = String.format("%s %s%s %steleported all players to their location!",
+                    QWERTZcore.CORE_ICON,
+                    ChatColor.YELLOW,
+                    executor.getName(),
+                    ChatColor.GREEN);
+        }
         Bukkit.broadcastMessage(broadcastMessage);
 
         return true;

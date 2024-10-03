@@ -74,7 +74,7 @@ public class EventManager {
     public int getDeadCount() {
         return deadPlayers.size();
     }
-    public void handlePlayerDeath(Player player) {
+    public void handlePlayerDeath(Player player, boolean noTp) {
         UUID playerUUID = player.getUniqueId();
         if (alivePlayers.remove(playerUUID)) {
             deathTimes.put(playerUUID, System.currentTimeMillis());
@@ -86,7 +86,7 @@ public class EventManager {
             // If the player wasn't in either list (e.g., new player who died immediately)
             deadPlayers.add(playerUUID);
         }
-        if (plugin.getConfigManager().getTpOnDeath()) {
+        if (plugin.getConfigManager().getTpOnDeath() && !noTp) {
             player.teleport(plugin.getConfigManager().getSpawnLocation());
         }
     }

@@ -77,7 +77,7 @@ public class SpawnCommand implements CommandExecutor {
         return true;
     }
     private void unrevivePlayer(Player player) {
-        plugin.getEventManager().handlePlayerDeath(player);
+        plugin.getEventManager().handlePlayerDeath(player, true);
         player.sendMessage(ChatColor.RED + "You have been unrevived as you chose to teleport to spawn while alive.");
     }
     private void teleportToSpawn(Player player, boolean wasAlive) {
