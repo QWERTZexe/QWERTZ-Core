@@ -48,13 +48,21 @@ public class EventCountdownCommand implements CommandExecutor {
         int minutes = 0;
         int seconds = 0;
 
+        int parse1 = Integer.parseInt(timeArg.substring(0, timeArg.length() - 1));
+        int parse2 = Integer.parseInt(timeArg.substring(0, timeArg.length() - 3));
         if (timeArg.endsWith("s")) {
-            seconds = Integer.parseInt(timeArg.substring(0, timeArg.length() - 1));
-        } else if (timeArg.endsWith("min")) {
-            minutes = Integer.parseInt(timeArg.substring(0, timeArg.length() - 3));
+            seconds = parse1;
+        }
+        else if (timeArg.endsWith("min")) {
+            minutes = parse2;
+        } else if (timeArg.endsWith("sec")) {
+            seconds = parse2;
+        } else if (timeArg.endsWith("m")) {
+            minutes = parse1;
         } else {
             minutes = Integer.parseInt(timeArg);
         }
+
 
         remainingSeconds = minutes * 60 + seconds;
 
