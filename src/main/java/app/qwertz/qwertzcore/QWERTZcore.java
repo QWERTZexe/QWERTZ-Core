@@ -44,6 +44,7 @@ public final class QWERTZcore extends JavaPlugin {
     private HideCommand hideCommand;
     private EventCountdownCommand eventCountdownCommand;
     private MessageManager messageManager;
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -69,7 +70,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.chatManager = new ChatManager(this);
         this.databaseManager = new DatabaseManager(this);
         this.messageManager = new MessageManager(this);
-
+        this.updateChecker = new UpdateChecker(this);
         registerCommands();
         registerListeners();
         PluginCommand configCommand = this.getCommand("config");
@@ -218,7 +219,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("delwarp").setTabCompleter(warpTabCompleter);
     }
     private void registerListeners() {
-        getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand), this);
+        getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
         getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(), this);
     }

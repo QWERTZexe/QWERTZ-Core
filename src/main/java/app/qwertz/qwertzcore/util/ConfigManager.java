@@ -143,6 +143,9 @@ public class ConfigManager {
         if (!config.containsKey("warps")) {
             config.put("warps", new HashMap<String, Map<String, Object>>());
         }
+        if (!config.containsKey("checkForUpdates")) {
+            config.put("checkForUpdates", true);
+        }
     }
 
 
