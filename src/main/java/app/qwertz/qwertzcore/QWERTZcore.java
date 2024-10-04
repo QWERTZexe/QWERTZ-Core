@@ -21,6 +21,7 @@ import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -80,6 +81,13 @@ public final class QWERTZcore extends JavaPlugin {
         int pluginId = 23512;
         Metrics metrics = new Metrics(this, pluginId);
         // BSTATS - INIT DONE
+        for (String commandName : getDescription().getCommands().keySet()) {
+            PluginCommand command = getCommand(commandName);
+            if (command != null) {
+                CommandExecutor originalExecutor = command.getExecutor();
+                command.setExecutor(new CommandRemapper(this, originalExecutor, commandName));
+            }
+        }
         printAsciiArt();
     }
 

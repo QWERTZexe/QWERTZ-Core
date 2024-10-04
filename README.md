@@ -1,4 +1,4 @@
-# QWERTZcore Documentation
+# QWERTZ Core Documentation
 
 ## Overview
 
