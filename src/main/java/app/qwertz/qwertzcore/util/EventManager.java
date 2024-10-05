@@ -99,7 +99,7 @@ public class EventManager {
             alivePlayers.add(uuid);
         }
         deadPlayers.clear();
-        broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " All players have been revived!");
+        broadcastMessage(ChatColor.GREEN + " All players have been revived!");
     }
 
     public void unReviveAll() {
@@ -109,7 +109,7 @@ public class EventManager {
             deadPlayers.add(uuid);
         }
         alivePlayers.clear();
-        broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " All players have been unrevived!");
+        broadcastMessage(ChatColor.RED + " All players have been unrevived!");
     }
 
     public boolean isPlayerDead(Player player) {
