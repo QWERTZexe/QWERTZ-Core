@@ -48,6 +48,8 @@ public class EventCommands implements CommandExecutor {
                 return handleUnrevive(sender, args);
             case "reviveall":
                 return handleReviveAll(sender);
+            case "unreviveall":
+                return handleUnReviveAll(sender);
             case "listalive":
                 return handleListAlive(sender);
             case "listdead":
@@ -112,8 +114,14 @@ public class EventCommands implements CommandExecutor {
     }
 
     private boolean handleReviveAll(CommandSender sender) {
-        eventManager.reviveAll();
+        eventManager.reviveAll((Player) sender);
         sender.sendMessage(ChatColor.GREEN + "All players have been revived!");
+        return true;
+    }
+
+    private boolean handleUnReviveAll(CommandSender sender) {
+        eventManager.unReviveAll();
+        sender.sendMessage(ChatColor.RED + "All players have been unrevived!");
         return true;
     }
 

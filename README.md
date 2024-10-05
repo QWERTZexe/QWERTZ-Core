@@ -66,6 +66,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/revive <player>` - Revive a player
 - `/unrevive <player>` - Mark a player as dead
 - `/reviveall` - Revive all players
+- `/unreviveall` - Unrevive all players
 - `/revivelast [seconds]` - Revives all players who died in the last specified number of seconds
 - `/userevive` - Request to use a revive token
 - `/reviveaccept <player>` - Accept a player's revive request
@@ -113,6 +114,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.revive` - Revive players
 - `qwertzcore.host.unrevive` - Unrevive players
 - `qwertzcore.host.reviveall` - Revive all players
+- `qwertzcore.host.unreviveall` - Unrevive all players
 - `qwertzcore.host.listalive` - List alive players
 - `qwertzcore.host.listdead` - List dead players
 - `qwertzcore.host.givedead` - Give items to dead players

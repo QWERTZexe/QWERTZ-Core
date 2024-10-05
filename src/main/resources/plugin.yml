@@ -52,6 +52,10 @@ commands:
     description: Revive all players
     usage: /<command>
     permission: qwertzcore.host.reviveall
+  unreviveall:
+    description: Unrevive all players
+    usage: /<command>
+    permission: qwertzcore.host.unreviveall
   listalive:
     description: List all alive players
     usage: /<command>
@@ -259,6 +263,9 @@ permissions:
     default: op
   qwertzcore.host.reviveall:
     description: Allows the user to revive all players
+    default: op
+  qwertzcore.host.unreviveall:
+    description: Allows the user to unrevive all players
     default: op
   qwertzcore.host.listalive:
     description: Allows the user to list alive players

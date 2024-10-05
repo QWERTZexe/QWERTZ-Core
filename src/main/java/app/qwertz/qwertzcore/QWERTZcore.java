@@ -161,6 +161,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("revive").setExecutor(eventCommands);
         getCommand("unrevive").setExecutor(eventCommands);
         getCommand("reviveall").setExecutor(eventCommands);
+        getCommand("unreviveall").setExecutor(eventCommands);
         getCommand("listalive").setExecutor(eventCommands);
         getCommand("listdead").setExecutor(eventCommands);
         getCommand("givedead").setExecutor(eventCommands);

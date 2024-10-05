@@ -17,6 +17,7 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -90,12 +91,25 @@ public class EventManager {
             player.teleport(plugin.getConfigManager().getSpawnLocation());
         }
     }
-    public void reviveAll() {
+
+    public void reviveAll(Player sender) {
         for (UUID uuid : deadPlayers) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.teleport(sender.getLocation());
             alivePlayers.add(uuid);
         }
         deadPlayers.clear();
-        broadcastMessage(ChatColor.GREEN + "All players have been revived!");
+        broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " All players have been revived!");
+    }
+
+    public void unReviveAll() {
+        for (UUID uuid : alivePlayers) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.teleport(plugin.getConfigManager().getSpawnLocation());
+            deadPlayers.add(uuid);
+        }
+        alivePlayers.clear();
+        broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " All players have been unrevived!");
     }
 
     public boolean isPlayerDead(Player player) {
