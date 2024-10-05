@@ -206,9 +206,7 @@ public class DatabaseManager {
         if (loadedBlocks != null && !loadedBlocks.isEmpty()) {
             specialBlocks.clear();
             specialBlocks.putAll(loadedBlocks);
-            System.out.println("Loaded special blocks: " + specialBlocks);
         } else {
-            System.out.println("No special blocks found in the database.");
         }
     }
     public void saveSpecialBlocks(Map<String, String> blocks) {
