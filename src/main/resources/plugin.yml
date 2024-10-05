@@ -205,6 +205,10 @@ commands:
     usage: /warps
     aliases: [listwarps]
     permission: qwertzcore.player.listwarps
+  eventblock:
+    description: Get a special QWERTZ Core event block
+    usage: /eventblock <block> [material]
+    permission: qwertzcore.host.eventblock
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -352,4 +356,7 @@ permissions:
     default: op
   qwertzcore.chat.bypassme:
     description: Allows the player to bypass the disabled vanilla command /me
+    default: op
+  qwertzcore.host.eventblock:
+    description: Allows the player to create QWERTZ Core event blocks
     default: op

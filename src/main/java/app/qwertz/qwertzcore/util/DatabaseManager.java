@@ -27,30 +27,55 @@ public class DatabaseManager {
 
     private final QWERTZcore plugin;
     private final File databaseFile;
-    private Map<String, PlayerData> database;
+    private Map<String, Object> database;
+    private Map<String, String> specialBlocks;
     private final Gson gson;
 
     public DatabaseManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.databaseFile = new File(plugin.getDataFolder(), "database.json");
         this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.specialBlocks = new HashMap<>();
         loadDatabase();
     }
-
+    public void initializeSpecialBlocks() {
+        loadSpecialBlocks();
+    }
     private void loadDatabase() {
         if (!databaseFile.exists()) {
             database = new HashMap<>();
+            database.put("players", new HashMap<String, PlayerData>());
+            database.put("specialBlocks", new HashMap<String, String>());
             saveDatabase();
         } else {
             try (FileReader reader = new FileReader(databaseFile)) {
-                Type type = new TypeToken<Map<String, PlayerData>>(){}.getType();
+                Type type = new TypeToken<Map<String, Object>>(){}.getType();
                 database = gson.fromJson(reader, type);
                 if (database == null) {
                     database = new HashMap<>();
+                    database.put("players", new HashMap<String, PlayerData>());
+                    database.put("specialBlocks", new HashMap<String, String>());
+                }
+
+                // Convert player data to PlayerData objects
+                Map<String, PlayerData> players = new HashMap<>();
+                Map<String, Object> playersData = (Map<String, Object>) database.get("players");
+                if (playersData != null) {
+                    for (Map.Entry<String, Object> entry : playersData.entrySet()) {
+                        players.put(entry.getKey(), gson.fromJson(gson.toJson(entry.getValue()), PlayerData.class));
+                    }
+                }
+                database.put("players", players);
+
+                // Ensure specialBlocks exists
+                if (!database.containsKey("specialBlocks")) {
+                    database.put("specialBlocks", new HashMap<String, String>());
                 }
             } catch (IOException e) {
                 plugin.getLogger().severe("Could not load database: " + e.getMessage());
                 database = new HashMap<>();
+                database.put("players", new HashMap<String, PlayerData>());
+                database.put("specialBlocks", new HashMap<String, String>());
             }
         }
     }
@@ -120,7 +145,8 @@ public class DatabaseManager {
     }
     private PlayerData getPlayerData(UUID playerUUID) {
         String uuidString = playerUUID.toString();
-        return database.computeIfAbsent(uuidString, k -> new PlayerData());
+        Map<String, PlayerData> players = (Map<String, PlayerData>) database.get("players");
+        return players.computeIfAbsent(uuidString, k -> new PlayerData());
     }
 
     private static class PlayerData {
@@ -174,5 +200,23 @@ public class DatabaseManager {
         public void setMessageToggleEnabled(boolean messageToggleEnabled) {
             this.messageToggleEnabled = messageToggleEnabled;
         }
+    }
+    private void loadSpecialBlocks() {
+        Map<String, String> loadedBlocks = plugin.getDatabaseManager().getSpecialBlocks();
+        if (loadedBlocks != null && !loadedBlocks.isEmpty()) {
+            specialBlocks.clear();
+            specialBlocks.putAll(loadedBlocks);
+            System.out.println("Loaded special blocks: " + specialBlocks);
+        } else {
+            System.out.println("No special blocks found in the database.");
+        }
+    }
+    public void saveSpecialBlocks(Map<String, String> blocks) {
+        database.put("specialBlocks", blocks);
+        saveDatabase();
+    }
+
+    public Map<String, String> getSpecialBlocks() {
+        return new HashMap<>((Map<String, String>) database.get("specialBlocks"));
     }
 }

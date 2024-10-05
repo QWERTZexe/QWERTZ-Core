@@ -42,6 +42,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/setwarp <warp>` - Create a warp
 - `/delwarp <warp>` - Delete a warp
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
+- `/eventblock <block> [material]` - Get a QWERTZ Core event block
 
 ### Event Management
 
@@ -128,6 +129,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.mutechat` - Mute the chat
 - `qwertzcore.host.unmutechat` - Unmute the chat
 - `qwertzcore.host.ad` - Broadcast an advertisement
+- `qwertzcore.host.eventblock` - Get a QWERTZ Core event block
 
 #### Player Permissions
 
@@ -167,6 +169,13 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.chat.bypass` - Bypass a muted chat
 - `qwertzcore.chat.bypasstm` - Bypass the disabled vanilla commands /tm and /teammsg
 - `qwertzcore.chat.bypassme` - Bypass the disabled vanilla command /me
+
+## Event Blocks
+
+- `DAMAGE_BLOCK` - Constant damage while standing on it
+- `INSTANT_DEATH_BLOCK` - Instant death when standing on it
+- `RANDOM_DROP_BLOCK` - Drops a random block on break
+- `GRAVITY_FLIP_BLOCK` - Inverts gravity for 5 seconds upon standing on it
 
 ## Placeholders
 

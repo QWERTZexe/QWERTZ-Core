@@ -29,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.GREEN + "❇" + ChatColor.RESET;
+    public static final String CORE_ICON_RAW = "❇";
     public static final String VERSION = "1.1";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
@@ -45,6 +46,7 @@ public final class QWERTZcore extends JavaPlugin {
     private EventCountdownCommand eventCountdownCommand;
     private MessageManager messageManager;
     private UpdateChecker updateChecker;
+    private BlockManager blockManager;
 
     @Override
     public void onEnable() {
@@ -69,8 +71,11 @@ public final class QWERTZcore extends JavaPlugin {
         this.tablistManager = new TablistManager(this);
         this.chatManager = new ChatManager(this);
         this.databaseManager = new DatabaseManager(this);
+        this.databaseManager.initializeSpecialBlocks();
         this.messageManager = new MessageManager(this);
         this.updateChecker = new UpdateChecker(this);
+        this.blockManager = new BlockManager(this);
+
         registerCommands();
         registerListeners();
         PluginCommand configCommand = this.getCommand("config");
@@ -217,11 +222,14 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("setwarp").setTabCompleter(warpTabCompleter);
         this.getCommand("warp").setTabCompleter(warpTabCompleter);
         this.getCommand("delwarp").setTabCompleter(warpTabCompleter);
+        this.getCommand("eventblock").setExecutor(new EventBlockCommand(this));
+        this.getCommand("eventblock").setTabCompleter(new EventBlockTabCompleter());
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
         getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
     }
     public EventManager getEventManager() {
         return eventManager;
@@ -252,5 +260,8 @@ public final class QWERTZcore extends JavaPlugin {
     }
     public MessageManager getMessageManager() {
         return messageManager;
+    }
+    public BlockManager getBlockManager() {
+        return blockManager;
     }
 }

@@ -146,6 +146,9 @@ public class ConfigManager {
         if (!config.containsKey("checkForUpdates")) {
             config.put("checkForUpdates", true);
         }
+        if (!config.containsKey("specialBlockOutput")) {
+            config.put("specialBlockOutput", false);
+        }
     }
 
 
