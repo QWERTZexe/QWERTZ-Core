@@ -20,11 +20,10 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConfigManager {
     private final QWERTZcore plugin;
@@ -218,7 +217,54 @@ public class ConfigManager {
     public void set(String key, Object value) {
         config.put(key, value);
     }
+    public void saveKit(String kitName, List<ItemStack> items) {
+        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
+        List<Map<String, Object>> serializedItems = new ArrayList<>();
 
+        for (ItemStack item : items) {
+            if (item != null) {
+                serializedItems.add(item.serialize());
+            } else {
+                serializedItems.add(null);
+            }
+        }
+
+        kitsMap.put(kitName, serializedItems);
+        config.put("kits", kitsMap);
+        saveConfig();
+    }
+
+    public List<ItemStack> getKit(String kitName) {
+        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
+        List<Map<String, Object>> serializedItems = (List<Map<String, Object>>) kitsMap.get(kitName);
+
+        if (serializedItems == null) {
+            return null;
+        }
+
+        List<ItemStack> items = new ArrayList<>();
+        for (Map<String, Object> serializedItem : serializedItems) {
+            if (serializedItem != null) {
+                items.add(ItemStack.deserialize(serializedItem));
+            } else {
+                items.add(null);
+            }
+        }
+
+        return items;
+    }
+
+    public void deleteKit(String kitName) {
+        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
+        kitsMap.remove(kitName);
+        config.put("kits", kitsMap);
+        saveConfig();
+    }
+
+    public Set<String> getKitNames() {
+        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
+        return kitsMap.keySet();
+    }
     public void addWarp(String name, Location location) {
         Map<String, Object> warpMap = new HashMap<>();
         warpMap.put("world", location.getWorld().getName());

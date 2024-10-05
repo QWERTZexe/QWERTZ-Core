@@ -224,6 +224,14 @@ public final class QWERTZcore extends JavaPlugin {
         this.getCommand("delwarp").setTabCompleter(warpTabCompleter);
         this.getCommand("eventblock").setExecutor(new EventBlockCommand(this));
         this.getCommand("eventblock").setTabCompleter(new EventBlockTabCompleter());
+        getCommand("createkit").setExecutor(new KitCommand(this));
+        getCommand("kit").setExecutor(new KitCommand(this));
+        getCommand("delkit").setExecutor(new KitCommand(this));
+        getCommand("createkit").setTabCompleter(new KitTabCompleter(this));
+        getCommand("kit").setTabCompleter(new KitTabCompleter(this));
+        getCommand("delkit").setTabCompleter(new KitTabCompleter(this));
+        getCommand("kits").setExecutor(new KitCommand(this));
+        getCommand("invsee").setExecutor(new InvseeCommand(this));
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);

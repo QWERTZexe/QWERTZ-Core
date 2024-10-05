@@ -41,8 +41,11 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/warps` - List all available warps
 - `/setwarp <warp>` - Create a warp
 - `/delwarp <warp>` - Delete a warp
+- `/createkit <kit>` - Create a kit
+- `/delkit <kit>` - Delete a kit
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
 - `/eventblock <block> [material]` - Get a QWERTZ Core event block
+- `/kits` Lists all kits
 
 ### Event Management
 
@@ -83,6 +86,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/cleardead` - Clears the inventory of all dead players
 - `/healalive` - Heals all alive players
 - `/healdead` - Heals all dead players
+- `/kit <kit> <player|alive|dead|all>` Gives a kit to the selected group
 
 ### Database Management
 
@@ -130,6 +134,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.unmutechat` - Unmute the chat
 - `qwertzcore.host.ad` - Broadcast an advertisement
 - `qwertzcore.host.eventblock` - Get a QWERTZ Core event block
+- `qwertzcore.host.kit` - Give out kits
+- `qwertzcore.host.kits` - List all kits
 
 #### Player Permissions
 
@@ -158,6 +164,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.config.setad` - Set an advertisement
 - `qwertzcore.config.setwarp` - Set a warp
 - `qwertzcore.config.delwarp` - Delete a warp
+- `qwertzcore.config.createkit` - Create a kit
+- `qwertzcore.config.delkit` - Delete a kit
 
 #### Database Permissions
 

@@ -209,6 +209,26 @@ commands:
     description: Get a special QWERTZ Core event block
     usage: /eventblock <block> [material]
     permission: qwertzcore.host.eventblock
+  createkit:
+    description: Sets a kit to the player's items
+    usage: /createkit <kitname>
+    permission: qwertzcore.config.createkit
+  kit:
+    description: Gives the player/players the items in the kit
+    usage: /kit <kitname> <alive|dead|all>
+    permission: qwertzcore.host.kit
+  delkit:
+    description: Removes a kit
+    usage: /delkit <kitname>
+    permission: qwertzcore.config.delkit
+  kits:
+    description: Sends a list of kits
+    usage: /kits
+    permission: qwertzcore.host.kits
+  invsee:
+    description: View and modify another player's inventory
+    usage: /invsee <player>
+    permission: qwertzcore.host.invsee
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -359,4 +379,19 @@ permissions:
     default: op
   qwertzcore.host.eventblock:
     description: Allows the player to create QWERTZ Core event blocks
+    default: op
+  qwertzcore.config.createkit:
+    description: Allows the player to create kits
+    default: op
+  qwertzcore.config.delkit:
+    description: Allows the player to delete kits
+    default: op
+  qwertzcore.host.kit:
+    description: Allows the player to apply kits
+    default: op
+  qwertzcore.host.kits:
+    description: Allows the player to list kits
+    default: op
+  qwertzcore.host.invsee:
+    description: Allows the player to invsee other players
     default: op
