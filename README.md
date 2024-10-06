@@ -91,8 +91,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/cleardead` - Clears the inventory of all dead players
 - `/healalive` - Heals all alive players
 - `/healdead` - Heals all dead players
-- `/kit <kit> <player|alive|dead|all>` Gives a kit to the selected group
-
+- `/kit <kit> <player|alive|dead|all>` - Gives a kit to the selected group
+- `/invsee <player>` - View and modify another player's inventory
 ### Database Management
 
 - `/addwin <player>` - Add a win to a player's record
@@ -142,6 +142,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.eventblock` - Get a QWERTZ Core event block
 - `qwertzcore.host.kit` - Give out kits
 - `qwertzcore.host.kits` - List all kits
+- `qwertzcore.host.invsee` - Allows the player to see other players' inventory
 
 #### Player Permissions
 

@@ -21,6 +21,7 @@ import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BlockManager {
     private final QWERTZcore plugin;
@@ -99,7 +100,7 @@ public class BlockManager {
     }
 
     private String locationToString(Location location) {
-        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
+        return Objects.requireNonNull(location.getWorld()).getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
     }
 
     private Location stringToLocation(String str) {
