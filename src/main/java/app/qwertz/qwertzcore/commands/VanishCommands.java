@@ -34,8 +34,8 @@ public class VanishCommands implements CommandExecutor {
             return true;
         }
         if (!plugin.getVanishManager().getVanishedPlayers().contains(sender.getName())) {
-            if (plugin.getConfigManager().getMsgsOnVanish()) {
-                int fakeCount = plugin.getVanishManager().getFakePlayerCount();
+                if (plugin.getConfigManager().getMsgsOnVanish()) {
+                int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount - 1;
                 broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + sender.getName() +
                         ChatColor.RED + " Just left us! " + ChatColor.GRAY +
@@ -61,10 +61,10 @@ public class VanishCommands implements CommandExecutor {
         }
         if (plugin.getVanishManager().getVanishedPlayers().contains(sender.getName())) {
             if (plugin.getConfigManager().getMsgsOnVanish()) {
-                int fakeCount = plugin.getVanishManager().getFakePlayerCount();
+                int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount + 1;
                 broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + sender.getName() +
-                        ChatColor.RED + " Just joined us! " + ChatColor.GRAY + "[" +
+                        ChatColor.GREEN + " Just joined us! " + ChatColor.GRAY + "[" +
                         ChatColor.AQUA + fakeCount + ChatColor.GRAY + " -> " +
                         ChatColor.AQUA + newCount + ChatColor.GRAY + "]");
             }
@@ -74,7 +74,7 @@ public class VanishCommands implements CommandExecutor {
                 loop.showPlayer((Player) sender);
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "You aren't vanished!");
+            sender.sendMessage(ChatColor.RED + "You are not vanished!");
         }
 
         return true;
