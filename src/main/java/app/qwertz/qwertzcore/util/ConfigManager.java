@@ -148,6 +148,9 @@ public class ConfigManager {
         if (!config.containsKey("specialBlockOutput")) {
             config.put("specialBlockOutput", false);
         }
+        if (!config.containsKey("joinLeaveMsgsOnVanish")) {
+            config.put("joinLeaveMsgsOnVanish", true);
+        }
     }
 
 
@@ -315,6 +318,10 @@ public class ConfigManager {
     }
     public boolean getTpOnUnrevive() {
         return (boolean) config.getOrDefault("tpOnUnrevive", true);
+    }
+
+    public boolean getMsgsOnVanish() {
+        return (boolean) config.getOrDefault("joinLeaveMsgsOnVanish", true);
     }
 
     public boolean getTpOnDeath() {

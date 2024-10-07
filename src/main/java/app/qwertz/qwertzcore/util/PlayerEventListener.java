@@ -30,20 +30,23 @@ public class PlayerEventListener implements Listener {
     private final TablistManager tablistManager;
     private final HideCommand hideCommand;
     private final UpdateChecker updateChecker;
+    private final VanishManager vanishManager;
 
 
-    public PlayerEventListener(EventManager eventManager, ConfigManager configManager, ScoreboardManager scoreboardManager, TablistManager tablistManager, HideCommand hideCommand, UpdateChecker updateChecker) {
+    public PlayerEventListener(EventManager eventManager, VanishManager vanishManager, ConfigManager configManager, ScoreboardManager scoreboardManager, TablistManager tablistManager, HideCommand hideCommand, UpdateChecker updateChecker) {
         this.eventManager = eventManager;
         this.configManager = configManager;
         this.scoreboardManager = scoreboardManager;
         this.tablistManager = tablistManager;
         this.hideCommand = hideCommand;
         this.updateChecker = updateChecker;
+        this.vanishManager = vanishManager;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        vanishManager.hideVanishedPlayers(event.getPlayer());
         if ((Boolean) configManager.get("checkForUpdates")) {
             updateChecker.notifyPlayer(player);
         }
@@ -59,6 +62,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         eventManager.removePlayer(event.getPlayer());
+        vanishManager.removeVanishedPlayer(event.getPlayer());
         scoreboardManager.removeScoreboard(event.getPlayer());
     }
 }

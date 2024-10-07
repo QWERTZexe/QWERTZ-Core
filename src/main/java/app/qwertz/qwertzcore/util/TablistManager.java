@@ -36,7 +36,7 @@ public class TablistManager {
         if (plugin.getConfigManager().getTabList()) {
         String header = ChatColor.GOLD + "" + ChatColor.BOLD + plugin.getConfigManager().getServerName() + "\n\n" +
                 ChatColor.YELLOW + "Event: " + plugin.getConfigManager().getEventName() + "\n" +
-                ChatColor.AQUA + "Players: " + Bukkit.getOnlinePlayers().size() + "\n";
+                ChatColor.AQUA + "Players: " + plugin.getVanishManager().getNonVanishedPlayerCount() + "\n";
 
         String footer = "\n" + QWERTZcore.CORE_ICON + ChatColor.GOLD + " QWERTZ Core";
 
