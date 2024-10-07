@@ -48,19 +48,18 @@ public class EventCountdownCommand implements CommandExecutor {
         int minutes = 0;
         int seconds = 0;
 
-        int parse1 = Integer.parseInt(timeArg.substring(0, timeArg.length() - 1));
-        int parse2 = Integer.parseInt(timeArg.substring(0, timeArg.length() - 3));
-        if (timeArg.endsWith("s")) {
-            seconds = parse1;
-        }
-        else if (timeArg.endsWith("min")) {
-            minutes = parse2;
-        } else if (timeArg.endsWith("sec")) {
-            seconds = parse2;
-        } else if (timeArg.endsWith("m")) {
-            minutes = parse1;
-        } else {
+        if (timeArg.matches("\\d+s")) {
+            seconds = Integer.parseInt(timeArg.substring(0, timeArg.length() - 1));
+        } else if (timeArg.matches("\\d+min")) {
+            minutes = Integer.parseInt(timeArg.substring(0, timeArg.length() - 3));
+        } else if (timeArg.matches("\\d+sec")) {
+            seconds = Integer.parseInt(timeArg.substring(0, timeArg.length() - 3));
+        } else if (timeArg.matches("\\d+m")) {
+            minutes = Integer.parseInt(timeArg.substring(0, timeArg.length() - 1));
+        } else if (timeArg.matches("\\d+")) {
             minutes = Integer.parseInt(timeArg);
+        } else {
+            throw new IllegalArgumentException("Invalid time format. Use: <number>[s|sec|m|min] or just <number> for minutes.");
         }
 
 

@@ -16,8 +16,10 @@ package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.blocks.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,12 @@ public class BlockManager {
         this.specialBlocks = new HashMap<>();
         this.blockTypes = new HashMap<>();
         registerBlockTypes();
-        loadSpecialBlocks();
+        plugin.getLogger().info("Scheduling task to load special blocks...");
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            plugin.getLogger().info("Loading special blocks...");
+            int amount = loadSpecialBlocks();
+            plugin.getLogger().info("Loaded " + amount + " special blocks!");
+        }, 20L);
     }
 
     private void registerBlockTypes() {
@@ -45,12 +52,14 @@ public class BlockManager {
 
     public void setSpecialBlock(Location location, String blockType, Material material) {
         try {
-            QWERTZcoreBlockType type = QWERTZcoreBlockType.valueOf(blockType);
+            QWERTZcoreBlockType type = QWERTZcoreBlockType.valueOf(blockType.toUpperCase());
             QWERTZcoreBlock block = createBlock(type, material);
             specialBlocks.put(location, block);
             saveSpecialBlocks();
         } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("Failed to create special block: " + e.getMessage());
+            plugin.getLogger().warning("Invalid block type: " + blockType);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Error setting special block: " + e.getMessage());
         }
     }
     private QWERTZcoreBlock createBlock(QWERTZcoreBlockType type, Material material) {
@@ -73,21 +82,39 @@ public class BlockManager {
     public void removeSpecialBlock(Location location) {
         if (specialBlocks.remove(location) != null) {
             saveSpecialBlocks();
-            System.out.println("Removed special block at: " + location);
         }
     }
 
 
-
-    private void loadSpecialBlocks() {
-
+    private int loadSpecialBlocks() {
+        int count = 0;
         Map<String, String> savedBlocks = plugin.getDatabaseManager().getSpecialBlocks();
         for (Map.Entry<String, String> entry : savedBlocks.entrySet()) {
-            Location location = stringToLocation(entry.getKey());
+            String locationString = entry.getKey();
             String blockType = entry.getValue();
+            try {
+                Location location = stringToLocation(locationString);
+                if (location == null) {
+                    plugin.getLogger().warning("Failed to parse location: " + locationString);
+                    continue;
+                }
 
-            setSpecialBlock(location, blockType, null);
+                if (blockType == null || blockType.isEmpty()) {
+                    plugin.getLogger().warning("Invalid block type for location: " + locationString);
+                    continue;
+                }
+
+                Material material = Material.GRASS_BLOCK;
+
+                setSpecialBlock(location, blockType, material);
+                count++;
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid block type '" + blockType + "' for location: " + locationString);
+            } catch (Exception e) {
+                plugin.getLogger().severe("Error processing special block at " + locationString + ": " + e.getMessage());
+            }
         }
+        return count;
     }
 
     public void saveSpecialBlocks() {
@@ -106,14 +133,18 @@ public class BlockManager {
     private Location stringToLocation(String str) {
         String[] parts = str.split(",");
         if (parts.length == 4) {
-            return new Location(plugin.getServer().getWorld(parts[0]),
+            World world = plugin.getServer().getWorld(parts[0]);
+            if (world == null) {
+                plugin.getLogger().warning("World not found: " + parts[0]);
+                return null;
+            }
+            return new Location(world,
                     Double.parseDouble(parts[1]),
                     Double.parseDouble(parts[2]),
                     Double.parseDouble(parts[3]));
         }
         return null;
     }
-
     public boolean isValidBlockType(String blockType) {
         return blockTypes.containsKey(blockType);
     }
