@@ -35,6 +35,7 @@ public final class QWERTZcore extends JavaPlugin {
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
 
+    private VanishManager vanishManager;
     private EventManager eventManager;
     private ConfigManager configManager;
     private RankManager rankManager;
@@ -73,6 +74,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.databaseManager = new DatabaseManager(this);
         this.databaseManager.initializeSpecialBlocks();
         this.messageManager = new MessageManager(this);
+        this.vanishManager = new VanishManager(this);
         this.updateChecker = new UpdateChecker(this);
         this.blockManager = new BlockManager(this);
 
@@ -171,10 +173,12 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("tpalive").setExecutor(eventCommands);
         getCommand("tpdead").setExecutor(eventCommands);
         getCommand("tphere").setExecutor(eventCommands);
-        getCommand("revivelast").setExecutor(eventCommands);;
+        getCommand("revivelast").setExecutor(eventCommands);
         getCommand("revivelast").setTabCompleter(new ReviveLastTabCompleter());
         getCommand("healalive").setExecutor(eventCommands);
         getCommand("healdead").setExecutor(eventCommands);
+        getCommand("vanish").setExecutor(new VanishCommand(this));
+        getCommand("unvanish").setExecutor(new UnvanishCommand(this));
         getCommand("config").setExecutor(new ConfigCommand(this));
         getCommand("spawn").setExecutor(new SpawnCommand(this));
         ClearInventoryCommand clearInventoryCommand = new ClearInventoryCommand(this);
@@ -235,7 +239,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("invsee").setExecutor(new InvseeCommand(this));
     }
     private void registerListeners() {
-        getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
+        getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, vanishManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
         getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(), this);
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
@@ -272,5 +276,8 @@ public final class QWERTZcore extends JavaPlugin {
     }
     public BlockManager getBlockManager() {
         return blockManager;
+    }
+    public VanishManager getVanishManager() {
+        return vanishManager;
     }
 }
