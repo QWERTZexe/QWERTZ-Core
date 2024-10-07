@@ -60,8 +60,8 @@ public class ScoreboardManager {
         obj.getScore(ChatColor.STRIKETHROUGH + "----------------" + ChatColor.RESET).setScore(12);
         obj.getScore(ChatColor.YELLOW + "EVENT").setScore(11);
         obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Name: ") + ChatColor.GOLD + plugin.getConfigManager().getEventName()).setScore(10);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Alive: ") + ChatColor.GREEN + eventManager.getAliveCount()).setScore(9);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Dead: ") + ChatColor.RED + eventManager.getDeadCount()).setScore(8);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Alive: ") + ChatColor.GREEN + eventManager.getAlivePlayerCountWithoutVanish()).setScore(9);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Dead: ") + ChatColor.RED + eventManager.getDeadPlayerCountWithoutVanish()).setScore(8);
         obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Starting in: ") + ChatColor.AQUA + this.eventcountdown).setScore(7);
         obj.getScore(" ").setScore(6); // Empty line
         obj.getScore(ChatColor.YELLOW + player.getName()).setScore(5);

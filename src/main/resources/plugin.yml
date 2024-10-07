@@ -84,6 +84,14 @@ commands:
     description: Teleport the selected player to you
     usage: /<command> <player>
     permission: qwertzcore.host.tphere
+  vanish:
+    description: Vanishes the player from the server
+    usage: /vanish
+    permission: qwertzcore.host.vanish
+  unvanish:
+    description: Unvanishes the player from the server
+    usage: /unvanish
+    permission: qwertzcore.host.unvanish
   config:
     description: Edit configuration values
     usage: /config <key> <value>
@@ -401,4 +409,10 @@ permissions:
     default: op
   qwertzcore.host.invsee:
     description: Allows the player to invsee other players
+    default: op
+  qwertzcore.host.vanish:
+    description: Allows the player to vanish
+    default: op
+  qwertzcore.host.unvanish:
+    description: Allows the player to unvanish
     default: op

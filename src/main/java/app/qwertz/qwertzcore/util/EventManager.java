@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
 
 import java.util.*;
 
@@ -126,6 +127,25 @@ public class EventManager {
 
     public Set<UUID> getAlivePlayers() {
         return new HashSet<>(alivePlayers);
+    }
+
+    public Integer getAlivePlayerCountWithoutVanish() {
+        Integer counter = 0;
+        for (UUID uuid : alivePlayers) {
+            if (!plugin.getVanishManager().getVanishedPlayers().contains(uuid)) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+    public Integer getDeadPlayerCountWithoutVanish() {
+        Integer counter = 0;
+        for (UUID uuid : deadPlayers) {
+            if (!plugin.getVanishManager().getVanishedPlayers().contains(uuid)) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public void addNewPlayer(Player player) {
