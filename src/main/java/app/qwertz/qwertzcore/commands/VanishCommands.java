@@ -33,12 +33,12 @@ public class VanishCommands implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
             return true;
         }
-        if (!plugin.getVanishManager().getVanishedPlayers().contains(sender.getName())) {
+        if (!plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
                 if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount - 1;
                 broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + sender.getName() +
-                        ChatColor.RED + " Just left us! " + ChatColor.GRAY +
+                        ChatColor.RED + " just left us! " + ChatColor.GRAY +
                         "[" + ChatColor.AQUA + fakeCount + ChatColor.GRAY +
                         " -> " + ChatColor.AQUA + newCount + ChatColor.GRAY + "]");
             }
@@ -59,12 +59,12 @@ public class VanishCommands implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
             return true;
         }
-        if (plugin.getVanishManager().getVanishedPlayers().contains(sender.getName())) {
+        if (plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
             if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount + 1;
                 broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + sender.getName() +
-                        ChatColor.GREEN + " Just joined us! " + ChatColor.GRAY + "[" +
+                        ChatColor.GREEN + " just joined! " + ChatColor.GRAY + "[" +
                         ChatColor.AQUA + fakeCount + ChatColor.GRAY + " -> " +
                         ChatColor.AQUA + newCount + ChatColor.GRAY + "]");
             }

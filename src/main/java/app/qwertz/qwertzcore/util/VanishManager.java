@@ -8,7 +8,7 @@ import java.util.*;
 
 public class VanishManager {
     private final QWERTZcore plugin;
-    List<String> vanishedPlayers = new ArrayList<>();
+    List<UUID> vanishedPlayers = new ArrayList<>();
     
     public VanishManager(QWERTZcore plugin) {
         this.plugin = plugin;
@@ -16,18 +16,18 @@ public class VanishManager {
     
     public void hideVanishedPlayers(Player player) {
         for (Player loop : Bukkit.getOnlinePlayers()) {
-            if(vanishedPlayers.contains(loop.getName())) {
+            if(vanishedPlayers.contains(loop.getUniqueId())) {
                 player.hidePlayer(loop);
             }
         }
     }
     
     public void removeVanishedPlayer(Player player) {
-        vanishedPlayers.remove(player.getName());
+        vanishedPlayers.remove(player.getUniqueId());
     }
     
     public void addVanishedPlayer(Player player) {
-        vanishedPlayers.add(player.getName());
+        vanishedPlayers.add(player.getUniqueId());
     }
     
     public int getNonVanishedPlayerCount() {
