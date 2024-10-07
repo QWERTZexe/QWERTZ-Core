@@ -177,8 +177,8 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("revivelast").setTabCompleter(new ReviveLastTabCompleter());
         getCommand("healalive").setExecutor(eventCommands);
         getCommand("healdead").setExecutor(eventCommands);
-        getCommand("vanish").setExecutor(new VanishCommand(this));
-        getCommand("unvanish").setExecutor(new UnvanishCommand(this));
+        getCommand("vanish").setExecutor(new VanishCommands(this));
+        getCommand("unvanish").setExecutor(new VanishCommands(this));
         getCommand("config").setExecutor(new ConfigCommand(this));
         getCommand("spawn").setExecutor(new SpawnCommand(this));
         ClearInventoryCommand clearInventoryCommand = new ClearInventoryCommand(this);
