@@ -15,12 +15,15 @@ public class RestrictedCommandsListener implements Listener {
 
     private final Map<String, String> restrictedCommands = new HashMap<>();
 
-    public RestrictedCommandsListener() {
+    private final ConfigManager configManager;
+
+    public RestrictedCommandsListener(ConfigManager configManager) {
         restrictedCommands.put("/minecraft:me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/minecraft:tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/teammsg", "qwertzcore.chat.bypasstm");
+        this.configManager = configManager;
     }
 
     @EventHandler
@@ -32,7 +35,7 @@ public class RestrictedCommandsListener implements Listener {
             String bypassPermission = restrictedCommands.get(command);
             if (!player.isOp() && !player.hasPermission(bypassPermission)) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+                player.sendMessage(configManager.getColor("colorError") + "You don't have permission to use this command.");
             }
         }
     }

@@ -241,7 +241,7 @@ public final class QWERTZcore extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, vanishManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
-        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(), this);
+        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(configManager), this);
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
     }
     public EventManager getEventManager() {

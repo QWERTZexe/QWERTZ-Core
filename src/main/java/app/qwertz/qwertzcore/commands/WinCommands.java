@@ -46,48 +46,48 @@ public class WinCommands implements CommandExecutor {
 
     private boolean handleAddWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /addwin <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /addwin <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
         plugin.getDatabaseManager().addWin(target.getUniqueId());
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Added a win for " + ChatColor.YELLOW + target.getName() + ChatColor.GREEN + ". They now have " + ChatColor.YELLOW + wins +  ChatColor.GREEN + " wins.");
-        target.sendMessage(ChatColor.GREEN + "You have been awarded a win! You now have " +  ChatColor.YELLOW + wins + ChatColor.GREEN + " wins.");
+        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " Added a win for " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorAlive") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
+        target.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "You have been awarded a win! You now have " +  plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
 
         return true;
     }
 
     private boolean handleRemoveWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /removewin <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /removewin <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
         int currentWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         if (currentWins <= 0) {
-            sender.sendMessage(ChatColor.RED + target.getName() + " has no wins to remove.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + target.getName() + " has no wins to remove.");
             return true;
         }
 
         plugin.getDatabaseManager().removeWin(target.getUniqueId());
         int newWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Removed a win from " + ChatColor.YELLOW + target.getName() + ChatColor.RED + ". They now have " + ChatColor.YELLOW + newWins + ChatColor.RED + " wins.");
-        target.sendMessage(ChatColor.GREEN + "A win has been removed from your record. You now have " + ChatColor.YELLOW + newWins + ChatColor.RED + " wins.");
+        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed a win from " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorDead") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
+        target.sendMessage(plugin.getConfigManager().getColor("colorDead") + "A win has been removed from your record. You now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
 
         return true;
     }
@@ -99,16 +99,16 @@ public class WinCommands implements CommandExecutor {
         } else if (args.length == 1) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(ChatColor.RED + "Player not found.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
                 return true;
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "Usage: /wins [player]");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /wins [player]");
             return true;
         }
 
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
-        sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + target.getName() + ChatColor.GREEN + " has " + wins + " wins.");
+        sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + target.getName() + plugin.getConfigManager().getColor("colorAlive") + " has " + wins + " wins.");
 
         return true;
     }

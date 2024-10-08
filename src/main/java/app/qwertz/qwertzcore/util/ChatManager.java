@@ -33,7 +33,7 @@ public class ChatManager implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (!plugin.getConfigManager().getChat() && !event.getPlayer().hasPermission("qwertzcore.chat.bypass")) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Chat is disabled!");
+            event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Chat is disabled!");
             return;
         }
         if (plugin.getConfigManager().getChatFormatting()) {
@@ -45,21 +45,12 @@ public class ChatManager implements Listener {
             String message = event.getMessage();
             String formattedMessage;
 
-            if (prefix.isEmpty()) {
-                formattedMessage = String.format("%s%s%s: %s",
-                        prefix,
-                        player.getName(),
-                        suffix,
-                        ChatColor.WHITE + message
-                );
-            } else {
-                formattedMessage = String.format("%s %s%s: %s",
-                        prefix,
-                        player.getName(),
-                        suffix,
-                        ChatColor.WHITE + message
-                );
-            }
+            formattedMessage = String.format("%s%s%s: %s",
+                    prefix,
+                    player.getName(),
+                    suffix,
+                    message
+            );
 
 
             plugin.getServer().broadcastMessage(formattedMessage);

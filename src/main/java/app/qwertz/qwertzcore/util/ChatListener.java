@@ -17,7 +17,6 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.ChatReviveCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -61,11 +60,11 @@ public class ChatListener implements Listener {
 
     private void announceWinner(String playerName) {
         Bukkit.broadcastMessage(String.format("%s %s%s %shas won the chat revival game!",
-                QWERTZcore.CORE_ICON, ChatColor.GREEN, playerName, ChatColor.YELLOW));
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorAlive"), playerName, plugin.getConfigManager().getColor("colorPrimary")));
 
         if (gameType.equals("guess") || gameType.equals("math")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
-                    QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, answer));
+                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
         }
 
         endGame();
@@ -74,10 +73,10 @@ public class ChatListener implements Listener {
     public void cancelGame() {
         if (gameType.equals("guess") || gameType.equals("math")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
-                    QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, answer));
+                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
         } else if (gameType.equals("typer")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct sentence was: %s%s",
-                    QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, answer));
+                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
         }
         endGame();
     }

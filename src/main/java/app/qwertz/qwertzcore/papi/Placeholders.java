@@ -70,7 +70,7 @@ public class Placeholders extends PlaceholderExpansion {
                 return String.valueOf(plugin.getDatabaseManager().getWins(player.getUniqueId()));
             case "status":
                 return plugin.getEventManager().isPlayerDead(player) ?
-                        ChatColor.RED + "DEAD" : ChatColor.GREEN + "ALIVE";
+                        plugin.getConfigManager().getColor("colorDead") + "DEAD" : plugin.getConfigManager().getColor("colorAlive") + "ALIVE";
             case "startingin":
                 return String.valueOf(plugin.getScoreboardManager().eventcountdown);
             case "server":

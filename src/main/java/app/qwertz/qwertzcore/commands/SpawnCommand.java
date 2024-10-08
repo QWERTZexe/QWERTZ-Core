@@ -15,7 +15,6 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +39,7 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
@@ -61,8 +60,8 @@ public class SpawnCommand implements CommandExecutor {
                 }
             } else {
                 // First time or cooldown expired, show warning
-                player.sendTitle(ChatColor.RED + "WARNING", ChatColor.YELLOW + "You are still alive!", 10, 70, 20);
-                player.sendMessage(ChatColor.RED + "WARNING: " + ChatColor.YELLOW + "You are still alive! Type /spawn again within 10 seconds to confirm teleportation.");
+                player.sendTitle(plugin.getConfigManager().getColor("colorError") + "WARNING", plugin.getConfigManager().getColor("colorPrimary") + "You are still alive!", 10, 70, 20);
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "WARNING: " + plugin.getConfigManager().getColor("colorPrimary") + "You are still alive! Type /spawn again within 10 seconds to confirm teleportation.");
                 cooldowns.put(playerUUID, currentTime);
 
                 // Schedule a task to remove the cooldown after 10 seconds
@@ -78,18 +77,18 @@ public class SpawnCommand implements CommandExecutor {
     }
     private void unrevivePlayer(Player player) {
         plugin.getEventManager().handlePlayerDeath(player, true);
-        player.sendMessage(ChatColor.RED + "You have been unrevived as you chose to teleport to spawn while alive.");
+        player.sendMessage(plugin.getConfigManager().getColor("colorDead") + "You have been unrevived as you chose to teleport to spawn while alive.");
     }
     private void teleportToSpawn(Player player, boolean wasAlive) {
         Location spawnLocation = plugin.getConfigManager().getSpawnLocation();
         if (spawnLocation != null) {
             player.teleport(spawnLocation);
-            player.sendMessage(ChatColor.GREEN + "Teleported to spawn.");
+            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Teleported to spawn!");
             if (wasAlive) {
                 unrevivePlayer(player);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "Spawn location is not set.");
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Spawn location is not set!");
         }
     }
 }

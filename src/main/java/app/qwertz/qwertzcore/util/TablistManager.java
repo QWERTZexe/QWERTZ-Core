@@ -34,9 +34,9 @@ public class TablistManager {
     public void updateTablist(Player player) {
 
         if (plugin.getConfigManager().getTabList()) {
-        String header = ChatColor.GOLD + "" + ChatColor.BOLD + plugin.getConfigManager().getServerName() + "\n\n" +
-                ChatColor.YELLOW + "Event: " + plugin.getConfigManager().getEventName() + "\n" +
-                ChatColor.AQUA + "Players: " + plugin.getVanishManager().getNonVanishedPlayerCount() + "\n";
+        String header = plugin.getConfigManager().getColor("colorSecondary") + ChatColor.BOLD + plugin.getConfigManager().getServerName() + "\n\n" +
+                plugin.getConfigManager().getColor("colorPrimary") + "Event: " + plugin.getConfigManager().getEventName() + "\n" +
+                plugin.getConfigManager().getColor("colorTertiary") + "Players: " + plugin.getVanishManager().getNonVanishedPlayerCount() + "\n";
 
         String footer = "\n" + QWERTZcore.CORE_ICON + ChatColor.GOLD + " QWERTZ Core";
 

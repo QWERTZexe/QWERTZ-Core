@@ -18,7 +18,6 @@ import app.qwertz.qwertzcore.QWERTZcore;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,26 +37,26 @@ public class TimerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /timer <seconds> or /timer cancel");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /timer <seconds> or /timer cancel");
             return false;
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
             cancelTimer();
-            sender.sendMessage(ChatColor.YELLOW + "Timer cancelled.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "Timer cancelled.");
             return true;
         }
 
         try {
             int seconds = Integer.parseInt(args[0]);
             if (seconds <= 0) {
-                sender.sendMessage(ChatColor.RED + "Please provide a positive number of seconds.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Please provide a positive number of seconds.");
                 return false;
             }
             startTimer(seconds);
             return true;
         } catch (NumberFormatException e) {
-            sender.sendMessage(ChatColor.RED + "Invalid number format. Please provide a valid number of seconds.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format. Please provide a valid number of seconds.");
             return false;
         }
     }
@@ -66,7 +65,7 @@ public class TimerCommand implements CommandExecutor {
         cancelTimer(); // Cancel any existing timer
 
         String startMessage = String.format("%s %s%s%sA timer just got started!",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, ChatColor.YELLOW);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), plugin.getConfigManager().getColor("colorPrimary"));
         broadcastMessage(startMessage);
         broadcastActionBar(startMessage);
 
@@ -76,15 +75,15 @@ public class TimerCommand implements CommandExecutor {
             @Override
             public void run() {
                 if (timeLeft <= 0) {
-                    broadcastMessage(ChatColor.GOLD + "Time's up!");
-                    broadcastActionBar(ChatColor.GOLD + "Time's up!");
+                    broadcastMessage(plugin.getConfigManager().getColor("colorSecondary") + "Time's up!");
+                    broadcastActionBar(plugin.getConfigManager().getColor("colorSecondary") + "Time's up!");
                     currentTimer = null;
                     cancel();
                     return;
                 }
 
-                String message = String.format("%s %s%s%d %sseconds",
-                        QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, timeLeft, ChatColor.YELLOW);
+                String message = String.format("%s %s%d %sseconds",
+                        QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorSuccess"), timeLeft, plugin.getConfigManager().getColor("colorPrimary"));
 
                 broadcastMessage(message);
                 broadcastActionBar(message);
@@ -98,7 +97,7 @@ public class TimerCommand implements CommandExecutor {
         if (currentTimer != null) {
             currentTimer.cancel();
             currentTimer = null;
-            broadcastMessage(ChatColor.YELLOW + "Timer has been cancelled.");
+            broadcastMessage(plugin.getConfigManager().getColor("colorPrimary") + "Timer has been cancelled.");
         }
     }
 
