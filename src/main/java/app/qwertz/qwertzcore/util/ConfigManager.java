@@ -172,6 +172,9 @@ public class ConfigManager {
         if (!config.containsKey("colorSuccess")) {
             config.put("colorSuccess", "§a");
         }
+        if (!config.containsKey("suppressVanilla")) {
+            config.put("suppressVanilla", true);
+        }
     }
 
 

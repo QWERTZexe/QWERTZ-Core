@@ -49,7 +49,7 @@ public class ChatReviveCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
-            cancelGame();
+            cancelGame(sender);
             return true;
         }
 
@@ -157,13 +157,13 @@ public class ChatReviveCommand implements CommandExecutor {
         Bukkit.broadcastMessage(message);
     }
 
-    private void cancelGame() {
+    private void cancelGame(CommandSender sender) {
         if (activeGame != null) {
             activeGame.cancelGame();
             activeGame = null;
             broadcastMessage(plugin.getConfigManager().getColor("colorPrimary") + "The chat revival game has been cancelled.");
         } else {
-            broadcastMessage(plugin.getConfigManager().getColor("colorError") + "There is no active chat revival game to cancel.");
+            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " There is no active chat revival game to cancel.");
         }
     }
 
