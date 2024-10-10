@@ -75,10 +75,10 @@ public class RankManager {
             }
         }
         if (player.isOp()) {
-            return "§6[§6§lHOST§6]";
+            return "§6[§6§lHOST§6] ";
         }
         else {
-            return "§a[PLAYER]";
+            return "§a[PLAYER] ";
         }
     }
 
