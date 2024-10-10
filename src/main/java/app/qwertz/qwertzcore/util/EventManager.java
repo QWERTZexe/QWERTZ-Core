@@ -100,7 +100,7 @@ public class EventManager {
             alivePlayers.add(uuid);
         }
         deadPlayers.clear();
-        broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " All players have been revived!");
+        broadcastMessage(plugin.getConfigManager().getColor("colorAlive") + "All players have been revived!");
     }
 
     public void unReviveAll() {
@@ -112,7 +112,7 @@ public class EventManager {
             deadPlayers.add(uuid);
         }
         alivePlayers.clear();
-        broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " All players have been unrevived!");
+        broadcastMessage(plugin.getConfigManager().getColor("colorDead") + "All players have been unrevived!");
     }
 
     public boolean isPlayerDead(Player player) {

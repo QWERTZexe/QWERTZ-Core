@@ -16,7 +16,6 @@ package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,9 +35,9 @@ public class ChatMuteCommand implements CommandExecutor {
 
         String message = String.format("%s %sChat has been %s%s",
                 QWERTZcore.CORE_ICON,
-                ChatColor.YELLOW,
-                isMuting ? ChatColor.RED + "muted" : ChatColor.GREEN + "unmuted",
-                ChatColor.YELLOW + "!");
+                plugin.getConfigManager().getColor("colorPrimary"),
+                isMuting ? plugin.getConfigManager().getColor("colorDead") + "muted" : plugin.getConfigManager().getColor("colorAlive") + "unmuted",
+                plugin.getConfigManager().getColor("colorPrimary") + "!");
         Bukkit.broadcastMessage(message);
         return true;
     }

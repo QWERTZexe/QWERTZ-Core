@@ -39,21 +39,21 @@ public class ClearInventoryCommand implements CommandExecutor {
             boolean isDead = plugin.getEventManager().isPlayerDead(player);
             if ((clearAlive && !isDead) || (!clearAlive && isDead)) {
                 player.getInventory().clear();
-                player.sendMessage(ChatColor.RED + "Your inventory has been cleared by an admin.");
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Your inventory has been cleared by an admin.");
                 clearedCount++;
             }
         }
 
         String playerType = clearAlive ? "alive" : "dead";
-        ChatColor playerTypeColor = clearAlive ? ChatColor.GREEN : ChatColor.RED;
+        String playerTypeColor = clearAlive ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead");
 
         String message = String.format("%s %s%d %s%s %splayers have had their inventories cleared",
                 QWERTZcore.CORE_ICON,
-                ChatColor.GREEN,
+                plugin.getConfigManager().getColor("colorSuccess"),
                 clearedCount,
                 playerTypeColor,
                 playerType,
-                ChatColor.GREEN);
+                plugin.getConfigManager().getColor("colorSuccess"));
 
         Bukkit.broadcastMessage(message);
 

@@ -79,49 +79,49 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleRevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /revive <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revive <player>");
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
             return false;
         }
 
         if  (!eventManager.revivePlayer(target, (Player) sender)) {
-            sender.sendMessage(ChatColor.YELLOW + target.getName() + " is already alive!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already alive!");
         }
         return true;
     }
 
     private boolean handleUnrevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /unrevive <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /unrevive <player>");
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
             return false;
         }
 
         if (!eventManager.unrevivePlayer(target)) {
-            sender.sendMessage(ChatColor.YELLOW + target.getName() + " is already dead!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already dead!");
         }
         return true;
     }
 
     private boolean handleReviveAll(CommandSender sender) {
         eventManager.reviveAll((Player) sender);
-        sender.sendMessage(ChatColor.GREEN + "All players have been revived!");
+        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "All players have been revived!");
         return true;
     }
 
     private boolean handleUnReviveAll(CommandSender sender) {
         eventManager.unReviveAll();
-        sender.sendMessage(ChatColor.RED + "All players have been unrevived!");
+        sender.sendMessage(plugin.getConfigManager().getColor("colorDead") + "All players have been unrevived!");
         return true;
     }
 
@@ -133,9 +133,9 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (aliveList.isEmpty()) {
-            sender.sendMessage(ChatColor.YELLOW + "There are no alive players!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no alive players!");
         } else {
-            sender.sendMessage(ChatColor.GREEN + "Alive players: " + aliveList);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "Alive players: " + aliveList);
         }
         return true;
     }
@@ -148,22 +148,22 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (deadList.isEmpty()) {
-            sender.sendMessage(ChatColor.YELLOW + "There are no dead players!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no dead players!");
         } else {
-            sender.sendMessage(ChatColor.RED + "Dead players: " + deadList);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorDead") + "Dead players: " + deadList);
         }
         return true;
     }
 
     private boolean handleGive(CommandSender sender, String[] args, boolean isDead) {
         if (args.length < 1 || args.length > 3) {
-            sender.sendMessage(ChatColor.RED + "Usage: /" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
             return false;
         }
 
         Material material = Material.matchMaterial(args[0]);
         if (material == null) {
-            sender.sendMessage(ChatColor.RED + "Invalid item: " + args[0]);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid item: " + args[0]);
             return false;
         }
 
@@ -172,7 +172,7 @@ public class EventCommands implements CommandExecutor {
             try {
                 amount = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + "Invalid amount: " + args[1]);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid amount: " + args[1]);
                 return false;
             }
         }
@@ -182,7 +182,7 @@ public class EventCommands implements CommandExecutor {
             try {
                 data = Short.parseShort(args[2]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + "Invalid data value: " + args[2]);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid data value: " + args[2]);
                 return false;
             }
         }
@@ -198,19 +198,19 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = isDead ? "dead" : "alive";
-        ChatColor playerTypeColor = isDead ? ChatColor.RED : ChatColor.GREEN;
+        String playerTypeColor = isDead ? plugin.getConfigManager().getColor("colorDead") : plugin.getConfigManager().getColor("colorAlive");
         String itemName = itemStack.getType().toString().toLowerCase().replace("_", " ");
 
         String message = String.format("%s %s%d %s%s %splayers have received %s%d %s%s",
                 QWERTZcore.CORE_ICON,
-                ChatColor.GREEN,
+                plugin.getConfigManager().getColor("colorSuccess"),
                 playersAffected,
                 playerTypeColor,
                 playerType,
-                ChatColor.GREEN,
-                ChatColor.YELLOW,
+                plugin.getConfigManager().getColor("colorSuccess"),
+                plugin.getConfigManager().getColor("colorPrimary"),
                 itemStack.getAmount(),
-                ChatColor.YELLOW,
+                plugin.getConfigManager().getColor("colorPrimary"),
                 itemName);
 
         // Broadcast the message to all players
@@ -220,7 +220,7 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleTeleport(CommandSender sender, boolean isDead, boolean filter) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be executed by a player!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be executed by a player!");
             return true;
         }
 
@@ -242,25 +242,25 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = isDead ? "dead" : "alive";
-        ChatColor playerTypeColor = isDead ? ChatColor.RED : ChatColor.GREEN;
+        String playerTypeColor = isDead ? plugin.getConfigManager().getColor("colorDead") : plugin.getConfigManager().getColor("colorAlive");
         String broadcastMessage = "";
         if (filter) {
             // Broadcast a message to all players
             broadcastMessage = String.format("%s %s%s %steleported all %s%s %splayers to their location!",
                     QWERTZcore.CORE_ICON,
-                    ChatColor.YELLOW,
+                    plugin.getConfigManager().getColor("colorPrimary"),
                     executor.getName(),
-                    ChatColor.GREEN,
+                    plugin.getConfigManager().getColor("colorSuccess"),
                     playerTypeColor,
                     playerType,
-                    ChatColor.GREEN);
+                    plugin.getConfigManager().getColor("colorSuccess"));
 
         } else {
             broadcastMessage = String.format("%s %s%s %steleported all players to their location!",
                     QWERTZcore.CORE_ICON,
-                    ChatColor.YELLOW,
+                    plugin.getConfigManager().getColor("colorPrimary"),
                     executor.getName(),
-                    ChatColor.GREEN);
+                    plugin.getConfigManager().getColor("colorSuccess"));
         }
         Bukkit.broadcastMessage(broadcastMessage);
 
@@ -268,12 +268,12 @@ public class EventCommands implements CommandExecutor {
     }
     private boolean handleTpHere(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /tphere <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /tphere <player>");
             return true;
         }
 
@@ -281,12 +281,12 @@ public class EventCommands implements CommandExecutor {
         Player targetPlayer = Bukkit.getPlayer(args[0]);
 
         if (targetPlayer == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
         if (targetPlayer == commandSender) {
-            sender.sendMessage(ChatColor.RED + "You can't teleport yourself to yourself!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You can't teleport yourself to yourself!");
             return true;
         }
 
@@ -294,14 +294,14 @@ public class EventCommands implements CommandExecutor {
 
         String message = String.format("%s %s%s %shas been teleported to you!",
                 QWERTZcore.CORE_ICON,
-                ChatColor.YELLOW, targetPlayer.getName(),
-                ChatColor.GREEN);
+                plugin.getConfigManager().getColor("colorPrimary"), targetPlayer.getName(),
+                plugin.getConfigManager().getColor("colorSuccess"));
 
         commandSender.sendMessage(message);
         String targetmessage = String.format("%s %sYou have been teleported to %s%s%s!",
                 QWERTZcore.CORE_ICON,
-                ChatColor.GREEN,
-                ChatColor.YELLOW, commandSender.getName(), ChatColor.GREEN);
+                plugin.getConfigManager().getColor("colorSuccess"),
+                plugin.getConfigManager().getColor("colorPrimary"), commandSender.getName(), plugin.getConfigManager().getColor("colorSuccess"));
         targetPlayer.sendMessage(targetmessage);
 
         return true;
@@ -313,11 +313,11 @@ public class EventCommands implements CommandExecutor {
             try {
                 seconds = Integer.parseInt(args[0]);
                 if (seconds <= 0 || seconds > 60) {
-                    sender.sendMessage(ChatColor.RED + "Please specify a number of seconds between 1 and 60.");
+                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Please specify a number of seconds between 1 and 60.");
                     return true;
                 }
             } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + "Invalid number of seconds. Using default of 30 seconds.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number of seconds. Using default of 30 seconds.");
                 seconds = 30;
             }
         }
@@ -332,12 +332,12 @@ public class EventCommands implements CommandExecutor {
 
         String message = String.format("%s %s%d %splayers who died in the last %s%d %sseconds have been revived",
                 QWERTZcore.CORE_ICON,
-                ChatColor.GREEN,
+                plugin.getConfigManager().getColor("colorSuccess"),
                 revivedCount,
-                ChatColor.YELLOW,
-                ChatColor.GREEN,
+                plugin.getConfigManager().getColor("colorPrimary"),
+                plugin.getConfigManager().getColor("colorSuccess"),
                 seconds,
-                ChatColor.YELLOW);
+                plugin.getConfigManager().getColor("colorPrimary"));
 
         Bukkit.broadcastMessage(message);
         return true;
@@ -355,15 +355,15 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = healAlive ? "alive" : "dead";
-        ChatColor playerTypeColor = healAlive ? ChatColor.GREEN : ChatColor.RED;
+        String playerTypeColor = healAlive ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead");
 
         String message = String.format("%s %s%d %s%s %splayers have been healed",
                 QWERTZcore.CORE_ICON,
-                ChatColor.GREEN,
+                plugin.getConfigManager().getColor("colorSuccess"),
                 healedCount,
                 playerTypeColor,
                 playerType,
-                ChatColor.GREEN);
+                plugin.getConfigManager().getColor("colorSuccess"));
 
         Bukkit.broadcastMessage(message);
 

@@ -33,12 +33,12 @@ public class InvseeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /invsee <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /invsee <player>");
             return true;
         }
 
@@ -46,7 +46,7 @@ public class InvseeCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 

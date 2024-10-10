@@ -35,7 +35,7 @@ public class EventCountdownCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /eventcountdown <time|cancel>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /eventcountdown <time|cancel>");
             return true;
         }
 
@@ -71,7 +71,7 @@ public class EventCountdownCommand implements CommandExecutor {
             }
             cancelCountdown();
             plugin.getScoreboardManager().updateCountdown("...");
-            sender.sendMessage(ChatColor.RED + "Invalid time. Please specify a time between 1 second and 60 minutes.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid time. Please specify a time between 1 second and 60 minutes.");
             return true;
         }
 
@@ -80,7 +80,7 @@ public class EventCountdownCommand implements CommandExecutor {
         }
 
         startCountdown();
-        sender.sendMessage(ChatColor.GREEN + "Event countdown started for " + formatTime(remainingSeconds));
+        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Event countdown started for " + formatTime(remainingSeconds));
         return true;
     }
 
@@ -89,7 +89,7 @@ public class EventCountdownCommand implements CommandExecutor {
             @Override
             public void run() {
                 if (remainingSeconds <= 0) {
-                    Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
+                    Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
                     updateScoreboard(0);
                     this.cancel();
                     return;
@@ -111,8 +111,8 @@ public class EventCountdownCommand implements CommandExecutor {
 
     private void broadcastCountdown() {
         String timeLeft = formatTime(remainingSeconds);
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " Event " + plugin.getConfigManager().getEventName() +
-                " starts in " + ChatColor.RED + timeLeft + ChatColor.YELLOW + "!");
+        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " Event " + plugin.getConfigManager().getEventName() +
+                " starts in " + ChatColor.RED + timeLeft + plugin.getConfigManager().getColor("colorPrimary") + "!");
     }
 
     private String formatTime(int seconds) {

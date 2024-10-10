@@ -37,15 +37,15 @@ public class EventBlockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players!");
             return true;
         }
 
         Player player = (Player) sender;
 
         if (args.length < 1) {
-            player.sendMessage(ChatColor.RED + "Usage: /eventblock <blocktype> [material]");
-            player.sendMessage(ChatColor.YELLOW + "Available block types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /eventblock <blocktype> [material]");
+            player.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "Available block types: " + Arrays.toString(QWERTZcoreBlockType.values()));
             return true;
         }
 
@@ -55,13 +55,13 @@ public class EventBlockCommand implements CommandExecutor {
         if (args.length > 1) {
             material = Material.matchMaterial(args[1]);
             if (material == null || !material.isBlock()) {
-                player.sendMessage(ChatColor.RED + "Invalid material specified!");
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid material specified!");
                 return true;
             }
         }
 
         if (!plugin.getBlockManager().isValidBlockType(blockType)) {
-            player.sendMessage(ChatColor.RED + "Invalid block type! " + ChatColor.YELLOW + "Available types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid block type! " + plugin.getConfigManager().getColor("colorPrimary") + "Available types: " + Arrays.toString(QWERTZcoreBlockType.values()));
             return true;
         }
 
@@ -73,7 +73,7 @@ public class EventBlockCommand implements CommandExecutor {
             item.setItemMeta(meta);
 
             player.getInventory().addItem(item);
-            player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " You have received a " + ChatColor.GOLD + "QWERTZ Core " + ChatColor.YELLOW + blockType + ChatColor.GREEN + " with material " + ChatColor.YELLOW + item.getType().name() + ChatColor.GREEN + "!");
+            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " You have received a " + ChatColor.GOLD + "QWERTZ Core " + plugin.getConfigManager().getColor("colorPrimary") + blockType + plugin.getConfigManager().getColor("colorSuccess") + " with material " + plugin.getConfigManager().getColor("colorPrimary") + item.getType().name() + plugin.getConfigManager().getColor("colorSuccess") + "!");
         }
 
         return true;

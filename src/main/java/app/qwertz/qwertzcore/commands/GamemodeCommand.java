@@ -15,7 +15,6 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +32,7 @@ public class GamemodeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
@@ -55,12 +54,12 @@ public class GamemodeCommand implements CommandExecutor {
                 break;
             case "gm":
                 if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /gm <creative|survival|adventure|spectator>");
+                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /gm <creative|survival|adventure|spectator>");
                     return false;
                 }
                 targetGameMode = parseGameMode(args[0]);
                 if (targetGameMode == null) {
-                    sender.sendMessage(ChatColor.RED + "Invalid gamemode. Use creative, survival, adventure, or spectator.");
+                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid gamemode. Use creative, survival, adventure, or spectator.");
                     return false;
                 }
                 break;
@@ -70,7 +69,7 @@ public class GamemodeCommand implements CommandExecutor {
 
         player.setGameMode(targetGameMode);
         player.sendMessage(String.format("%s %sYour gamemode has been set to %s%s%s.",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, targetGameMode.name(), ChatColor.YELLOW));
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), targetGameMode.name(), plugin.getConfigManager().getColor("colorPrimary")));
         return true;
     }
 

@@ -15,7 +15,6 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +35,7 @@ public class ConfigCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Usage: /config <key> <value>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /config <key> <value>");
             return true;
         }
 
@@ -44,13 +43,13 @@ public class ConfigCommand implements CommandExecutor {
         String value = String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length));
 
         if (!plugin.getConfigManager().hasKey(key) && !key.equals("spawn")) {
-            sender.sendMessage(ChatColor.RED + "Config key not found: " + key);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Config key not found: " + key);
             return true;
         }
 
         if (key.equals("spawn")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
                 return true;
             }
             if (value.equalsIgnoreCase("currentpos")) {
@@ -64,9 +63,9 @@ public class ConfigCommand implements CommandExecutor {
                 spawnMap.put("yaw", (double) loc.getYaw());
                 spawnMap.put("pitch", (double) loc.getPitch());
                 plugin.getConfigManager().set("spawn", spawnMap);
-                sender.sendMessage(ChatColor.GREEN + "Set spawn to your current location.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set spawn to your current location.");
             } else {
-                sender.sendMessage(ChatColor.RED + "Invalid value for spawn. Use 'currentpos'.");
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid value for spawn. Use 'currentpos'.");
             }
         } else {
             Object currentValue = plugin.getConfigManager().get(key);
@@ -74,27 +73,27 @@ public class ConfigCommand implements CommandExecutor {
             if (currentValue instanceof Boolean) {
                 boolean boolValue = Boolean.parseBoolean(value);
                 plugin.getConfigManager().set(key, boolValue);
-                sender.sendMessage(ChatColor.GREEN + "Set " + key + " to " + boolValue);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + boolValue);
             } else if (currentValue instanceof String) {
                 plugin.getConfigManager().set(key, value);
-                sender.sendMessage(ChatColor.GREEN + "Set " + key + " to " + value);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + value);
             } else if (currentValue instanceof Number) {
                 try {
                     if (value.contains(".")) {
                         double doubleValue = Double.parseDouble(value);
                         plugin.getConfigManager().set(key, doubleValue);
-                        sender.sendMessage(ChatColor.GREEN + "Set " + key + " to " + doubleValue);
+                        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + doubleValue);
                     } else {
                         int intValue = Integer.parseInt(value);
                         plugin.getConfigManager().set(key, intValue);
-                        sender.sendMessage(ChatColor.GREEN + "Set " + key + " to " + intValue);
+                        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + intValue);
                     }
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + "Invalid number format: " + value);
+                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format: " + value);
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "Unsupported config value type for: " + key);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Unsupported config value type for: " + key);
                 return true;
             }
         }

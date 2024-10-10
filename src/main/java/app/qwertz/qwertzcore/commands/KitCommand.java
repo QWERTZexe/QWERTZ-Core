@@ -16,7 +16,6 @@ package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,7 +37,7 @@ public class KitCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
@@ -46,19 +45,19 @@ public class KitCommand implements CommandExecutor {
 
         if (label.equalsIgnoreCase("createkit")) {
             if (args.length != 1) {
-                player.sendMessage(ChatColor.RED + "Usage: /createkit <kitname>");
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /createkit <kitname>");
                 return true;
             }
             createKit(player, args[0]);
         } else if (label.equalsIgnoreCase("kit")) {
             if (args.length != 2) {
-                player.sendMessage(ChatColor.RED + "Usage: /kit <kitname> <player|alive|dead|all>");
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /kit <kitname> <player|alive|dead|all>");
                 return true;
             }
             giveKit(player, args[0], args[1]);
         } else if (label.equalsIgnoreCase("delkit")) {
             if (args.length != 1) {
-                player.sendMessage(ChatColor.RED + "Usage: /delkit <kitname>");
+                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /delkit <kitname>");
                 return true;
             }
             deleteKit(player, args[0]);
@@ -86,13 +85,13 @@ public class KitCommand implements CommandExecutor {
         items.add(player.getInventory().getItemInOffHand().clone());
 
         plugin.getConfigManager().saveKit(kitName, items);
-        player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " has been created!");
+        player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been created!");
     }
 
     private void giveKit(Player sender, String kitName, String target) {
         List<ItemStack> items = plugin.getConfigManager().getKit(kitName);
         if (items == null) {
-            sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + "Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " does not exist!");
+            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + "Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " does not exist!");
             return;
         }
 
@@ -123,7 +122,7 @@ public class KitCommand implements CommandExecutor {
                 if (targetPlayer != null) {
                     targetPlayers.add(targetPlayer);
                 } else {
-                    sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Player " + ChatColor.YELLOW + "'" + target + "'" + ChatColor.RED + " not found!");
+                    sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Player " + plugin.getConfigManager().getColor("colorPrimary") + "'" + target + "'" + plugin.getConfigManager().getColor("colorError") + " not found!");
                     return;
                 }
         }
@@ -154,28 +153,28 @@ public class KitCommand implements CommandExecutor {
                 targetPlayer.getInventory().setItemInOffHand(items.get(40) != null ? items.get(40).clone() : null);
             }
 
-            targetPlayer.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " You have received the kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + "!");
+            targetPlayer.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " You have received the kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + "!");
         }
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " has been given to " + ChatColor.YELLOW + targetPlayers.size() + ChatColor.GREEN + " players!");
+        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been given to " + plugin.getConfigManager().getColor("colorPrimary") + targetPlayers.size() + plugin.getConfigManager().getColor("colorSuccess") + " players!");
     }
 
     private void deleteKit(Player player, String kitName) {
         if (plugin.getConfigManager().getKit(kitName) == null) {
-            player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.RED + " does not exist.");
+            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " does not exist.");
             return;
         }
 
         plugin.getConfigManager().deleteKit(kitName);
-        player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.RED + " has been deleted.");
+        player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " has been deleted.");
     }
 
     private void listKits(Player player) {
         Set<String> kitNames = plugin.getConfigManager().getKitNames();
         if (kitNames.isEmpty()) {
-            player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " There are no kits available.");
+            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " There are no kits available.");
         } else {
-            player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Available kits: " + ChatColor.YELLOW + String.join(", ", kitNames));
+            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Available kits: " + plugin.getConfigManager().getColor("colorPrimary") + String.join(", ", kitNames));
         }
     }
 }

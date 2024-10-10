@@ -38,7 +38,7 @@ public class DiscordCommand implements CommandExecutor {
         String discordLink = plugin.getConfigManager().getDiscordLink();
 
         if (discordLink == null || discordLink.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "Discord link is not set in the configuration.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Discord link is not set in the configuration.");
             return true;
         }
 
@@ -55,7 +55,7 @@ public class DiscordCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            sender.sendMessage(ChatColor.RED + "The last part of your advertisement must be a valid URL.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
             return true;
         }
 

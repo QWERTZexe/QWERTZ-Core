@@ -14,9 +14,7 @@
 
 package app.qwertz.qwertzcore.util;
 
-import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.HideCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;

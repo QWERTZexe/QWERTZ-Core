@@ -33,7 +33,7 @@ public class MessageCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
@@ -58,18 +58,18 @@ public class MessageCommands implements CommandExecutor {
 
     private boolean handleMessageCommand(Player sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Usage: /message <player> <message>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /message <player> <message>");
             return true;
         }
 
         Player recipient = Bukkit.getPlayer(args[0]);
         if (recipient == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
-            sender.sendMessage(ChatColor.RED + recipient.getName() + " has disabled private messages.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + recipient.getName() + " has disabled private messages.");
             return true;
         }
 
@@ -80,18 +80,18 @@ public class MessageCommands implements CommandExecutor {
 
     private boolean handleReplyCommand(Player sender, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /reply <message>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /reply <message>");
             return true;
         }
 
         Player recipient = plugin.getMessageManager().getReplyTarget(sender);
         if (recipient == null) {
-            sender.sendMessage(ChatColor.RED + "You have no one to reply to.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You have no one to reply to.");
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
-            sender.sendMessage(ChatColor.RED + recipient.getName() + " has disabled private messages.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + recipient.getName() + " has disabled private messages.");
             return true;
         }
 
@@ -103,12 +103,12 @@ public class MessageCommands implements CommandExecutor {
     private boolean handleMessageToggleCommand(Player player) {
         plugin.getMessageManager().toggleMessages(player);
         boolean enabled = plugin.getMessageManager().canReceiveMessages(player);
-        player.sendMessage(QWERTZcore.CORE_ICON + (enabled ? ChatColor.GREEN : ChatColor.RED) + " Private messages have been " + (enabled ? "enabled" : "disabled") + "!");
+        player.sendMessage(QWERTZcore.CORE_ICON + (enabled ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead")) + " Private messages have been " + (enabled ? "enabled" : "disabled") + "!");
         return true;
     }
 
     private void sendPrivateMessage(Player sender, Player recipient, String message) {
-        String formattedMessage = ChatColor.GRAY + "[" + ChatColor.YELLOW + sender.getName() + ChatColor.GRAY + " -> " + ChatColor.YELLOW + recipient.getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + message;
+        String formattedMessage = ChatColor.GRAY + "[" + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + ChatColor.GRAY + " -> " + plugin.getConfigManager().getColor("colorPrimary") + recipient.getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + message;
         sender.sendMessage(formattedMessage);
         recipient.sendMessage(formattedMessage);
         plugin.getMessageManager().setReplyTarget(sender, recipient);

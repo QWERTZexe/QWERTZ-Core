@@ -240,6 +240,9 @@ public class ConfigManager {
 
     public String getColor(String key) {
         String unformatted = (String) config.get(key);
+        if (unformatted == null) {
+            unformatted = "§a";
+        }
         unformatted = unformatted.replace("&", "§");
         StringBuilder colorCodes = new StringBuilder();
 
