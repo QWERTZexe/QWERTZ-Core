@@ -43,15 +43,23 @@ public class ChatManager implements Listener {
             String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
             String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
             String message = event.getMessage();
-            String formattedMessage;
-
-            formattedMessage = String.format("%s%s%s: %s",
-                    prefix,
-                    player.getName(),
-                    suffix,
-                    message
-            );
-
+            String formattedMessage = "";
+            if ((Boolean) plugin.getConfigManager().get("forceWhiteMessages")) {
+                formattedMessage = String.format("%s%s%s:§r %s",
+                        prefix,
+                        player.getName(),
+                        suffix,
+                        message
+                );
+            }
+            else {
+                formattedMessage = String.format("%s%s%s: %s",
+                        prefix,
+                        player.getName(),
+                        suffix,
+                        message
+                );
+            }
 
             plugin.getServer().broadcastMessage(formattedMessage);
         }

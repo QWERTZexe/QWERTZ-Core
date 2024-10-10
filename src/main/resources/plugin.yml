@@ -241,6 +241,31 @@ commands:
     description: View and modify another player's inventory
     usage: /invsee <player>
     permission: qwertzcore.host.invsee
+  pvp:
+    description: Toggle PvP in the current region or globally
+    usage: /pvp [region]
+    permission: qwertzcore.host.pvp
+    aliases: [togglepvp]
+  break:
+    description: Toggle block breaking in the current region or globally
+    usage: /break [region]
+    permission: qwertzcore.host.break
+    aliases: [togglebreak]
+  place:
+    description: Toggle block placing in the current region or globally
+    usage: /place [region]
+    permission: qwertzcore.host.place
+    aliases: [toggleplace]
+  falldamage:
+    description: Toggle block breaking in the current region or globally
+    usage: /falldamage [region]
+    permission: qwertzcore.host.falldamage
+    aliases: [togglefalldamage]
+  hunger:
+    description: Toggle block placing in the current region or globally
+    usage: /hunger [region]
+    permission: qwertzcore.host.hunger
+    aliases: [togglehunger]
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -415,4 +440,19 @@ permissions:
     default: op
   qwertzcore.host.unvanish:
     description: Allows the player to unvanish
+    default: op
+  qwertzcore.host.pvp:
+    description: Allows the player to toggle PvP
+    default: op
+  qwertzcore.host.break:
+    description: Allows the player to toggle block breaking
+    default: op
+  qwertzcore.host.place:
+    description: Allows the player to toggle block placing
+    default: op
+  qwertzcore.host.hunger:
+    description: Allows the player to toggle hunger drain
+    default: op
+  qwertzcore.host.falldamage:
+    description: Allows the player to toggle fall damage
     default: op

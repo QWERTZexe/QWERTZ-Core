@@ -17,6 +17,7 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -68,11 +69,17 @@ public class RankManager {
             if (user != null) {
                 String prefix = user.getCachedData().getMetaData().getPrefix();
                 if (prefix != null) {
+                    prefix = ChatColor.translateAlternateColorCodes('&', prefix);
                     return prefix;
                 }
             }
         }
-        return "[PLAYER]";
+        if (player.isOp()) {
+            return "§6[§6§lHOST§6]";
+        }
+        else {
+            return "§a[PLAYER]";
+        }
     }
 
     public String getSuffix(Player player) {
@@ -81,6 +88,7 @@ public class RankManager {
             if (user != null) {
                 String suffix = user.getCachedData().getMetaData().getSuffix();
                 if (suffix != null) {
+                    suffix = ChatColor.translateAlternateColorCodes('&', suffix);
                     return suffix;
                 }
             }

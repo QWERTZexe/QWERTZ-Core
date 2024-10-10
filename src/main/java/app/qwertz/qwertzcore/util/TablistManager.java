@@ -51,12 +51,7 @@ public class TablistManager {
         String suffix = plugin.getRankManager().getSuffix(player);
         String pingColor = getPingColor(player.getPing());
         String listName;
-        if (!(Objects.equals(prefix, ""))) {
-            listName = prefix + " " + player.getName() + suffix + " " + pingColor + player.getPing();
-        }
-        else {
-            listName = prefix + player.getName() + suffix + " " + pingColor + player.getPing();
-        }
+        listName = prefix + player.getName() + suffix + " " + pingColor + player.getPing();
         Scoreboard scoreboard = player.getScoreboard();
         Team team = scoreboard.getTeam(player.getName());
         if (team == null) {

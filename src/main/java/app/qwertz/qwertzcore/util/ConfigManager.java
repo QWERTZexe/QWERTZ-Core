@@ -175,6 +175,9 @@ public class ConfigManager {
         if (!config.containsKey("suppressVanilla")) {
             config.put("suppressVanilla", true);
         }
+        if (!config.containsKey("forceWhiteMessages")) {
+            config.put("forceWhiteMessages", false);
+        }
     }
 
 

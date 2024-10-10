@@ -96,6 +96,14 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/kit <kit> <player|alive|dead|all>` - Gives a kit to the selected group
 - `/invsee <player>` - View and modify another player's inventory
 
+### WorldGuard Management
+
+- `/pvp [region]` - Toggle PVP in the selected region or globally
+- `/place [region]` - Toggle Block Placing in the selected region or globally
+- `/break [region]` - Toggle Block Breaking in the selected region or globally
+- `/hunger [region]` - Toggle Hunger in the selected region or globally
+- `/falldamage [region]` - Toggle Fall Damage in the selected region or globally
+
 ### Database Management
 
 - `/addwin <player>` - Add a win to a player's record
@@ -148,6 +156,11 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.invsee` - Allows the player to see other players' inventory
 - `qwertzcore.host.vanish` - Use vanish
 - `qwertzcore.host.unvanish` - Use unvanish
+- `qwertzcore.host.pvp` - Toggle PVP using /pvp
+- `qwertzcore.host.break` - Toggle Block Breaking using /break
+- `qwertzcore.host.place` - Toggle Block Placing using /place
+- `qwertzcore.host.hunger` - Toggle Hunger using /hunger
+- `qwertzcore.host.falldamage` - Toggle Fall Damage using /falldamage
 
 #### Player Permissions
 
