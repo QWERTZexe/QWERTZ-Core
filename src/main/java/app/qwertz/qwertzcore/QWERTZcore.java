@@ -30,7 +30,7 @@ public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.GREEN + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3-BETA";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -258,6 +258,9 @@ public final class QWERTZcore extends JavaPlugin {
             getCommand("hunger").setTabCompleter(worldGuardTabCompleter);
             getCommand("falldamage").setTabCompleter(worldGuardTabCompleter);
         }
+        PollCommand pollCommand = new PollCommand(this);
+        getCommand("poll").setExecutor(pollCommand);
+        getCommand("pollvote").setExecutor(new PollVoteCommand(this, pollCommand));
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, vanishManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);

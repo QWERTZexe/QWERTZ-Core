@@ -266,6 +266,14 @@ commands:
     usage: /hunger [region]
     permission: qwertzcore.host.hunger
     aliases: [togglehunger]
+  poll:
+    description: Create and manage polls
+    usage: /poll <duration> <question> <answer1> <answer2> [answer3] ...
+    permission: qwertzcore.host.poll
+  pollvote:
+    description: Vote in an active poll
+    usage: /pollvote <option>
+    permission: qwertzcore.player.pollvote
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -456,3 +464,9 @@ permissions:
   qwertzcore.host.falldamage:
     description: Allows the player to toggle fall damage
     default: op
+  qwertzcore.host.poll:
+    description: Allows the player to create and manage polls
+    default: op
+  qwertzcore.player.pollvote:
+    description: Allows the player to vote in polls
+    default: true
