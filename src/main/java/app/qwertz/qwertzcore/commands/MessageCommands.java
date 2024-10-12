@@ -59,44 +59,54 @@ public class MessageCommands implements CommandExecutor {
     private boolean handleMessageCommand(Player sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(ChatColor.RED + "Usage: /message <player> <message>");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         Player recipient = Bukkit.getPlayer(args[0]);
         if (recipient == null) {
             sender.sendMessage(ChatColor.RED + "Player not found.");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
             sender.sendMessage(ChatColor.RED + recipient.getName() + " has disabled private messages.");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         String message = String.join(" ", args).substring(args[0].length() + 1);
         sendPrivateMessage(sender, recipient, message);
+        plugin.getSoundManager().playSound(sender);
+        plugin.getSoundManager().playSound(recipient);
         return true;
     }
 
     private boolean handleReplyCommand(Player sender, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /reply <message>");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         Player recipient = plugin.getMessageManager().getReplyTarget(sender);
         if (recipient == null) {
             sender.sendMessage(ChatColor.RED + "You have no one to reply to.");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
             sender.sendMessage(ChatColor.RED + recipient.getName() + " has disabled private messages.");
+            plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         String message = String.join(" ", args);
         sendPrivateMessage(sender, recipient, message);
+        plugin.getSoundManager().playSound(sender);
+        plugin.getSoundManager().playSound(recipient);
         return true;
     }
 
@@ -104,6 +114,7 @@ public class MessageCommands implements CommandExecutor {
         plugin.getMessageManager().toggleMessages(player);
         boolean enabled = plugin.getMessageManager().canReceiveMessages(player);
         player.sendMessage(QWERTZcore.CORE_ICON + (enabled ? ChatColor.GREEN : ChatColor.RED) + " Private messages have been " + (enabled ? "enabled" : "disabled") + "!");
+        plugin.getSoundManager().playSound(player);
         return true;
     }
 
@@ -111,6 +122,8 @@ public class MessageCommands implements CommandExecutor {
         String formattedMessage = ChatColor.GRAY + "[" + ChatColor.YELLOW + sender.getName() + ChatColor.GRAY + " -> " + ChatColor.YELLOW + recipient.getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + message;
         sender.sendMessage(formattedMessage);
         recipient.sendMessage(formattedMessage);
+        plugin.getSoundManager().playSound(sender);
+        plugin.getSoundManager().playSound(recipient);
         plugin.getMessageManager().setReplyTarget(sender, recipient);
     }
 }

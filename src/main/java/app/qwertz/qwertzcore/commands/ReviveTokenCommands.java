@@ -55,6 +55,7 @@ public class ReviveTokenCommands implements CommandExecutor {
     }
 
     private boolean handleRevivals(CommandSender sender, String[] args) {
+
         Player target;
         if (args.length == 0 && sender instanceof Player) {
             target = (Player) sender;
@@ -62,10 +63,12 @@ public class ReviveTokenCommands implements CommandExecutor {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 sender.sendMessage(ChatColor.RED + "Player not found.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: /revives [player]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 

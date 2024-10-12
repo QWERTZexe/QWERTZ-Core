@@ -47,6 +47,7 @@ public class HideCommand implements CommandExecutor {
 
         if (args.length != 1) {
             player.sendMessage(ChatColor.RED + "Usage: /hide <host|staff|all|off>");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -62,6 +63,7 @@ public class HideCommand implements CommandExecutor {
                 break;
             default:
                 player.sendMessage(ChatColor.RED + "Invalid mode. Use host, staff, all, or off.");
+                plugin.getSoundManager().playSound(player);
                 return true;
         }
 
@@ -74,8 +76,10 @@ public class HideCommand implements CommandExecutor {
 
         if (mode == null) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " All " + ChatColor.GREEN + "players are now visible to you.");
+            plugin.getSoundManager().playSound(player);
         } else {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Hide mode set to: " + ChatColor.YELLOW + mode);
+            plugin.getSoundManager().playSound(player);
         }
     }
 

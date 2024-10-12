@@ -103,6 +103,18 @@ public class ConfigManager {
         if (!config.containsKey("font")) {
             config.put("font", "modern");
         }
+        if (!config.containsKey("sound")) {
+            config.put("sound", true);
+        }
+        if (!config.containsKey("soundEffect")) {
+            config.put("soundEffect", "BLOCK_NOTE_BLOCK_PLING");
+        }
+        if (!config.containsKey("soundPitch")) {
+            config.put("soundPitch", 1);
+        }
+        if (!config.containsKey("soundVolume")) {
+            config.put("soundVolume", 100);
+        }
         if (!config.containsKey("reviveTokensEnabled")) {
             config.put("reviveTokensEnabled", true);
         }
@@ -191,8 +203,6 @@ public class ConfigManager {
     public boolean getTpOnRevive() {
         return (boolean) config.getOrDefault("tpOnRevive", true);
     }
-
-
 
     private void ensurePluginFolder() {
         if (!plugin.getDataFolder().exists()) {
@@ -347,6 +357,18 @@ public class ConfigManager {
     }
     public String getFont() {
         return (String) config.getOrDefault("font", "modern");
+    }
+    public String getConfigSound() {
+        return (String) config.getOrDefault("soundEffect", "BLOCK_NOTE_BLOCK_PLING");
+    }
+    public double getSoundVolume() {
+        return (double) config.getOrDefault("soundVolume", 100);
+    }
+    public double getSoundPitch() {
+        return (double) config.getOrDefault("soundPitch", 1);
+    }
+    public boolean playSounds() {
+        return (boolean) config.getOrDefault("sound", true);
     }
 
     public String getFontString() {

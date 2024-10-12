@@ -47,12 +47,14 @@ public class WinCommands implements CommandExecutor {
     private boolean handleAddWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /addwin <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -61,6 +63,7 @@ public class WinCommands implements CommandExecutor {
 
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Added a win for " + ChatColor.YELLOW + target.getName() + ChatColor.GREEN + ". They now have " + ChatColor.YELLOW + wins +  ChatColor.GREEN + " wins.");
         target.sendMessage(ChatColor.GREEN + "You have been awarded a win! You now have " +  ChatColor.YELLOW + wins + ChatColor.GREEN + " wins.");
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
@@ -68,18 +71,21 @@ public class WinCommands implements CommandExecutor {
     private boolean handleRemoveWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /removewin <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int currentWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         if (currentWins <= 0) {
             sender.sendMessage(ChatColor.RED + target.getName() + " has no wins to remove.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -88,6 +94,7 @@ public class WinCommands implements CommandExecutor {
 
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Removed a win from " + ChatColor.YELLOW + target.getName() + ChatColor.RED + ". They now have " + ChatColor.YELLOW + newWins + ChatColor.RED + " wins.");
         target.sendMessage(ChatColor.GREEN + "A win has been removed from your record. You now have " + ChatColor.YELLOW + newWins + ChatColor.RED + " wins.");
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
@@ -100,15 +107,18 @@ public class WinCommands implements CommandExecutor {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 sender.sendMessage(ChatColor.RED + "Player not found.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: /wins [player]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + target.getName() + ChatColor.GREEN + " has " + wins + " wins.");
+        plugin.getSoundManager().playSoundToSender(sender);
 
         return true;
     }

@@ -39,6 +39,7 @@ public class InvseeCommand implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /invsee <player>");
+            plugin.getSoundManager().playSound(((Player) sender).getPlayer());
             return true;
         }
 
@@ -47,6 +48,7 @@ public class InvseeCommand implements CommandExecutor {
 
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "Player not found.");
+            plugin.getSoundManager().playSound(viewer);
             return true;
         }
 

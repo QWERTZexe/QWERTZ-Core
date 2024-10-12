@@ -47,18 +47,21 @@ public class KitCommand implements CommandExecutor {
         if (label.equalsIgnoreCase("createkit")) {
             if (args.length != 1) {
                 player.sendMessage(ChatColor.RED + "Usage: /createkit <kitname>");
+                plugin.getSoundManager().playSound(player);
                 return true;
             }
             createKit(player, args[0]);
         } else if (label.equalsIgnoreCase("kit")) {
             if (args.length != 2) {
                 player.sendMessage(ChatColor.RED + "Usage: /kit <kitname> <player|alive|dead|all>");
+                plugin.getSoundManager().playSound(player);
                 return true;
             }
             giveKit(player, args[0], args[1]);
         } else if (label.equalsIgnoreCase("delkit")) {
             if (args.length != 1) {
                 player.sendMessage(ChatColor.RED + "Usage: /delkit <kitname>");
+                plugin.getSoundManager().playSound(player);
                 return true;
             }
             deleteKit(player, args[0]);
@@ -87,12 +90,14 @@ public class KitCommand implements CommandExecutor {
 
         plugin.getConfigManager().saveKit(kitName, items);
         player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " has been created!");
+        plugin.getSoundManager().playSound(player);
     }
 
     private void giveKit(Player sender, String kitName, String target) {
         List<ItemStack> items = plugin.getConfigManager().getKit(kitName);
         if (items == null) {
             sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + "Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " does not exist!");
+            plugin.getSoundManager().playSound(sender);
             return;
         }
 
@@ -124,6 +129,7 @@ public class KitCommand implements CommandExecutor {
                     targetPlayers.add(targetPlayer);
                 } else {
                     sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Player " + ChatColor.YELLOW + "'" + target + "'" + ChatColor.RED + " not found!");
+                    plugin.getSoundManager().playSound(sender);
                     return;
                 }
         }
@@ -155,27 +161,33 @@ public class KitCommand implements CommandExecutor {
             }
 
             targetPlayer.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " You have received the kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + "!");
+            plugin.getSoundManager().playSound(targetPlayer);
         }
 
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.GREEN + " has been given to " + ChatColor.YELLOW + targetPlayers.size() + ChatColor.GREEN + " players!");
+        plugin.getSoundManager().broadcastConfigSound();
     }
 
     private void deleteKit(Player player, String kitName) {
         if (plugin.getConfigManager().getKit(kitName) == null) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.RED + " does not exist.");
+            plugin.getSoundManager().playSound(player);
             return;
         }
 
         plugin.getConfigManager().deleteKit(kitName);
         player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Kit " + ChatColor.YELLOW + "'" + kitName + "'" + ChatColor.RED + " has been deleted.");
+        plugin.getSoundManager().playSound(player);
     }
 
     private void listKits(Player player) {
         Set<String> kitNames = plugin.getConfigManager().getKitNames();
         if (kitNames.isEmpty()) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " There are no kits available.");
+            plugin.getSoundManager().playSound(player);
         } else {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Available kits: " + ChatColor.YELLOW + String.join(", ", kitNames));
+            plugin.getSoundManager().playSound(player);
         }
     }
 }

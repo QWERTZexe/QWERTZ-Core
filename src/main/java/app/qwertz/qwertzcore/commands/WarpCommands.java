@@ -65,11 +65,13 @@ public class WarpCommands implements CommandExecutor {
     private boolean handleSetWarp(Player player, String[] args) {
         if (!player.hasPermission("qwertzcore.setwarp")) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " You don't have permission to set warps!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
         if (args.length != 1) {
             player.sendMessage(ChatColor.RED + "Usage: /setwarp <name>");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -77,12 +79,14 @@ public class WarpCommands implements CommandExecutor {
         Location location = player.getLocation();
         plugin.getConfigManager().addWarp(warpName, location);
         player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Warp " + ChatColor.YELLOW + "'" + warpName + "'" + ChatColor.GREEN + " has been set at your current location!");
+        plugin.getSoundManager().playSound(player);
         return true;
     }
 
     private boolean handleWarp(Player player, String[] args) {
         if (args.length != 1) {
             player.sendMessage(ChatColor.RED + "Usage: /warp <name>");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -91,6 +95,7 @@ public class WarpCommands implements CommandExecutor {
 
         if (warpLocation == null) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Warp " + ChatColor.YELLOW + "'" + warpName + "'" + ChatColor.RED + " does not exist!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -110,6 +115,7 @@ public class WarpCommands implements CommandExecutor {
             } else {
                 player.sendTitle(ChatColor.RED + "WARNING", ChatColor.YELLOW + "You are still alive!", 10, 70, 20);
                 player.sendMessage(ChatColor.RED + "WARNING: " + ChatColor.YELLOW + "You are still alive! Type /warp " + warpName + " again within 10 seconds to confirm teleportation!");
+                plugin.getSoundManager().playSound(player);
                 cooldowns.put(playerUUID, currentTime);
 
                 BukkitTask task = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
@@ -126,22 +132,26 @@ public class WarpCommands implements CommandExecutor {
     private boolean handleDelWarp(Player player, String[] args) {
         if (!player.hasPermission("qwertzcore.delwarp")) {
             player.sendMessage(ChatColor.RED + "You don't have permission to delete warps!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
         if (args.length != 1) {
             player.sendMessage(ChatColor.RED + "Usage: /delwarp <name>");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
         String warpName = args[0].toLowerCase();
         if (plugin.getConfigManager().getWarp(warpName) == null) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Warp " + ChatColor.YELLOW + "'" + warpName + "'" + ChatColor.RED + " does not exist!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
         plugin.getConfigManager().removeWarp(warpName);
         player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Warp " + ChatColor.YELLOW + "'" + warpName + "'" + ChatColor.RED +  " has been deleted!");
+        plugin.getSoundManager().playSound(player);
         return true;
     }
 
@@ -149,8 +159,10 @@ public class WarpCommands implements CommandExecutor {
         Set<String> warpNames = plugin.getConfigManager().getWarpNames();
         if (warpNames.isEmpty()) {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " There are no warps set!");
+            plugin.getSoundManager().playSound(player);
         } else {
             player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " Available warps: " + String.join(", ", warpNames));
+            plugin.getSoundManager().playSound(player);
         }
         return true;
     }
@@ -158,11 +170,13 @@ public class WarpCommands implements CommandExecutor {
     private void unrevivePlayer(Player player) {
         plugin.getEventManager().handlePlayerDeath(player, true);
         player.sendMessage(ChatColor.RED + "You have been unrevived as you chose to teleport while alive!");
+        plugin.getSoundManager().playSound(player);
     }
 
     private void teleportToWarp(Player player, Location location, boolean wasAlive) {
         player.teleport(location);
         player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Teleported to warp!");
+        plugin.getSoundManager().playSound(player);
         if (wasAlive) {
             unrevivePlayer(player);
         }

@@ -36,6 +36,7 @@ public final class QWERTZcore extends JavaPlugin {
     public static final String WEBSITE = "https://qwertz.app";
 
     private VanishManager vanishManager;
+    private SoundManager soundManager;
     private EventManager eventManager;
     private ConfigManager configManager;
     private RankManager rankManager;
@@ -75,6 +76,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.databaseManager.initializeSpecialBlocks();
         this.messageManager = new MessageManager(this);
         this.vanishManager = new VanishManager(this);
+        this.soundManager = new SoundManager(this);
         this.updateChecker = new UpdateChecker(this);
         this.blockManager = new BlockManager(this);
 
@@ -248,6 +250,9 @@ public final class QWERTZcore extends JavaPlugin {
         return eventManager;
     }
 
+    public SoundManager getSoundManager() {
+        return soundManager;
+    }
     public ConfigManager getConfigManager() {
         return configManager;
     }

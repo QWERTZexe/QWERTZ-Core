@@ -21,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Random;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class ChatReviveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /chatrevive <math|typer|guess|cancel> [max]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
@@ -56,6 +58,7 @@ public class ChatReviveCommand implements CommandExecutor {
 
         if (activeGame != null && !activeGame.isGameOver()) {
             sender.sendMessage(ChatColor.RED + "A game is already in progress. Use /chatrevive cancel to end it.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -73,12 +76,14 @@ public class ChatReviveCommand implements CommandExecutor {
                         max = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
                         sender.sendMessage(ChatColor.RED + "Invalid number format for max value. Using default of 40.");
+                        plugin.getSoundManager().playSoundToSender(sender);
                     }
                 }
                 startGuessGame(max);
                 break;
             default:
                 sender.sendMessage(ChatColor.RED + "Invalid game type. Use math, typer, or guess.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 return false;
         }
 
@@ -99,6 +104,7 @@ public class ChatReviveCommand implements CommandExecutor {
         broadcastMessage(String.format("%s %sMath Question: %s%s",
                 QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, question));
         broadcastMessage(ChatColor.YELLOW + "Type the correct answer in chat!");
+        plugin.getSoundManager().broadcastConfigSound();
 
         activeGame = new ChatListener(plugin, answer, "math", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -114,9 +120,11 @@ public class ChatReviveCommand implements CommandExecutor {
 
         broadcastMessage(String.format("%s %sType this sentence: %s%s",
                 QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, finalSentence));
+        plugin.getSoundManager().broadcastConfigSound();
 
         activeGame = new ChatListener(plugin, finalSentence, "typer", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
+
     }
 
     private void startGuessGame(int max) {
@@ -124,6 +132,7 @@ public class ChatReviveCommand implements CommandExecutor {
 
         broadcastMessage(String.format("%s %sGuess a number between %s1 %sand %s%d",
                 QWERTZcore.CORE_ICON, ChatColor.YELLOW, ChatColor.GREEN, ChatColor.YELLOW, ChatColor.GREEN, max));
+        plugin.getSoundManager().broadcastConfigSound();
 
         activeGame = new ChatListener(plugin, target, "guess", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -163,6 +172,7 @@ public class ChatReviveCommand implements CommandExecutor {
             activeGame.cancelGame();
             activeGame = null;
             broadcastMessage(ChatColor.YELLOW + "The chat revival game has been cancelled.");
+            plugin.getSoundManager().broadcastConfigSound();
         } else {
             broadcastMessage(ChatColor.RED + "There is no active chat revival game to cancel.");
         }

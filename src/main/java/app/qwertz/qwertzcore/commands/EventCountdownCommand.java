@@ -20,6 +20,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EventCountdownCommand implements CommandExecutor {
@@ -36,6 +37,7 @@ public class EventCountdownCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /eventcountdown <time|cancel>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -73,6 +75,7 @@ public class EventCountdownCommand implements CommandExecutor {
             cancelCountdown();
             plugin.getScoreboardManager().updateCountdown("...");
             sender.sendMessage(ChatColor.RED + "Invalid time. Please specify a time between 1 second and 60 minutes.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -82,6 +85,7 @@ public class EventCountdownCommand implements CommandExecutor {
 
         startCountdown();
         sender.sendMessage(ChatColor.GREEN + "Event countdown started for " + formatTime(remainingSeconds));
+        plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 
@@ -91,6 +95,7 @@ public class EventCountdownCommand implements CommandExecutor {
             public void run() {
                 if (remainingSeconds <= 0) {
                     Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.GREEN + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
+                    plugin.getSoundManager().broadcastConfigSound();
                     updateScoreboard(0);
                     this.cancel();
                     return;
@@ -100,6 +105,7 @@ public class EventCountdownCommand implements CommandExecutor {
                         (remainingSeconds <= 60 && remainingSeconds % 10 == 0) ||
                         remainingSeconds % 60 == 0) {
                     broadcastCountdown();
+                    plugin.getSoundManager().broadcastConfigSound();
                 }
 
                 updateScoreboard(remainingSeconds);
@@ -114,6 +120,7 @@ public class EventCountdownCommand implements CommandExecutor {
         String timeLeft = formatTime(remainingSeconds);
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " Event " + plugin.getConfigManager().getEventName() +
                 " starts in " + ChatColor.RED + timeLeft + ChatColor.YELLOW + "!");
+        plugin.getSoundManager().broadcastConfigSound();
     }
 
     private String formatTime(int seconds) {
