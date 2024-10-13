@@ -36,6 +36,7 @@ public class ConfigCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /config <key> <value>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -44,6 +45,7 @@ public class ConfigCommand implements CommandExecutor {
 
         if (!plugin.getConfigManager().hasKey(key) && !key.equals("spawn")) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Config key not found: " + key);
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -64,6 +66,7 @@ public class ConfigCommand implements CommandExecutor {
                 spawnMap.put("pitch", (double) loc.getPitch());
                 plugin.getConfigManager().set("spawn", spawnMap);
                 sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set spawn to your current location.");
+                plugin.getSoundManager().playSoundToSender(sender);
             } else {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid value for spawn. Use 'currentpos'.");
             }
@@ -74,26 +77,32 @@ public class ConfigCommand implements CommandExecutor {
                 boolean boolValue = Boolean.parseBoolean(value);
                 plugin.getConfigManager().set(key, boolValue);
                 sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + boolValue);
+                plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof String) {
                 plugin.getConfigManager().set(key, value);
                 sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + value);
+                plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof Number) {
                 try {
                     if (value.contains(".")) {
                         double doubleValue = Double.parseDouble(value);
                         plugin.getConfigManager().set(key, doubleValue);
                         sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + doubleValue);
+                        plugin.getSoundManager().playSoundToSender(sender);
                     } else {
                         int intValue = Integer.parseInt(value);
                         plugin.getConfigManager().set(key, intValue);
                         sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + intValue);
+                        plugin.getSoundManager().playSoundToSender(sender);
                     }
                 } catch (NumberFormatException e) {
                     sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format: " + value);
+                    plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } else {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Unsupported config value type for: " + key);
+                plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         }

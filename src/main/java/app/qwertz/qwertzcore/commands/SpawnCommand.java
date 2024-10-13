@@ -62,6 +62,7 @@ public class SpawnCommand implements CommandExecutor {
                 // First time or cooldown expired, show warning
                 player.sendTitle(plugin.getConfigManager().getColor("colorError") + "WARNING", plugin.getConfigManager().getColor("colorPrimary") + "You are still alive!", 10, 70, 20);
                 player.sendMessage(plugin.getConfigManager().getColor("colorError") + "WARNING: " + plugin.getConfigManager().getColor("colorPrimary") + "You are still alive! Type /spawn again within 10 seconds to confirm teleportation.");
+                plugin.getSoundManager().playSound(player);
                 cooldowns.put(playerUUID, currentTime);
 
                 // Schedule a task to remove the cooldown after 10 seconds
@@ -78,17 +79,20 @@ public class SpawnCommand implements CommandExecutor {
     private void unrevivePlayer(Player player) {
         plugin.getEventManager().handlePlayerDeath(player, true);
         player.sendMessage(plugin.getConfigManager().getColor("colorDead") + "You have been unrevived as you chose to teleport to spawn while alive.");
+        plugin.getSoundManager().playSound(player);
     }
     private void teleportToSpawn(Player player, boolean wasAlive) {
         Location spawnLocation = plugin.getConfigManager().getSpawnLocation();
         if (spawnLocation != null) {
             player.teleport(spawnLocation);
             player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Teleported to spawn!");
+            plugin.getSoundManager().playSound(player);
             if (wasAlive) {
                 unrevivePlayer(player);
             }
         } else {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Spawn location is not set!");
+            plugin.getSoundManager().playSound(player);
         }
     }
 }

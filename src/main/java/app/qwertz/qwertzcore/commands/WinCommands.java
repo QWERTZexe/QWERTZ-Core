@@ -47,12 +47,14 @@ public class WinCommands implements CommandExecutor {
     private boolean handleAddWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /addwin <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -61,25 +63,28 @@ public class WinCommands implements CommandExecutor {
 
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " Added a win for " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorAlive") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
         target.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "You have been awarded a win! You now have " +  plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
     private boolean handleRemoveWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /removewin <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int currentWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         if (currentWins <= 0) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + target.getName() + " has no wins to remove.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -88,7 +93,7 @@ public class WinCommands implements CommandExecutor {
 
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed a win from " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorDead") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
         target.sendMessage(plugin.getConfigManager().getColor("colorDead") + "A win has been removed from your record. You now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -100,16 +105,18 @@ public class WinCommands implements CommandExecutor {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /wins [player]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + target.getName() + plugin.getConfigManager().getColor("colorAlive") + " has " + wins + " wins.");
-
+        plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 }

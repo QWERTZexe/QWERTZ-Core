@@ -60,12 +60,14 @@ public class AdvertisementCommand implements CommandExecutor {
     private boolean handleAdCommand(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /ad <platform>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         String platform = args[0].toLowerCase();
         if (!platformColors.containsKey(platform)) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -73,6 +75,7 @@ public class AdvertisementCommand implements CommandExecutor {
         String adMessage = (String) plugin.getConfigManager().get(platform);
         if (adMessage == null || adMessage.isEmpty()) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "No advertisement set for this platform.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -86,6 +89,7 @@ public class AdvertisementCommand implements CommandExecutor {
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -125,6 +129,7 @@ public class AdvertisementCommand implements CommandExecutor {
     private boolean handleSetAdCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /setad <platform> <message>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -133,6 +138,7 @@ public class AdvertisementCommand implements CommandExecutor {
         // Validate platform
         if (!platformColors.containsKey(platform)) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -141,6 +147,7 @@ public class AdvertisementCommand implements CommandExecutor {
         plugin.getConfigManager().set(platform, message);
 
         sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Advertisement for " + platform + " has been set.");
+        plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 }

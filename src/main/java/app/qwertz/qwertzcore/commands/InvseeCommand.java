@@ -34,11 +34,13 @@ public class InvseeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /invsee <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -47,6 +49,7 @@ public class InvseeCommand implements CommandExecutor {
 
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
