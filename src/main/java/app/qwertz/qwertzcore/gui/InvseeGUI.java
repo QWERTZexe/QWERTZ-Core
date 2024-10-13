@@ -140,8 +140,6 @@ public class InvseeGUI implements Listener {
                 if (slot >= 18 && slot < 54) {
                     int targetSlot = slot - 18;
                     int column = targetSlot % 9;
-                    event.getWhoClicked().sendMessage(String.valueOf(slot));
-                    event.getWhoClicked().sendMessage(String.valueOf(targetSlot));
                     if (targetSlot < 9) {
                         target.getInventory().setItem(9 + column, event.getNewItems().get(slot));
                     }

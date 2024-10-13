@@ -95,6 +95,15 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/healdead` - Heals all dead players
 - `/kit <kit> <player|alive|dead|all>` - Gives a kit to the selected group
 - `/invsee <player>` - View and modify another player's inventory
+- `/poll <duration> <question> <answer1> <answer2> [answer3] ...` - Create a poll, to use multiword parameters, use "-" instead of " "
+
+### WorldGuard Management
+
+- `/pvp [region]` - Toggle PVP in the selected region or globally
+- `/place [region]` - Toggle Block Placing in the selected region or globally
+- `/break [region]` - Toggle Block Breaking in the selected region or globally
+- `/hunger [region]` - Toggle Hunger in the selected region or globally
+- `/falldamage [region]` - Toggle Fall Damage in the selected region or globally
 
 ### Database Management
 
@@ -148,6 +157,12 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.invsee` - Allows the player to see other players' inventory
 - `qwertzcore.host.vanish` - Use vanish
 - `qwertzcore.host.unvanish` - Use unvanish
+- `qwertzcore.host.pvp` - Toggle PVP using /pvp
+- `qwertzcore.host.break` - Toggle Block Breaking using /break
+- `qwertzcore.host.place` - Toggle Block Placing using /place
+- `qwertzcore.host.hunger` - Toggle Hunger using /hunger
+- `qwertzcore.host.falldamage` - Toggle Fall Damage using /falldamage
+- `qwertzcore.host.poll` - Create polls
 
 #### Player Permissions
 
@@ -161,6 +176,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.player.togglemessage` - Toggle incoming private messages
 - `qwertzcore.player.listwarps` - List all available warps
 - `qwertzcore.player.warp` - Use warps
+- `qwertzcore.player.pollvote` - Vote in polls
 
 #### Gamemode Permissions
 

@@ -43,9 +43,8 @@ public class ScoreboardManager {
     public void setScoreboard(Player player) {
         if (plugin.getConfigManager().getScoreBoard()) {
             Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-            Objective obj = board.registerNewObjective("qwertzcore", "dummy", ChatColor.GOLD + plugin.getConfigManager().getServerName());
+            Objective obj = board.registerNewObjective("qwertzcore", "dummy", plugin.getConfigManager().getColor("colorSecondary") + plugin.getConfigManager().getServerName());
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-
             updateScoreboard(player, board, obj);
             player.setScoreboard(board);
             playerScoreboards.put(player.getUniqueId(), board);
@@ -58,16 +57,16 @@ public class ScoreboardManager {
             this.eventcountdown = "...";
         }
         obj.getScore(ChatColor.STRIKETHROUGH + "----------------" + ChatColor.RESET).setScore(12);
-        obj.getScore(ChatColor.YELLOW + "EVENT").setScore(11);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Name: ") + ChatColor.GOLD + plugin.getConfigManager().getEventName()).setScore(10);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Alive: ") + ChatColor.GREEN + eventManager.getAlivePlayerCountWithoutVanish()).setScore(9);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Dead: ") + ChatColor.RED + eventManager.getDeadPlayerCountWithoutVanish()).setScore(8);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Starting in: ") + ChatColor.AQUA + this.eventcountdown).setScore(7);
+        obj.getScore(plugin.getConfigManager().getColor("colorPrimary") + "EVENT").setScore(11);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Name: ") + plugin.getConfigManager().getColor("colorSecondary") + plugin.getConfigManager().getEventName()).setScore(10);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Alive: ") + plugin.getConfigManager().getColor("colorAlive") + eventManager.getAlivePlayerCountWithoutVanish()).setScore(9);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Dead: ") + plugin.getConfigManager().getColor("colorDead") + eventManager.getDeadPlayerCountWithoutVanish()).setScore(8);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Starting in: ") + plugin.getConfigManager().getColor("colorAqua") + this.eventcountdown).setScore(7);
         obj.getScore(" ").setScore(6); // Empty line
-        obj.getScore(ChatColor.YELLOW + player.getName()).setScore(5);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Rank: ") + ChatColor.GOLD + plugin.getRankManager().getRank(player)).setScore(4);
+        obj.getScore(plugin.getConfigManager().getColor("colorPrimary") + player.getName()).setScore(5);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Rank: ") + plugin.getConfigManager().getColor("colorSecondary") + plugin.getRankManager().getRank(player)).setScore(4);
         obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Wins: ") + ChatColor.LIGHT_PURPLE + plugin.getDatabaseManager().getWins(player.getUniqueId())).setScore(3);
-        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Revive Tokens: ") + ChatColor.AQUA + plugin.getDatabaseManager().getReviveTokens(player.getUniqueId())).setScore(2);
+        obj.getScore(ChatColor.GRAY + "| " + ChatColor.WHITE + configManager.formatScoreboardText("Revive Tokens: ") + plugin.getConfigManager().getColor("colorTertiary") + plugin.getDatabaseManager().getReviveTokens(player.getUniqueId())).setScore(2);
         obj.getScore(ChatColor.STRIKETHROUGH + "----------------").setScore(1);
         obj.getScore(QWERTZcore.CORE_ICON + ChatColor.GOLD + " QWERTZ Core").setScore(0);
     }

@@ -15,19 +15,19 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import app.qwertz.qwertzcore.gui.InvseeGUI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class InvseeCommand implements CommandExecutor {
-    private final QWERTZcore plugin;
+public class PollVoteCommand implements CommandExecutor {
 
-    public InvseeCommand(QWERTZcore plugin) {
+    private final QWERTZcore plugin;
+    private final PollCommand pollCommand;
+
+    public PollVoteCommand(QWERTZcore plugin, PollCommand pollCommand) {
         this.plugin = plugin;
+        this.pollCommand = pollCommand;
     }
 
     @Override
@@ -38,19 +38,17 @@ public class InvseeCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /invsee <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /pollvote <option>");
             return true;
         }
 
-        Player viewer = (Player) sender;
-        Player target = Bukkit.getPlayer(args[0]);
-
-        if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
-            return true;
+        try {
+            int option = Integer.parseInt(args[0]);
+            pollCommand.vote((Player) sender, option);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid option. Please provide a number.");
         }
 
-        new InvseeGUI(plugin, viewer, target).open();
         return true;
     }
 }

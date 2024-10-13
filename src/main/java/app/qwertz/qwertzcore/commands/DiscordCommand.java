@@ -38,8 +38,7 @@ public class DiscordCommand implements CommandExecutor {
         String discordLink = plugin.getConfigManager().getDiscordLink();
 
         if (discordLink == null || discordLink.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "Discord link is not set in the configuration.");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Discord link is not set in the configuration.");
             return true;
         }
 
@@ -56,8 +55,7 @@ public class DiscordCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            sender.sendMessage(ChatColor.RED + "The last part of your advertisement must be a valid URL.");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
             return true;
         }
 
@@ -71,10 +69,8 @@ public class DiscordCommand implements CommandExecutor {
 
         if (sender instanceof Player) {
             ((Player) sender).spigot().sendMessage(message);
-            plugin.getSoundManager().playSound(((Player) sender).getPlayer());
         } else {
             sender.sendMessage(ChatColor.AQUA + "Discord link: " + discordLink);
-            plugin.getSoundManager().playSoundToSender(sender);
         }
 
         return true;

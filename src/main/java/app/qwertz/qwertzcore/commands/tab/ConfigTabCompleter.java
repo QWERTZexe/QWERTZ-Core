@@ -29,7 +29,7 @@ public class ConfigTabCompleter implements TabCompleter {
     private final QWERTZcore plugin;
     private final List<String> fontOptions = Arrays.asList("default", "qwertz", "modern", "blocky");
     private final List<String> booleanOptions = Arrays.asList("true", "false");
-
+    private final List<String> colorList = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k", "&l", "&m", "&n", "&o", "&r");
     public ConfigTabCompleter(QWERTZcore plugin) {
         this.plugin = plugin;
     }
@@ -50,7 +50,12 @@ public class ConfigTabCompleter implements TabCompleter {
                 return fontOptions.stream()
                         .filter(font -> font.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
-            } else {
+            } else if (key.contains("color")) {
+                return colorList.stream()
+                        .filter(option -> option.startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            else {
                 Object value = plugin.getConfigManager().get(key);
                 if (value == null || value instanceof Boolean) {
                     return booleanOptions.stream()

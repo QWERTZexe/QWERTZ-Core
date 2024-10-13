@@ -30,11 +30,12 @@ public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.GREEN + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3-BETA";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
 
+    public Boolean isUsingWorldGuard = false;
     private VanishManager vanishManager;
     private SoundManager soundManager;
     private EventManager eventManager;
@@ -68,6 +69,12 @@ public final class QWERTZcore extends JavaPlugin {
             new Placeholders(this).register();
         } else {
             getLogger().warning("[EXTENSION] PlaceholderAPI not found. No placeholders will be provided.");
+        }
+        if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+            getLogger().info("[EXTENSION] WorldGuard found and added security commands successfully.");
+            this.isUsingWorldGuard = true;
+        } else {
+            getLogger().warning("[EXTENSION] WorldGuard not found. No security commands will be provided.");
         }
         this.scoreboardManager = new ScoreboardManager(this, eventManager, configManager);
         this.tablistManager = new TablistManager(this);
@@ -239,11 +246,28 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("delkit").setTabCompleter(new KitTabCompleter(this));
         getCommand("kits").setExecutor(new KitCommand(this));
         getCommand("invsee").setExecutor(new InvseeCommand(this));
+        if (isUsingWorldGuard) {
+            WorldGuardCommands worldGuardCommands = new WorldGuardCommands(this);
+            getCommand("pvp").setExecutor(worldGuardCommands);
+            getCommand("break").setExecutor(worldGuardCommands);
+            getCommand("place").setExecutor(worldGuardCommands);
+            getCommand("hunger").setExecutor(worldGuardCommands);
+            getCommand("falldamage").setExecutor(worldGuardCommands);
+            WorldGuardTabCompleter worldGuardTabCompleter = new WorldGuardTabCompleter();
+            getCommand("pvp").setTabCompleter(worldGuardTabCompleter);
+            getCommand("break").setTabCompleter(worldGuardTabCompleter);
+            getCommand("place").setTabCompleter(worldGuardTabCompleter);
+            getCommand("hunger").setTabCompleter(worldGuardTabCompleter);
+            getCommand("falldamage").setTabCompleter(worldGuardTabCompleter);
+        }
+        PollCommand pollCommand = new PollCommand(this);
+        getCommand("poll").setExecutor(pollCommand);
+        getCommand("pollvote").setExecutor(new PollVoteCommand(this, pollCommand));
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, vanishManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
-        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(), this);
+        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(configManager), this);
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
     }
     public EventManager getEventManager() {

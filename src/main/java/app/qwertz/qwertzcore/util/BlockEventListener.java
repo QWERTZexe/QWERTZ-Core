@@ -53,7 +53,7 @@ public class BlockEventListener implements Listener {
                 if (blockManager.isValidBlockType(blockType)) {
                     blockManager.setSpecialBlock(block.getLocation(), blockType, block.getType());
                     if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                      player.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " Placed a " + ChatColor.GOLD + blockType + ChatColor.YELLOW + " at X: " + ChatColor.GOLD + block.getLocation().getBlockX() + ChatColor.YELLOW + " Y: " +  ChatColor.GOLD + block.getLocation().getBlockY() + ChatColor.YELLOW + " Z: " + ChatColor.GOLD + block.getLocation().getBlockZ() + ChatColor.YELLOW + " WORLD: " + ChatColor.GOLD + block.getWorld().getName());
+                      player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " Placed a " + plugin.getConfigManager().getColor("colorSecondary") + blockType + plugin.getConfigManager().getColor("colorPrimary") + " at X: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockX() + plugin.getConfigManager().getColor("colorPrimary") + " Y: " +  plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockY() + plugin.getConfigManager().getColor("colorPrimary") + " Z: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockZ() + plugin.getConfigManager().getColor("colorPrimary") + " WORLD: " + plugin.getConfigManager().getColor("colorSecondary") + block.getWorld().getName());
                     }
                 }
             }
@@ -76,7 +76,7 @@ public class BlockEventListener implements Listener {
                     // The block was successfully broken
                     blockManager.removeSpecialBlock(block.getLocation());
                     if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                        event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Removed special block at X: " + ChatColor.GOLD + block.getLocation().getBlockX() + ChatColor.RED +  " Y: " + ChatColor.GOLD + block.getLocation().getBlockY() + ChatColor.RED + " Z: " + ChatColor.GOLD + block.getLocation().getBlockZ() + ChatColor.RED + " WORLD: " + ChatColor.GOLD + Objects.requireNonNull(block.getLocation().getWorld()).getName());
+                        event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed special block at X: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockX() + plugin.getConfigManager().getColor("colorDead") +  " Y: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockY() + plugin.getConfigManager().getColor("colorDead") + " Z: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockZ() + plugin.getConfigManager().getColor("colorDead") + " WORLD: " + plugin.getConfigManager().getColor("colorSecondary") + Objects.requireNonNull(block.getLocation().getWorld()).getName());
                     }
                 }
             });

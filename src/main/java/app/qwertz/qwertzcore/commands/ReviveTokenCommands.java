@@ -16,7 +16,6 @@ package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,38 +54,35 @@ public class ReviveTokenCommands implements CommandExecutor {
     }
 
     private boolean handleRevivals(CommandSender sender, String[] args) {
-
         Player target;
         if (args.length == 0 && sender instanceof Player) {
             target = (Player) sender;
         } else if (args.length == 1) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(ChatColor.RED + "Player not found.");
-                plugin.getSoundManager().playSoundToSender(sender);
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
                 return true;
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "Usage: /revives [player]");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revives [player]");
             return true;
         }
 
         int reviveTokens = plugin.getDatabaseManager().getReviveTokens(target.getUniqueId());
-        sender.sendMessage(QWERTZcore.CORE_ICON + ChatColor.YELLOW + " " + target.getName() + ChatColor.GREEN + " has " + reviveTokens + " revival tokens.");
+        sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + target.getName() + plugin.getConfigManager().getColor("colorAlive") + " has " + reviveTokens + " revival tokens.");
 
         return true;
     }
 
     private boolean handleUseRevive(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
             return true;
         }
 
         Player player = (Player) sender;
         if (!plugin.getConfigManager().isReviveTokensEnabled()) {
-            player.sendMessage(ChatColor.RED + "Revive tokens are currently disabled!");
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Revive tokens are currently disabled!");
             return true;
         }
 
@@ -95,26 +91,26 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (currentTime < cooldownEndTime) {
             long remainingCooldown = (cooldownEndTime - currentTime) / 1000;
-            player.sendMessage(ChatColor.RED + "You must wait " + remainingCooldown + " seconds before requesting a revive!");
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You must wait " + remainingCooldown + " seconds before requesting a revive!");
             return true;
         }
 
         int tokens = plugin.getDatabaseManager().getReviveTokens(player.getUniqueId());
         if (tokens <= 0) {
-            player.sendMessage(ChatColor.RED + "You don't have any revive tokens!");
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You don't have any revive tokens!");
             return true;
         }
         if (plugin.getEventManager().isPlayerAlive(player)) {
-            player.sendMessage(ChatColor.RED + "You are already alive!");
+            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are already alive!");
             return true;
         }
         pendingReviveRequests.put(player.getUniqueId(), currentTime + 30000); // 20 seconds expiry
         plugin.getDatabaseManager().setReviveRequestCooldown(player.getUniqueId(), currentTime + 30000);
 
         String message = String.format("%s %s%s %sis requesting to use a revive token! (%s/reviveaccept %s%s%s or %s/revivedeny %s%s%s)",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, player.getName(), ChatColor.GREEN,
-                ChatColor.GREEN, ChatColor.YELLOW, player.getName(), ChatColor.GREEN,
-                ChatColor.RED, ChatColor.YELLOW, player.getName(), ChatColor.GREEN);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"),
+                plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"),
+                plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
 
         return true;
@@ -123,19 +119,19 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleReviveAccept(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /reviveaccept <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /reviveaccept <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
         if (!pendingReviveRequests.containsKey(target.getUniqueId()) ||
                 pendingReviveRequests.get(target.getUniqueId()) < System.currentTimeMillis()) {
-            sender.sendMessage(ChatColor.RED + "There is no pending revive request for this player!");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "There is no pending revive request for this player!");
             return true;
         }
 
@@ -144,7 +140,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         plugin.getEventManager().revivePlayer(target, (Player) sender);
 
         String message = String.format("%s %s%s's %srevive request has been accepted!",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, target.getName(), ChatColor.GREEN);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
 
         return true;
@@ -154,13 +150,13 @@ public class ReviveTokenCommands implements CommandExecutor {
 
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /revivedeny <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revivedeny <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
@@ -168,7 +164,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         plugin.getDatabaseManager().setReviveRequestCooldown(target.getUniqueId(), System.currentTimeMillis() + 120000); // 2 minutes cooldown
 
         String message = String.format("%s %s%s's %srevive request has been denied!",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, target.getName(), ChatColor.RED);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"));
         Bukkit.broadcastMessage(message);
 
         return true;
@@ -177,13 +173,13 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleAddRevive(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /addrevive <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /addrevive <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
@@ -191,7 +187,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         int tokens = plugin.getDatabaseManager().getReviveTokens(target.getUniqueId());
 
         String message = String.format("%s %s%s %shas been given a revive token! They now have %s%d %stokens.",
-                QWERTZcore.CORE_ICON, ChatColor.YELLOW, target.getName(), ChatColor.GREEN, ChatColor.YELLOW, tokens, ChatColor.GREEN);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
 
         return true;
@@ -200,13 +196,13 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleRemoveRevive(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /removerevive <player>");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /removerevive <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
             return true;
         }
 
@@ -214,7 +210,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         int tokens = plugin.getDatabaseManager().getReviveTokens(target.getUniqueId());
 
         String message = String.format("%s %sA revive token has been removed from %s%s%s! They now have %s%d %stokens.",
-                QWERTZcore.CORE_ICON, ChatColor.RED, ChatColor.YELLOW, target.getName(), ChatColor.RED, ChatColor.YELLOW, tokens, ChatColor.RED);
+                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorDead"));
         Bukkit.broadcastMessage(message);
 
         return true;

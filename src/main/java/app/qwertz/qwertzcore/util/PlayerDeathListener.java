@@ -34,7 +34,11 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         eventManager.handlePlayerDeath(player, false);
+        if (configManager.get("suppressVanilla").equals(true)) {
+            event.setDeathMessage(null);
+        }
     }
+
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();

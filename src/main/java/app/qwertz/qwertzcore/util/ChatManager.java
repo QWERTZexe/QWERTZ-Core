@@ -33,7 +33,7 @@ public class ChatManager implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (!plugin.getConfigManager().getChat() && !event.getPlayer().hasPermission("qwertzcore.chat.bypass")) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + ChatColor.RED + " Chat is disabled!");
+            event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Chat is disabled!");
             return;
         }
         if (plugin.getConfigManager().getChatFormatting()) {
@@ -43,24 +43,23 @@ public class ChatManager implements Listener {
             String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
             String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
             String message = event.getMessage();
-            String formattedMessage;
-
-            if (prefix.isEmpty()) {
+            String formattedMessage = "";
+            if ((Boolean) plugin.getConfigManager().get("forceWhiteMessages")) {
+                formattedMessage = String.format("%s%s%s:§r %s",
+                        prefix,
+                        player.getName(),
+                        suffix,
+                        message
+                );
+            }
+            else {
                 formattedMessage = String.format("%s%s%s: %s",
                         prefix,
                         player.getName(),
                         suffix,
-                        ChatColor.WHITE + message
-                );
-            } else {
-                formattedMessage = String.format("%s %s%s: %s",
-                        prefix,
-                        player.getName(),
-                        suffix,
-                        ChatColor.WHITE + message
+                        message
                 );
             }
-
 
             plugin.getServer().broadcastMessage(formattedMessage);
         }

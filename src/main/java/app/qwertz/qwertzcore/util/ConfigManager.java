@@ -163,6 +163,33 @@ public class ConfigManager {
         if (!config.containsKey("joinLeaveMsgsOnVanish")) {
             config.put("joinLeaveMsgsOnVanish", true);
         }
+        if (!config.containsKey("colorPrimary")) {
+            config.put("colorPrimary", "§e");
+        }
+        if (!config.containsKey("colorSecondary")) {
+            config.put("colorSecondary", "§6");
+        }
+        if (!config.containsKey("colorTertiary")) {
+            config.put("colorTertiary", "§b");
+        }
+        if (!config.containsKey("colorAlive")) {
+            config.put("colorAlive", "§a");
+        }
+        if (!config.containsKey("colorDead")) {
+            config.put("colorDead", "§c");
+        }
+        if (!config.containsKey("colorError")) {
+            config.put("colorError", "§c");
+        }
+        if (!config.containsKey("colorSuccess")) {
+            config.put("colorSuccess", "§a");
+        }
+        if (!config.containsKey("suppressVanilla")) {
+            config.put("suppressVanilla", true);
+        }
+        if (!config.containsKey("forceWhiteMessages")) {
+            config.put("forceWhiteMessages", false);
+        }
     }
 
 
@@ -225,6 +252,31 @@ public class ConfigManager {
 
     public Object get(String key) {
         return config.get(key);
+    }
+
+    public String getColor(String key) {
+        String unformatted = (String) config.get(key);
+        if (unformatted == null) {
+            unformatted = "§a";
+        }
+        unformatted = unformatted.replace("&", "§");
+        StringBuilder colorCodes = new StringBuilder();
+
+        for (int i = 0; i < unformatted.length(); i++) {
+            if (unformatted.charAt(i) == '§' && i + 1 < unformatted.length()) {
+                char colorChar = unformatted.charAt(i + 1);
+                if (isValidColorCode(colorChar)) {
+                    colorCodes.append('§').append(colorChar);
+                }
+                i++; // Skip the next character as it is part of the color code
+            }
+        }
+
+        return colorCodes.toString();
+    }
+
+    private boolean isValidColorCode(char c) {
+        return "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(c) > -1;
     }
 
     public void set(String key, Object value) {

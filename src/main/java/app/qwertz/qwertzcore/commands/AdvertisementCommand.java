@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,30 +58,21 @@ public class AdvertisementCommand implements CommandExecutor {
     }
 
     private boolean handleAdCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("qwertzcore.host.ad")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
-            plugin.getSoundManager().playSoundToSender(sender);
-            return true;
-        }
-
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /ad <platform>");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /ad <platform>");
             return true;
         }
 
         String platform = args[0].toLowerCase();
         if (!platformColors.containsKey(platform)) {
-            sender.sendMessage(ChatColor.RED + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
             return true;
         }
 
         // Get the advertisement message
         String adMessage = (String) plugin.getConfigManager().get(platform);
         if (adMessage == null || adMessage.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "No advertisement set for this platform.");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "No advertisement set for this platform.");
             return true;
         }
 
@@ -95,8 +85,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            sender.sendMessage(ChatColor.RED + "The last part of your advertisement must be a valid URL.");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
             return true;
         }
 
@@ -130,16 +119,12 @@ public class AdvertisementCommand implements CommandExecutor {
 
         Bukkit.broadcastMessage(separator);
 
-        plugin.getSoundManager().broadcastConfigSound();
-
         return true;
     }
 
     private boolean handleSetAdCommand(CommandSender sender, String[] args) {
-
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Usage: /setad <platform> <message>");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /setad <platform> <message>");
             return true;
         }
 
@@ -147,8 +132,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Validate platform
         if (!platformColors.containsKey(platform)) {
-            sender.sendMessage(ChatColor.RED + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
-            plugin.getSoundManager().playSoundToSender(sender);
+            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
             return true;
         }
 
@@ -156,8 +140,7 @@ public class AdvertisementCommand implements CommandExecutor {
         String message = String.join(" ", args).substring(platform.length() + 1);
         plugin.getConfigManager().set(platform, message);
 
-        sender.sendMessage(ChatColor.GREEN + "Advertisement for " + platform + " has been set.");
-        plugin.getSoundManager().playSoundToSender(sender);
+        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Advertisement for " + platform + " has been set.");
         return true;
     }
 }

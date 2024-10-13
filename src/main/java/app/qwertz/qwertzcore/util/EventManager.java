@@ -17,9 +17,7 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
 
 import java.util.*;
 
@@ -45,7 +43,7 @@ public class EventManager {
                 target.teleport(executor.getLocation());
             }
             deathTimes.remove(targetUUID);
-            broadcastMessage(ChatColor.GREEN + target.getName() + " has been revived!");
+            broadcastMessage(plugin.getConfigManager().getColor("colorAlive") + target.getName() + " has been revived!");
             return true;
         }
         else {
@@ -62,7 +60,7 @@ public class EventManager {
             if (plugin.getConfigManager().getTpOnUnrevive()) {
                 target.teleport(plugin.getConfigManager().getSpawnLocation());
             }
-            broadcastMessage(ChatColor.RED + target.getName() + " has been marked as dead!");
+            broadcastMessage(plugin.getConfigManager().getColor("colorDead") + target.getName() + " has been marked as dead!");
             return true;
         }
         else {
@@ -82,7 +80,7 @@ public class EventManager {
             deathTimes.put(playerUUID, System.currentTimeMillis());
             deadPlayers.add(playerUUID);
             broadcastMessage(String.format("%s%s %sDIED!",
-                    ChatColor.RED, player.getName(),
+                    plugin.getConfigManager().getColor("colorDead"), player.getName(),
                     ChatColor.DARK_RED));
         } else if (!deadPlayers.contains(playerUUID)) {
             // If the player wasn't in either list (e.g., new player who died immediately)
@@ -95,22 +93,26 @@ public class EventManager {
 
     public void reviveAll(Player sender) {
         for (UUID uuid : deadPlayers) {
-            Player player = Bukkit.getPlayer(uuid);
-            player.teleport(sender.getLocation());
+            if (plugin.getConfigManager().getTpOnRevive()) {
+                Player player = Bukkit.getPlayer(uuid);
+                player.teleport(sender.getLocation());
+            }
             alivePlayers.add(uuid);
         }
         deadPlayers.clear();
-        broadcastMessage(ChatColor.GREEN + "All players have been revived!");
+        broadcastMessage(plugin.getConfigManager().getColor("colorAlive") + "All players have been revived!");
     }
 
     public void unReviveAll() {
         for (UUID uuid : alivePlayers) {
-            Player player = Bukkit.getPlayer(uuid);
-            player.teleport(plugin.getConfigManager().getSpawnLocation());
+            if (plugin.getConfigManager().getTpOnUnrevive()) {
+                Player player = Bukkit.getPlayer(uuid);
+                player.teleport(plugin.getConfigManager().getSpawnLocation());
+            }
             deadPlayers.add(uuid);
         }
         alivePlayers.clear();
-        broadcastMessage(ChatColor.RED + "All players have been unrevived!");
+        broadcastMessage(plugin.getConfigManager().getColor("colorDead") + "All players have been unrevived!");
     }
 
     public boolean isPlayerDead(Player player) {

@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static org.bukkit.Bukkit.broadcastMessage;
+
 public class PlayerEventListener implements Listener {
     private final EventManager eventManager;
     private final ConfigManager configManager;
@@ -57,6 +59,16 @@ public class PlayerEventListener implements Listener {
         }
         scoreboardManager.setScoreboard(event.getPlayer());
         tablistManager.updateTablist(event.getPlayer());
+        if (configManager.get("suppressVanilla").equals(true)) {
+            int fakeCount = vanishManager.getNonVanishedPlayerCount()-1;
+            int newCount = fakeCount + 1;
+            broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
+                    configManager.getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
+                    configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
+                    configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+
+            event.setJoinMessage(null);
+        }
     }
 
     @EventHandler
@@ -64,5 +76,15 @@ public class PlayerEventListener implements Listener {
         eventManager.removePlayer(event.getPlayer());
         vanishManager.removeVanishedPlayer(event.getPlayer());
         scoreboardManager.removeScoreboard(event.getPlayer());
+
+        if (configManager.get("suppressVanilla").equals(true)) {
+            int fakeCount = vanishManager.getNonVanishedPlayerCount();
+            int newCount = fakeCount - 1;
+            broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
+                     configManager.getColor("colorDead") + " just left us! " + ChatColor.GRAY +
+                    "[" + configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
+                    " -> " + configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+            event.setQuitMessage(null);
+        }
     }
 }
