@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.commands.tab;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -30,6 +31,9 @@ public class ConfigTabCompleter implements TabCompleter {
     private final List<String> fontOptions = Arrays.asList("default", "qwertz", "modern", "blocky");
     private final List<String> booleanOptions = Arrays.asList("true", "false");
     private final List<String> colorList = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k", "&l", "&m", "&n", "&o", "&r");
+    private final List<String> pitchOptions = Arrays.asList("0.5", "1.0", "1.5", "2.0");
+    private final List<String> volumeOptions = Arrays.asList("50.0", "75.0", "100.0", "125.0", "150.0");
+
     public ConfigTabCompleter(QWERTZcore plugin) {
         this.plugin = plugin;
     }
@@ -53,6 +57,20 @@ public class ConfigTabCompleter implements TabCompleter {
             } else if (key.contains("color")) {
                 return colorList.stream()
                         .filter(option -> option.startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+
+            } else if (key.equals("soundpitch")) {
+                return pitchOptions.stream()
+                        .filter(pitch -> pitch.startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            } else if (key.equals("soundvolume")) {
+                return volumeOptions.stream()
+                        .filter(volume -> volume.startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            } else if (key.equals("soundeffect")) {
+                return Arrays.stream(Sound.values())
+                        .map(Sound::name)
+                        .filter(sound -> sound.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             }
             else {
