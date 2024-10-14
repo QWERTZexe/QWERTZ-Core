@@ -46,6 +46,7 @@ public class EventBlockCommand implements CommandExecutor {
         if (args.length < 1) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /eventblock <blocktype> [material]");
             player.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "Available block types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -56,12 +57,14 @@ public class EventBlockCommand implements CommandExecutor {
             material = Material.matchMaterial(args[1]);
             if (material == null || !material.isBlock()) {
                 player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid material specified!");
+                plugin.getSoundManager().playSound(player);
                 return true;
             }
         }
 
         if (!plugin.getBlockManager().isValidBlockType(blockType)) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid block type! " + plugin.getConfigManager().getColor("colorPrimary") + "Available types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -73,6 +76,7 @@ public class EventBlockCommand implements CommandExecutor {
             item.setItemMeta(meta);
 
             player.getInventory().addItem(item);
+            plugin.getSoundManager().playSound(player);
             player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " You have received a " + ChatColor.GOLD + "QWERTZ Core " + plugin.getConfigManager().getColor("colorPrimary") + blockType + plugin.getConfigManager().getColor("colorSuccess") + " with material " + plugin.getConfigManager().getColor("colorPrimary") + item.getType().name() + plugin.getConfigManager().getColor("colorSuccess") + "!");
         }
 

@@ -61,10 +61,11 @@ public class ChatListener implements Listener {
     private void announceWinner(String playerName) {
         Bukkit.broadcastMessage(String.format("%s %s%s %shas won the chat revival game!",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorAlive"), playerName, plugin.getConfigManager().getColor("colorPrimary")));
-
+        plugin.getSoundManager().broadcastConfigSound();
         if (gameType.equals("guess") || gameType.equals("math")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
                     QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            plugin.getSoundManager().broadcastConfigSound();
         }
 
         endGame();
@@ -74,9 +75,11 @@ public class ChatListener implements Listener {
         if (gameType.equals("guess") || gameType.equals("math")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
                     QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            plugin.getSoundManager().broadcastConfigSound();
         } else if (gameType.equals("typer")) {
             Bukkit.broadcastMessage(String.format("%s %sThe correct sentence was: %s%s",
                     QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            plugin.getSoundManager().broadcastConfigSound();
         }
         endGame();
     }

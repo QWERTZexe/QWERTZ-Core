@@ -55,6 +55,7 @@ public class VanishCommands implements CommandExecutor {
                         plugin.getConfigManager().getColor("colorDead") + " just left us! " + ChatColor.GRAY +
                         "[" + plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
                         " -> " + plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+                plugin.getSoundManager().broadcastConfigSound();
             }
             sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " You have been vanished!");
             plugin.getVanishManager().addVanishedPlayer((Player) sender);
@@ -63,6 +64,7 @@ public class VanishCommands implements CommandExecutor {
             }
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are already vanished!");
+            plugin.getSoundManager().playSoundToSender(sender);
         }
 
         return true;
@@ -81,14 +83,17 @@ public class VanishCommands implements CommandExecutor {
                         plugin.getConfigManager().getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
                         plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
                         plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+                plugin.getSoundManager().broadcastConfigSound();
             }
             sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " You have been unvanished!");
+            plugin.getSoundManager().playSoundToSender(sender);
             plugin.getVanishManager().removeVanishedPlayer((Player) sender);
             for (Player loop : Bukkit.getOnlinePlayers()) {
                 loop.showPlayer((Player) sender);
             }
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are not vanished!");
+            plugin.getSoundManager().playSoundToSender(sender);
         }
 
         return true;

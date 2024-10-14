@@ -61,16 +61,18 @@ public class ReviveTokenCommands implements CommandExecutor {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revives [player]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int reviveTokens = plugin.getDatabaseManager().getReviveTokens(target.getUniqueId());
         sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + target.getName() + plugin.getConfigManager().getColor("colorAlive") + " has " + reviveTokens + " revival tokens.");
-
+        plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 
@@ -83,6 +85,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         Player player = (Player) sender;
         if (!plugin.getConfigManager().isReviveTokensEnabled()) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Revive tokens are currently disabled!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -92,16 +95,19 @@ public class ReviveTokenCommands implements CommandExecutor {
         if (currentTime < cooldownEndTime) {
             long remainingCooldown = (cooldownEndTime - currentTime) / 1000;
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You must wait " + remainingCooldown + " seconds before requesting a revive!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
         int tokens = plugin.getDatabaseManager().getReviveTokens(player.getUniqueId());
         if (tokens <= 0) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You don't have any revive tokens!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
         if (plugin.getEventManager().isPlayerAlive(player)) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are already alive!");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
         pendingReviveRequests.put(player.getUniqueId(), currentTime + 30000); // 20 seconds expiry
@@ -112,6 +118,7 @@ public class ReviveTokenCommands implements CommandExecutor {
                 plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"),
                 plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
@@ -120,18 +127,21 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /reviveaccept <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (!pendingReviveRequests.containsKey(target.getUniqueId()) ||
                 pendingReviveRequests.get(target.getUniqueId()) < System.currentTimeMillis()) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "There is no pending revive request for this player!");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -142,7 +152,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         String message = String.format("%s %s%s's %srevive request has been accepted!",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -151,12 +161,14 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revivedeny <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -166,7 +178,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         String message = String.format("%s %s%s's %srevive request has been denied!",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"));
         Bukkit.broadcastMessage(message);
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -174,12 +186,14 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /addrevive <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -189,7 +203,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         String message = String.format("%s %s%s %shas been given a revive token! They now have %s%d %stokens.",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorAlive"));
         Bukkit.broadcastMessage(message);
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -197,12 +211,14 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /removerevive <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -212,7 +228,7 @@ public class ReviveTokenCommands implements CommandExecutor {
         String message = String.format("%s %sA revive token has been removed from %s%s%s! They now have %s%d %stokens.",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorDead"));
         Bukkit.broadcastMessage(message);
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 }

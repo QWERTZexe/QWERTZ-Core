@@ -80,17 +80,20 @@ public class EventCommands implements CommandExecutor {
     private boolean handleRevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revive <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if  (!eventManager.revivePlayer(target, (Player) sender)) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already alive!");
+            plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
     }
@@ -98,17 +101,20 @@ public class EventCommands implements CommandExecutor {
     private boolean handleUnrevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /unrevive <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if (!eventManager.unrevivePlayer(target)) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already dead!");
+            plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
     }
@@ -134,8 +140,10 @@ public class EventCommands implements CommandExecutor {
 
         if (aliveList.isEmpty()) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no alive players!");
+            plugin.getSoundManager().playSoundToSender(sender);
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "Alive players: " + aliveList);
+            plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
     }
@@ -149,8 +157,10 @@ public class EventCommands implements CommandExecutor {
 
         if (deadList.isEmpty()) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no dead players!");
+            plugin.getSoundManager().playSoundToSender(sender);
         } else {
             sender.sendMessage(plugin.getConfigManager().getColor("colorDead") + "Dead players: " + deadList);
+            plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
     }
@@ -158,12 +168,14 @@ public class EventCommands implements CommandExecutor {
     private boolean handleGive(CommandSender sender, String[] args, boolean isDead) {
         if (args.length < 1 || args.length > 3) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Material material = Material.matchMaterial(args[0]);
         if (material == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid item: " + args[0]);
+            plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
@@ -173,6 +185,7 @@ public class EventCommands implements CommandExecutor {
                 amount = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid amount: " + args[1]);
+                plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
         }
@@ -183,6 +196,7 @@ public class EventCommands implements CommandExecutor {
                 data = Short.parseShort(args[2]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid data value: " + args[2]);
+                plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
         }
@@ -215,6 +229,7 @@ public class EventCommands implements CommandExecutor {
 
         // Broadcast the message to all players
         Bukkit.broadcastMessage(message);
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -254,7 +269,7 @@ public class EventCommands implements CommandExecutor {
                     playerTypeColor,
                     playerType,
                     plugin.getConfigManager().getColor("colorSuccess"));
-
+            plugin.getSoundManager().broadcastConfigSound();
         } else {
             broadcastMessage = String.format("%s %s%s %steleported all players to their location!",
                     QWERTZcore.CORE_ICON,
@@ -263,6 +278,7 @@ public class EventCommands implements CommandExecutor {
                     plugin.getConfigManager().getColor("colorSuccess"));
         }
         Bukkit.broadcastMessage(broadcastMessage);
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
@@ -274,6 +290,7 @@ public class EventCommands implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /tphere <player>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -282,11 +299,13 @@ public class EventCommands implements CommandExecutor {
 
         if (targetPlayer == null) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (targetPlayer == commandSender) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You can't teleport yourself to yourself!");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -298,11 +317,13 @@ public class EventCommands implements CommandExecutor {
                 plugin.getConfigManager().getColor("colorSuccess"));
 
         commandSender.sendMessage(message);
+        plugin.getSoundManager().playSound(commandSender);
         String targetmessage = String.format("%s %sYou have been teleported to %s%s%s!",
                 QWERTZcore.CORE_ICON,
                 plugin.getConfigManager().getColor("colorSuccess"),
                 plugin.getConfigManager().getColor("colorPrimary"), commandSender.getName(), plugin.getConfigManager().getColor("colorSuccess"));
         targetPlayer.sendMessage(targetmessage);
+        plugin.getSoundManager().playSound(targetPlayer);
 
         return true;
     }
@@ -314,10 +335,12 @@ public class EventCommands implements CommandExecutor {
                 seconds = Integer.parseInt(args[0]);
                 if (seconds <= 0 || seconds > 60) {
                     sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Please specify a number of seconds between 1 and 60.");
+                    plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } catch (NumberFormatException e) {
                 sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number of seconds. Using default of 30 seconds.");
+                plugin.getSoundManager().playSoundToSender(sender);
                 seconds = 30;
             }
         }
@@ -340,6 +363,7 @@ public class EventCommands implements CommandExecutor {
                 plugin.getConfigManager().getColor("colorPrimary"));
 
         Bukkit.broadcastMessage(message);
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
     public boolean handleHeal(CommandSender sender, Boolean alive, String[] args) {
@@ -366,6 +390,7 @@ public class EventCommands implements CommandExecutor {
                 plugin.getConfigManager().getColor("colorSuccess"));
 
         Bukkit.broadcastMessage(message);
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }

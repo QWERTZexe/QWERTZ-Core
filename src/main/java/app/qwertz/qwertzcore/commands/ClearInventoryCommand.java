@@ -40,6 +40,7 @@ public class ClearInventoryCommand implements CommandExecutor {
             if ((clearAlive && !isDead) || (!clearAlive && isDead)) {
                 player.getInventory().clear();
                 player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Your inventory has been cleared by an admin.");
+                plugin.getSoundManager().playSound(player);
                 clearedCount++;
             }
         }
@@ -56,6 +57,7 @@ public class ClearInventoryCommand implements CommandExecutor {
                 plugin.getConfigManager().getColor("colorSuccess"));
 
         Bukkit.broadcastMessage(message);
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }

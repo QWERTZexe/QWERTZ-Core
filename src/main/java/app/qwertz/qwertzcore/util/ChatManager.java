@@ -34,6 +34,7 @@ public class ChatManager implements Listener {
         if (!plugin.getConfigManager().getChat() && !event.getPlayer().hasPermission("qwertzcore.chat.bypass")) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Chat is disabled!");
+            plugin.getSoundManager().playSound(event.getPlayer());
             return;
         }
         if (plugin.getConfigManager().getChatFormatting()) {

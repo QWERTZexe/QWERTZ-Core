@@ -39,6 +39,7 @@ public class PollVoteCommand implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /pollvote <option>");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -47,6 +48,7 @@ public class PollVoteCommand implements CommandExecutor {
             pollCommand.vote((Player) sender, option);
         } catch (NumberFormatException e) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid option. Please provide a number.");
+            plugin.getSoundManager().playSoundToSender(sender);
         }
 
         return true;

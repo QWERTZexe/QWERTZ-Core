@@ -37,6 +37,7 @@ public class WorldGuardCommands implements CommandExecutor {
 
         if (regions == null) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "WorldGuard regions are not available in this world.");
+            plugin.getSoundManager().playSound(player);
             return true;
         }
 
@@ -48,6 +49,7 @@ public class WorldGuardCommands implements CommandExecutor {
             region = regions.getRegion(regionName);
             if (region == null) {
                 player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Region '" + regionName + "' not found.");
+                plugin.getSoundManager().playSound(player);
                 return true;
             }
             isGlobal = false;
@@ -104,7 +106,7 @@ public class WorldGuardCommands implements CommandExecutor {
         String scope = isGlobal ? plugin.getConfigManager().getColor("colorSecondary") + " GLOBALLY" : " in region " + plugin.getConfigManager().getColor("colorSecondary") + "'" + region.getId() + "'";
         String newState = currentState ? plugin.getConfigManager().getColor("colorDead") + "DISABLED" : plugin.getConfigManager().getColor("colorAlive") + "ENABLED";
         broadcastMessage(QWERTZcore.CORE_ICON + " " + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + plugin.getConfigManager().getColor("colorSuccess") + " just " + newState + " " + plugin.getConfigManager().getColor("colorPrimary") + flagName + plugin.getConfigManager().getColor("colorSuccess") + scope + plugin.getConfigManager().getColor("colorSuccess") + "!");
-
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 }

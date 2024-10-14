@@ -50,11 +50,13 @@ public class PollCommand implements CommandExecutor {
 
         if (args.length < 2 || args.length == 3) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /poll <duration> <question> [<answer1> <answer2>] [answer3] ...");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (pollActive) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "A poll is already active.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -63,6 +65,7 @@ public class PollCommand implements CommandExecutor {
             duration = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
             sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid duration. Please provide a number in seconds.");
+            plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
@@ -94,10 +97,12 @@ public class PollCommand implements CommandExecutor {
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage("§7§oClick to vote!");
         Bukkit.broadcastMessage("");
+        plugin.getSoundManager().broadcastConfigSound();
     }
 
     private void endPoll() {
         pollActive = false;
+        plugin.getSoundManager().broadcastConfigSound();
         Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " §lPoll ended! " + plugin.getConfigManager().getColor("colorPrimary") + "Results:");
         Bukkit.broadcastMessage("");
 
@@ -119,15 +124,18 @@ public class PollCommand implements CommandExecutor {
     public void vote(Player player, int option) {
         if (!pollActive) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "There is no active poll.");
+            plugin.getSoundManager().playSound(player);
             return;
         }
 
         if (option < 0 || option >= options.size()) {
             player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid option.");
+            plugin.getSoundManager().playSound(player);
             return;
         }
 
         votes.put(player.getUniqueId(), option);
         player.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "You voted for: " + options.get(option));
+        plugin.getSoundManager().playSound(player);
     }
 }

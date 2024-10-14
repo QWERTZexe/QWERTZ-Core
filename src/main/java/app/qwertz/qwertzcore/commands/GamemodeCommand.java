@@ -55,11 +55,13 @@ public class GamemodeCommand implements CommandExecutor {
             case "gm":
                 if (args.length == 0) {
                     sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /gm <creative|survival|adventure|spectator>");
+                    plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }
                 targetGameMode = parseGameMode(args[0]);
                 if (targetGameMode == null) {
                     sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid gamemode. Use creative, survival, adventure, or spectator.");
+                    plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }
                 break;
@@ -70,6 +72,7 @@ public class GamemodeCommand implements CommandExecutor {
         player.setGameMode(targetGameMode);
         player.sendMessage(String.format("%s %sYour gamemode has been set to %s%s%s.",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), targetGameMode.name(), plugin.getConfigManager().getColor("colorPrimary")));
+        plugin.getSoundManager().playSound(player);
         return true;
     }
 
