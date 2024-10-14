@@ -14,6 +14,7 @@
 
 package app.qwertz.qwertzcore.commands;
 
+import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +24,12 @@ import org.bukkit.entity.Player;
 import static app.qwertz.qwertzcore.QWERTZcore.*;
 
 public class CoreCommand implements CommandExecutor {
+
+    private final QWERTZcore plugin;
+
+    public CoreCommand(QWERTZcore plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -35,6 +42,7 @@ public class CoreCommand implements CommandExecutor {
                 ChatColor.AQUA, ChatColor.LIGHT_PURPLE, AUTHORS,
                 ChatColor.BLUE, ChatColor.UNDERLINE, DISCORD_LINK
         ));
+        plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 }

@@ -157,7 +157,7 @@ public final class QWERTZcore extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("core").setExecutor(new CoreCommand());
+        getCommand("core").setExecutor(new CoreCommand(this));
         getCommand("timer").setExecutor(new TimerCommand(this));
         getCommand("timer").setTabCompleter(new TimerTabCompleter());
         getCommand("gmc").setExecutor(new GamemodeCommand(this));

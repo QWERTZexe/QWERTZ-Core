@@ -122,6 +122,7 @@ public class AdvertisementCommand implements CommandExecutor {
         Bukkit.spigot().broadcast(advertisement);
 
         Bukkit.broadcastMessage(separator);
+        plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
