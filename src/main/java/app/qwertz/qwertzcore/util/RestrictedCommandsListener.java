@@ -23,6 +23,9 @@ public class RestrictedCommandsListener implements Listener {
         restrictedCommands.put("/minecraft:tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/teammsg", "qwertzcore.chat.bypasstm");
+        restrictedCommands.put("/minecraft:msg", "null");
+        restrictedCommands.put("/minecraft:w", "null");
+        restrictedCommands.put("/minecraft:tell", "null");
         this.configManager = configManager;
     }
 
@@ -33,9 +36,15 @@ public class RestrictedCommandsListener implements Listener {
 
         if (restrictedCommands.containsKey(command)) {
             String bypassPermission = restrictedCommands.get(command);
-            if (!player.isOp() && !player.hasPermission(bypassPermission)) {
+            if (!bypassPermission.equals("null")) {
+                if (!player.isOp() && !player.hasPermission(bypassPermission)) {
+                    event.setCancelled(true);
+                    player.sendMessage(configManager.getColor("colorError") + "You don't have permission to use this command.");
+                }
+            }
+            else {
                 event.setCancelled(true);
-                player.sendMessage(configManager.getColor("colorError") + "You don't have permission to use this command.");
+                player.sendMessage(configManager.getColor("colorError") + "This command is disabled!");
             }
         }
     }
