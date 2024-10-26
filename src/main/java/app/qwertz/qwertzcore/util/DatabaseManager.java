@@ -115,6 +115,12 @@ public class DatabaseManager {
         saveDatabase();
     }
 
+    public void setReviveTokens(UUID playerUUID, long amount) {
+        PlayerData playerData = getPlayerData(playerUUID);
+        playerData.setReviveTokens((int) amount);
+        saveDatabase();
+    }
+
     public void removeReviveToken(UUID playerUUID) {
         PlayerData playerData = getPlayerData(playerUUID);
         playerData.removeReviveToken();
@@ -180,6 +186,10 @@ public class DatabaseManager {
 
         public void addReviveToken() {
             this.reviveTokens++;
+        }
+
+        public void setReviveTokens(int reviveTokens) {
+            this.reviveTokens = reviveTokens;
         }
 
         public void removeReviveToken() {
