@@ -228,7 +228,7 @@ public class EventCommands implements CommandExecutor {
                 itemName);
 
         // Broadcast the message to all players
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -277,7 +277,7 @@ public class EventCommands implements CommandExecutor {
                     executor.getName(),
                     plugin.getConfigManager().getColor("colorSuccess"));
         }
-        Bukkit.broadcastMessage(broadcastMessage);
+        plugin.getMessageManager().broadcastMessage(broadcastMessage);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;
@@ -362,7 +362,7 @@ public class EventCommands implements CommandExecutor {
                 seconds,
                 plugin.getConfigManager().getColor("colorPrimary"));
 
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -389,7 +389,7 @@ public class EventCommands implements CommandExecutor {
                 playerType,
                 plugin.getConfigManager().getColor("colorSuccess"));
 
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;

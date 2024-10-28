@@ -22,8 +22,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static org.bukkit.Bukkit.broadcastMessage;
-
 public class VanishCommands implements CommandExecutor {
     private final QWERTZcore plugin;
 
@@ -51,7 +49,7 @@ public class VanishCommands implements CommandExecutor {
                 if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount - 1;
-                broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
+                plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
                         plugin.getConfigManager().getColor("colorDead") + " just left us! " + ChatColor.GRAY +
                         "[" + plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
                         " -> " + plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
@@ -79,7 +77,7 @@ public class VanishCommands implements CommandExecutor {
             if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount + 1;
-                broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
+                plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
                         plugin.getConfigManager().getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
                         plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
                         plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");

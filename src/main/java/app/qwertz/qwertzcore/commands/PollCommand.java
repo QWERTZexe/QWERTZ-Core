@@ -117,8 +117,8 @@ public class PollCommand implements CommandExecutor {
             int optionIndex = entry.getKey();
             long count = entry.getValue();
             Bukkit.broadcastMessage(plugin.getConfigManager().getColor("colorSecondary") + (optionIndex + 1) + ". " + plugin.getConfigManager().getColor("colorTertiary") + options.get(optionIndex) + ": " + plugin.getConfigManager().getColor("colorPrimary") + count + " votes");
-            Bukkit.broadcastMessage("");
         }
+        Bukkit.broadcastMessage("");
     }
 
     public void vote(Player player, int option) {

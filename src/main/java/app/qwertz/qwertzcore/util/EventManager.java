@@ -179,7 +179,7 @@ public class EventManager {
     }
 
     private void broadcastMessage(String message) {
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + " " + message);
+        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + " " + message);
         plugin.getSoundManager().broadcastConfigSound();
     }
 }

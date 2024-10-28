@@ -92,7 +92,7 @@ public class EventCountdownCommand implements CommandExecutor {
             @Override
             public void run() {
                 if (remainingSeconds <= 0) {
-                    Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
+                    plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
                     plugin.getSoundManager().broadcastConfigSound();
                     updateScoreboard(0);
                     this.cancel();

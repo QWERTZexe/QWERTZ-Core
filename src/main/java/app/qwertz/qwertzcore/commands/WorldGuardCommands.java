@@ -15,8 +15,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static org.bukkit.Bukkit.broadcastMessage;
-
 public class WorldGuardCommands implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -105,7 +103,7 @@ public class WorldGuardCommands implements CommandExecutor {
 
         String scope = isGlobal ? plugin.getConfigManager().getColor("colorSecondary") + " GLOBALLY" : " in region " + plugin.getConfigManager().getColor("colorSecondary") + "'" + region.getId() + "'";
         String newState = currentState ? plugin.getConfigManager().getColor("colorDead") + "DISABLED" : plugin.getConfigManager().getColor("colorAlive") + "ENABLED";
-        broadcastMessage(QWERTZcore.CORE_ICON + " " + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + plugin.getConfigManager().getColor("colorSuccess") + " just " + newState + " " + plugin.getConfigManager().getColor("colorPrimary") + flagName + plugin.getConfigManager().getColor("colorSuccess") + scope + plugin.getConfigManager().getColor("colorSuccess") + "!");
+        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + " " + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + plugin.getConfigManager().getColor("colorSuccess") + " just " + newState + " " + plugin.getConfigManager().getColor("colorPrimary") + flagName + plugin.getConfigManager().getColor("colorSuccess") + scope + plugin.getConfigManager().getColor("colorSuccess") + "!");
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }

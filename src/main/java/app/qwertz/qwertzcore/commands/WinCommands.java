@@ -61,7 +61,7 @@ public class WinCommands implements CommandExecutor {
         plugin.getDatabaseManager().addWin(target.getUniqueId());
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " Added a win for " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorAlive") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
+        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " Added a win for " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorAlive") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
         target.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "You have been awarded a win! You now have " +  plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
         plugin.getSoundManager().broadcastConfigSound();
         return true;
@@ -91,7 +91,7 @@ public class WinCommands implements CommandExecutor {
         plugin.getDatabaseManager().removeWin(target.getUniqueId());
         int newWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed a win from " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorDead") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
+        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed a win from " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorDead") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
         target.sendMessage(plugin.getConfigManager().getColor("colorDead") + "A win has been removed from your record. You now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
         plugin.getSoundManager().broadcastConfigSound();
         return true;

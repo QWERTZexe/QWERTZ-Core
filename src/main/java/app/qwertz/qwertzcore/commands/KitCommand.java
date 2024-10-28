@@ -163,7 +163,7 @@ public class KitCommand implements CommandExecutor {
             plugin.getSoundManager().playSound(targetPlayer);
         }
 
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been given to " + plugin.getConfigManager().getColor("colorPrimary") + targetPlayers.size() + plugin.getConfigManager().getColor("colorSuccess") + " players!");
+        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been given to " + plugin.getConfigManager().getColor("colorPrimary") + targetPlayers.size() + plugin.getConfigManager().getColor("colorSuccess") + " players!");
         plugin.getSoundManager().broadcastConfigSound();
     }
 

@@ -161,7 +161,7 @@ public class ChatReviveCommand implements CommandExecutor {
     }
 
     private void broadcastMessage(String message) {
-        Bukkit.broadcastMessage(message);
+        this.plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + " " + message);
     }
 
     private void cancelGame(CommandSender sender) {

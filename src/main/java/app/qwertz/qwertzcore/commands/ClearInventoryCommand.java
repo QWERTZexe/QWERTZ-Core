@@ -56,7 +56,7 @@ public class ClearInventoryCommand implements CommandExecutor {
                 playerType,
                 plugin.getConfigManager().getColor("colorSuccess"));
 
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;

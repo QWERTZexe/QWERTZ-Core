@@ -23,8 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static org.bukkit.Bukkit.broadcastMessage;
-
 public class PlayerEventListener implements Listener {
     private final EventManager eventManager;
     private final ConfigManager configManager;
@@ -33,9 +31,11 @@ public class PlayerEventListener implements Listener {
     private final HideCommand hideCommand;
     private final UpdateChecker updateChecker;
     private final VanishManager vanishManager;
+    private final MessageManager messageManager;
 
 
-    public PlayerEventListener(EventManager eventManager, VanishManager vanishManager, ConfigManager configManager, ScoreboardManager scoreboardManager, TablistManager tablistManager, HideCommand hideCommand, UpdateChecker updateChecker) {
+
+    public PlayerEventListener(EventManager eventManager, VanishManager vanishManager, ConfigManager configManager, ScoreboardManager scoreboardManager, TablistManager tablistManager, HideCommand hideCommand, UpdateChecker updateChecker, MessageManager messageManager) {
         this.eventManager = eventManager;
         this.configManager = configManager;
         this.scoreboardManager = scoreboardManager;
@@ -43,6 +43,7 @@ public class PlayerEventListener implements Listener {
         this.hideCommand = hideCommand;
         this.updateChecker = updateChecker;
         this.vanishManager = vanishManager;
+        this.messageManager = messageManager;
     }
 
     @EventHandler
@@ -62,7 +63,7 @@ public class PlayerEventListener implements Listener {
         if (configManager.get("suppressVanilla").equals(true)) {
             int fakeCount = vanishManager.getNonVanishedPlayerCount()-1;
             int newCount = fakeCount + 1;
-            broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
+            messageManager.broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
                     configManager.getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
                     configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
                     configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
@@ -80,7 +81,7 @@ public class PlayerEventListener implements Listener {
         if (configManager.get("suppressVanilla").equals(true)) {
             int fakeCount = vanishManager.getNonVanishedPlayerCount();
             int newCount = fakeCount - 1;
-            broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
+            messageManager.broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
                      configManager.getColor("colorDead") + " just left us! " + ChatColor.GRAY +
                     "[" + configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
                     " -> " + configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");

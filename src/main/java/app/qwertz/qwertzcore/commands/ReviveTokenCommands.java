@@ -117,7 +117,7 @@ public class ReviveTokenCommands implements CommandExecutor {
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"),
                 plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"),
                 plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), player.getName(), plugin.getConfigManager().getColor("colorAlive"));
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;
@@ -151,7 +151,7 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         String message = String.format("%s %s%s's %srevive request has been accepted!",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"));
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -177,7 +177,7 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         String message = String.format("%s %s%s's %srevive request has been denied!",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"));
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -202,7 +202,7 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         String message = String.format("%s %s%s %shas been given a revive token! They now have %s%d %stokens.",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorAlive"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorAlive"));
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -227,7 +227,7 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         String message = String.format("%s %sA revive token has been removed from %s%s%s! They now have %s%d %stokens.",
                 QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), target.getName(), plugin.getConfigManager().getColor("colorDead"), plugin.getConfigManager().getColor("colorPrimary"), tokens, plugin.getConfigManager().getColor("colorDead"));
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }

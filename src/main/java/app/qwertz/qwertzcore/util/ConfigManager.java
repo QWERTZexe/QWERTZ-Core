@@ -190,6 +190,9 @@ public class ConfigManager {
         if (!config.containsKey("forceWhiteMessages")) {
             config.put("forceWhiteMessages", false);
         }
+        if (!config.containsKey("biggerMessages")) {
+            config.put("biggerMessages", true);
+        }
     }
 
 

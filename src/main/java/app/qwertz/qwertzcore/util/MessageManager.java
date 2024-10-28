@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -46,5 +47,16 @@ public class MessageManager {
     public Player getReplyTarget(Player player) {
         UUID lastSenderUUID = lastMessageSender.get(player.getUniqueId());
         return lastSenderUUID != null ? plugin.getServer().getPlayer(lastSenderUUID) : null;
+    }
+
+    public void broadcastMessage(String message) {
+        if ((Boolean) plugin.getConfigManager().get("biggerMessages")) {
+            Bukkit.broadcastMessage("");
+            Bukkit.broadcastMessage(message);
+            Bukkit.broadcastMessage("");
+        }
+        else {
+            Bukkit.broadcastMessage(message);
+        }
     }
 }

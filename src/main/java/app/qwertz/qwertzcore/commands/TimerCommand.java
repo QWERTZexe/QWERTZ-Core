@@ -89,7 +89,7 @@ public class TimerCommand implements CommandExecutor {
                 String message = String.format("%s %s%d %sseconds",
                         QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorSuccess"), timeLeft, plugin.getConfigManager().getColor("colorPrimary"));
 
-                broadcastMessage(message);
+                Bukkit.broadcastMessage(message);
                 broadcastActionBar(message);
 
                 timeLeft--;
@@ -106,7 +106,7 @@ public class TimerCommand implements CommandExecutor {
     }
 
     private void broadcastMessage(String message) {
-        Bukkit.broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
     }
 
