@@ -31,15 +31,25 @@ public class ChatMuteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean isMuting = label.equalsIgnoreCase("mutechat");
-        plugin.getConfigManager().set("chat", !isMuting);
+        if (!((Boolean) plugin.getConfigManager().get("chat") == isMuting)) {
+            plugin.getConfigManager().set("chat", !isMuting);
 
-        String message = String.format("%s %sChat has been %s%s",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorPrimary"),
-                isMuting ? plugin.getConfigManager().getColor("colorDead") + "muted" : plugin.getConfigManager().getColor("colorAlive") + "unmuted",
-                plugin.getConfigManager().getColor("colorPrimary") + "!");
-        plugin.getMessageManager().broadcastMessage(message);
-        plugin.getSoundManager().broadcastConfigSound();
+            String message = String.format("%s %sChat has been %s%s",
+                    QWERTZcore.CORE_ICON,
+                    plugin.getConfigManager().getColor("colorPrimary"),
+                    isMuting ? plugin.getConfigManager().getColor("colorDead") + "muted" : plugin.getConfigManager().getColor("colorAlive") + "unmuted",
+                    plugin.getConfigManager().getColor("colorPrimary") + "!");
+            plugin.getMessageManager().broadcastMessage(message);
+            plugin.getSoundManager().broadcastConfigSound();
+            return true;
+        }
+        else {
+            if (isMuting) {
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Chat is already muted!");
+            } else {
+                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Chat is already unmuted!");
+            }
+        }
         return true;
     }
 }
