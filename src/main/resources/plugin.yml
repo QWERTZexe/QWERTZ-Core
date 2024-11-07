@@ -251,6 +251,11 @@ commands:
     usage: /break [region]
     permission: qwertzcore.host.break
     aliases: [togglebreak]
+  flow:
+    description: Toggle flowing in the current region or globally
+    usage: /flow [region]
+    permission: qwertzcore.host.flow
+    aliases: [toggleflow]
   place:
     description: Toggle block placing in the current region or globally
     usage: /place [region]
@@ -463,6 +468,9 @@ permissions:
     default: op
   qwertzcore.host.falldamage:
     description: Allows the player to toggle fall damage
+    default: op
+  qwertzcore.host.flow:
+    description: Allows the player to toggle Flowing
     default: op
   qwertzcore.host.poll:
     description: Allows the player to create and manage polls
