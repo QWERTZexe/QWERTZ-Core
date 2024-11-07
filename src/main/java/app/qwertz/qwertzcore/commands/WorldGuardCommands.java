@@ -130,10 +130,10 @@ public class WorldGuardCommands implements CommandExecutor {
             region.setFlag(flag, currentState ? StateFlag.State.DENY : StateFlag.State.ALLOW);
         }else{
             StateFlag[] FlowFlags = {Flags.WATER_FLOW, Flags.LAVA_FLOW};
-            enableHighFrequencyFlags();
             for (StateFlag loop : FlowFlags) {
                 region.setFlag(loop, currentState ? StateFlag.State.DENY : StateFlag.State.ALLOW);
             }
+            enableHighFrequencyFlags();
         }
         String scope = isGlobal ? plugin.getConfigManager().getColor("colorSecondary") + " GLOBALLY" : " in region " + plugin.getConfigManager().getColor("colorSecondary") + "'" + region.getId() + "'";
         String newState = currentState ? plugin.getConfigManager().getColor("colorDead") + "DISABLED" : plugin.getConfigManager().getColor("colorAlive") + "ENABLED";
