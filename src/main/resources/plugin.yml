@@ -251,6 +251,11 @@ commands:
     usage: /break [region]
     permission: qwertzcore.host.break
     aliases: [togglebreak]
+  flow:
+    description: Toggle flowing in the current region or globally
+    usage: /flow [region]
+    permission: qwertzcore.host.flow
+    aliases: [toggleflow]
   place:
     description: Toggle block placing in the current region or globally
     usage: /place [region]

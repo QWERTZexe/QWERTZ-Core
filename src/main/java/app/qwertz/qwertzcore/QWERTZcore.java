@@ -249,6 +249,7 @@ public final class QWERTZcore extends JavaPlugin {
         if (isUsingWorldGuard) {
             WorldGuardCommands worldGuardCommands = new WorldGuardCommands(this);
             getCommand("pvp").setExecutor(worldGuardCommands);
+            getCommand("flow").setExecutor(worldGuardCommands);
             getCommand("break").setExecutor(worldGuardCommands);
             getCommand("place").setExecutor(worldGuardCommands);
             getCommand("hunger").setExecutor(worldGuardCommands);
