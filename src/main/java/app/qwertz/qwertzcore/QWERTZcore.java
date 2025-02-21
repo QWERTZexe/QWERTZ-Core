@@ -62,7 +62,12 @@ public final class QWERTZcore extends JavaPlugin {
         if (rankManager.isUsingLuckPerms()) {
             getLogger().info("[EXTENSION] LuckPerms found and hooked successfully.");
         } else {
-            getLogger().warning("[EXTENSION] LuckPerms not found. Using default rank system.");
+            if (rankManager.isUsingPowerRanks()) {
+                getLogger().info("[EXTENSION] PowerRanks found and hooked successfully.");
+            }
+            else {
+                getLogger().warning("[EXTENSION] LuckPerms not found. Using default rank system.");
+            }
         }
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             getLogger().info("[EXTENSION] PlaceholderAPI found and added placeholders successfully.");

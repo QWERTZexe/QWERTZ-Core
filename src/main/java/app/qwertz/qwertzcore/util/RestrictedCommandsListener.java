@@ -37,6 +37,7 @@ public class RestrictedCommandsListener implements Listener {
         restrictedCommands.put("/minecraft:tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/tm", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/teammsg", "qwertzcore.chat.bypasstm");
+        restrictedCommands.put("/minecraft:teammsg", "qwertzcore.chat.bypasstm");
         restrictedCommands.put("/minecraft:msg", "null");
         restrictedCommands.put("/minecraft:w", "null");
         restrictedCommands.put("/minecraft:tell", "null");

@@ -17,27 +17,42 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
+import nl.svenar.powerranks.common.structure.PRPlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import nl.svenar.powerranks.api.PowerRanksAPI;
+
+import java.util.List;
+import java.util.Set;
 
 public class RankManager {
     private final QWERTZcore plugin;
     private LuckPerms luckPerms;
+    private PowerRanksAPI powerRanksAPI;
     private boolean usingLuckPerms;
+    private boolean usingPowerRanks;
 
     public RankManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.usingLuckPerms = setupLuckPerms();
+        this.usingPowerRanks = setupPowerRanks();
     }
 
     private boolean setupLuckPerms() {
-        if (plugin.getServer().getPluginManager().getPlugin("LuckPerms") == null) {
-            return false;
+        if (plugin.getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            RegisteredServiceProvider<LuckPerms> provider = plugin.getServer().getServicesManager().getRegistration(LuckPerms.class);
+            if (provider != null) {
+                luckPerms = provider.getProvider();
+                return true;
+            }
         }
-        RegisteredServiceProvider<LuckPerms> provider = plugin.getServer().getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            luckPerms = provider.getProvider();
+        return false;
+    }
+
+    private boolean setupPowerRanks() {
+        if (plugin.getServer().getPluginManager().getPlugin("PowerRanks") != null) {
+            powerRanksAPI = new PowerRanksAPI();
             return true;
         }
         return false;
@@ -49,8 +64,15 @@ public class RankManager {
             if (user != null) {
                 return user.getPrimaryGroup();
             }
+        } else if (usingPowerRanks) {
+            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
+            if (!playerRanks.isEmpty()) {
+                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
+                return primaryRank.getName();
+            }
         }
         return "default";
+
     }
 
     public String getTag(Player player) {
@@ -60,24 +82,40 @@ public class RankManager {
                 String tag = user.getCachedData().getMetaData().getMetaValue("tag");
                 return tag != null ? tag : "";
             }
+        } else if (usingPowerRanks) {
+            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
+            if (!playerRanks.isEmpty()) {
+                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
+                return powerRanksAPI.getRanksAPI().getPrefix(primaryRank.getName());
+            }
         }
         return "";
     }
+
     public String getPrefix(Player player) {
         if (usingLuckPerms) {
             User user = luckPerms.getUserManager().getUser(player.getUniqueId());
             if (user != null) {
                 String prefix = user.getCachedData().getMetaData().getPrefix();
                 if (prefix != null) {
-                    prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-                    return prefix;
+                    return ChatColor.translateAlternateColorCodes('&', prefix);
                 }
             }
+        } else if (usingPowerRanks) {
+            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
+            if (!playerRanks.isEmpty()) {
+                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
+                String prefix = powerRanksAPI.getRanksAPI().getPrefix(primaryRank.getName());
+                if (prefix != null && !prefix.isEmpty()) {
+                    return ChatColor.translateAlternateColorCodes('&', prefix);
+                }
+            }
+
         }
+
         if (player.isOp()) {
             return "§6[§6§lHOST§6] ";
-        }
-        else {
+        } else {
             return "§a[PLAYER] ";
         }
     }
@@ -88,8 +126,16 @@ public class RankManager {
             if (user != null) {
                 String suffix = user.getCachedData().getMetaData().getSuffix();
                 if (suffix != null) {
-                    suffix = ChatColor.translateAlternateColorCodes('&', suffix);
-                    return suffix;
+                    return ChatColor.translateAlternateColorCodes('&', suffix);
+                }
+            }
+        } else if (usingPowerRanks) {
+            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
+            if (!playerRanks.isEmpty()) {
+                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
+                String suffix = powerRanksAPI.getRanksAPI().getSuffix(primaryRank.getName());
+                if (suffix != null && !suffix.isEmpty()) {
+                    return ChatColor.translateAlternateColorCodes('&', suffix);
                 }
             }
         }
@@ -98,5 +144,9 @@ public class RankManager {
 
     public boolean isUsingLuckPerms() {
         return usingLuckPerms;
+    }
+
+    public boolean isUsingPowerRanks() {
+        return usingPowerRanks;
     }
 }
