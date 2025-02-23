@@ -31,7 +31,7 @@ public class ChatMuteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean isMuting = label.equalsIgnoreCase("mutechat");
-        if (!((Boolean) plugin.getConfigManager().get("chat") == isMuting)) {
+        if (((Boolean) plugin.getConfigManager().get("chat") == isMuting)) {
             plugin.getConfigManager().set("chat", !isMuting);
 
             String message = String.format("%s %sChat has been %s%s",
