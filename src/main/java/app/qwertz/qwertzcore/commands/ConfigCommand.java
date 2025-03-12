@@ -35,7 +35,7 @@ public class ConfigCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /config <key> <value>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/config <key> <value>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -44,14 +44,16 @@ public class ConfigCommand implements CommandExecutor {
         String value = String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length));
 
         if (!plugin.getConfigManager().hasKey(key) && !key.equals("spawn")) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Config key not found: " + key);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%key%", key);
+            plugin.getMessageManager().sendMessage((Player) sender, "config.key-not-found", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (key.equals("spawn")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+                plugin.getMessageManager().sendMessage((Player) sender, "general.only-player-execute");
                 return true;
             }
             if (value.equalsIgnoreCase("currentpos")) {
@@ -65,43 +67,51 @@ public class ConfigCommand implements CommandExecutor {
                 spawnMap.put("yaw", (double) loc.getYaw());
                 spawnMap.put("pitch", (double) loc.getPitch());
                 plugin.getConfigManager().set("spawn", spawnMap);
-                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set spawn to your current location.");
+                plugin.getMessageManager().sendMessage((Player) sender, "config.set-spawn");
                 plugin.getSoundManager().playSoundToSender(sender);
             } else {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid value for spawn. Use 'currentpos'.");
+                plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-spawn");
             }
         } else {
             Object currentValue = plugin.getConfigManager().get(key);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%key%", key);
+            localMap.put("%value%", String.valueOf(currentValue));
+
 
             if (currentValue instanceof Boolean) {
                 boolean boolValue = Boolean.parseBoolean(value);
                 plugin.getConfigManager().set(key, boolValue);
-                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + boolValue);
+                plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof String) {
                 plugin.getConfigManager().set(key, value);
-                sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + value);
+                plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof Number) {
                 try {
                     if (value.contains(".")) {
                         double doubleValue = Double.parseDouble(value);
                         plugin.getConfigManager().set(key, doubleValue);
-                        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + doubleValue);
+                        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     } else {
                         int intValue = Integer.parseInt(value);
                         plugin.getConfigManager().set(key, intValue);
-                        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Set " + key + " to " + intValue);
+                        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     }
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format: " + value);
+                    HashMap<String, String> localMap2 = new HashMap<>();
+                    localMap2.put("%value%", value);
+                    plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-number-format", localMap2);
                     plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } else {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Unsupported config value type for: " + key);
+                HashMap<String, String> localMap3 = new HashMap<>();
+                localMap3.put("%key%", key);
+                plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-type", localMap3);
                 plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }

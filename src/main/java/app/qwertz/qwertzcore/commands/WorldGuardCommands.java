@@ -20,6 +20,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class WorldGuardCommands implements CommandExecutor {
 
@@ -45,7 +47,7 @@ public class WorldGuardCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -54,7 +56,7 @@ public class WorldGuardCommands implements CommandExecutor {
         RegionManager regions = container.get(BukkitAdapter.adapt(player.getWorld()));
 
         if (regions == null) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "WorldGuard regions are not available in this world.");
+            plugin.getMessageManager().sendMessage(player, "worldguard.no-regions");
             plugin.getSoundManager().playSound(player);
             return true;
         }
@@ -66,7 +68,9 @@ public class WorldGuardCommands implements CommandExecutor {
             String regionName = args[0];
             region = regions.getRegion(regionName);
             if (region == null) {
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Region '" + regionName + "' not found.");
+                HashMap<String, String> localMap = new HashMap<>();
+                localMap.put("%name%", regionName);
+                plugin.getMessageManager().sendMessage(player, "worldguard.not-found", localMap);
                 plugin.getSoundManager().playSound(player);
                 return true;
             }
@@ -92,50 +96,66 @@ public class WorldGuardCommands implements CommandExecutor {
             case "flow":
             case "toggleflow":
                 flag = Flags.WATER_FLOW;
-                flagName = "FLOWING";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.flow"), new HashMap<>());
                 break;
             case "pvp":
             case "togglepvp":
                 flag = Flags.PVP;
-                flagName = "PVP";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.pvp"), new HashMap<>());
                 break;
             case "break":
             case "togglebreak":
                 flag = Flags.BLOCK_BREAK;
-                flagName = "BLOCK BREAKING";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.break"), new HashMap<>());
                 break;
             case "place":
             case "toggleplace":
                 flag = Flags.BLOCK_PLACE;
-                flagName = "BLOCK PLACING";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.place"), new HashMap<>());
                 break;
             case "falldamage":
             case "togglefalldamage":
                 flag = Flags.FALL_DAMAGE;
-                flagName = "FALL DAMAGE";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.falldamage"), new HashMap<>());
                 break;
             case "hunger":
             case "togglehunger":
                 flag = Flags.HUNGER_DRAIN;
-                flagName = "HUNGER";
+                flagName = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("worldguard.flags.hunger"), new HashMap<>());
                 break;
             default:
                 return false;
         }
-
+        if (region == null) {
+            plugin.getMessageManager().sendMessage(player, "worldguard.invalid-region");
+            return true;
+        }
         boolean currentState = region.getFlag(flag) != StateFlag.State.DENY;
-        if (flagName != "FLOWING") {
+        if (!flag.equals(Flags.WATER_FLOW)) {
             region.setFlag(flag, currentState ? StateFlag.State.DENY : StateFlag.State.ALLOW);
         }else{
             StateFlag[] FlowFlags = {Flags.WATER_FLOW, Flags.LAVA_FLOW};
-            enableHighFrequencyFlags();
             for (StateFlag loop : FlowFlags) {
                 region.setFlag(loop, currentState ? StateFlag.State.DENY : StateFlag.State.ALLOW);
             }
+            enableHighFrequencyFlags();
         }
-        String scope = isGlobal ? plugin.getConfigManager().getColor("colorSecondary") + " GLOBALLY" : " in region " + plugin.getConfigManager().getColor("colorSecondary") + "'" + region.getId() + "'";
-        String newState = currentState ? plugin.getConfigManager().getColor("colorDead") + "DISABLED" : plugin.getConfigManager().getColor("colorAlive") + "ENABLED";
-        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + " " + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + plugin.getConfigManager().getColor("colorSuccess") + " just " + newState + " " + plugin.getConfigManager().getColor("colorPrimary") + flagName + plugin.getConfigManager().getColor("colorSuccess") + scope + plugin.getConfigManager().getColor("colorSuccess") + "!");
+        String newState = currentState ? "DISABLED" : "ENABLED";
+        String stateColor = currentState ? "%colorDead%" : "%colorAlive%";
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", sender.getName());
+        localMap.put("%state%", newState);
+        localMap.put("%stateLower%", newState.toLowerCase(Locale.ROOT));
+        localMap.put("%stateColor%", stateColor);
+        localMap.put("%flag%", flagName);
+
+
+        if (isGlobal) {
+            plugin.getMessageManager().broadcastMessage("worldguard.globally", localMap);
+        } else {
+            localMap.put("%region%", region.getId());
+            plugin.getMessageManager().broadcastMessage("worldguard.regionally", localMap);
+        }
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }

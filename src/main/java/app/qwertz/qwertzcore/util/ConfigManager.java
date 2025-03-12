@@ -31,9 +31,13 @@ public class ConfigManager {
     private final Gson gson;
     private Map<String, Object> config;
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static final String DEFAULT_FONT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    @Deprecated(since = "2.0", forRemoval = true)
     public static final String QWERTZ_FONT = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ";
+    @Deprecated(since = "2.0", forRemoval = true)
     public static final String MODERN_FONT = "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘᴏʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘᴏʀsᴛᴜᴠᴡxʏᴢ";
+    @Deprecated(since = "2.0", forRemoval = true)
     public static final String BLOCKY_FONT = "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉";
 
     public ConfigManager(QWERTZcore plugin) {
@@ -163,35 +167,14 @@ public class ConfigManager {
         if (!config.containsKey("joinLeaveMsgsOnVanish")) {
             config.put("joinLeaveMsgsOnVanish", true);
         }
-        if (!config.containsKey("colorPrimary")) {
-            config.put("colorPrimary", "§e");
-        }
-        if (!config.containsKey("colorSecondary")) {
-            config.put("colorSecondary", "§6");
-        }
-        if (!config.containsKey("colorTertiary")) {
-            config.put("colorTertiary", "§b");
-        }
-        if (!config.containsKey("colorAlive")) {
-            config.put("colorAlive", "§a");
-        }
-        if (!config.containsKey("colorDead")) {
-            config.put("colorDead", "§c");
-        }
-        if (!config.containsKey("colorError")) {
-            config.put("colorError", "§c");
-        }
-        if (!config.containsKey("colorSuccess")) {
-            config.put("colorSuccess", "§a");
-        }
         if (!config.containsKey("suppressVanilla")) {
             config.put("suppressVanilla", true);
         }
-        if (!config.containsKey("forceWhiteMessages")) {
-            config.put("forceWhiteMessages", false);
-        }
         if (!config.containsKey("biggerMessages")) {
             config.put("biggerMessages", true);
+        }
+        if (!config.containsKey("chatTimer")) {
+            config.put("chatTimer", true);
         }
     }
 
@@ -257,6 +240,7 @@ public class ConfigManager {
         return config.get(key);
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public String getColor(String key) {
         String unformatted = (String) config.get(key);
         if (unformatted == null) {
@@ -426,6 +410,7 @@ public class ConfigManager {
         return (boolean) config.getOrDefault("sound", true);
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public String getFontString() {
         String fontType = getFont();
         switch (fontType.toLowerCase()) {
@@ -440,7 +425,7 @@ public class ConfigManager {
         }
     }
 
-
+    @Deprecated(since = "2.0", forRemoval = true)
     public String formatScoreboardText(String text) {
         boolean upperCase = getScoreboardUpperCase();
         String fontString = getFontString();
@@ -470,6 +455,7 @@ public class ConfigManager {
 
         return formattedText.toString();
     }
+
     public boolean isReviveTokensEnabled() {
         return (boolean) config.getOrDefault("reviveTokensEnabled", true);
     }

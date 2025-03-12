@@ -28,9 +28,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class QWERTZcore extends JavaPlugin {
 
-    public static final String CORE_ICON = ChatColor.GREEN + "❇" + ChatColor.RESET;
+    public static final String CORE_ICON = ChatColor.YELLOW + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "1.4";
+    public static final String VERSION = "2.0-BETA";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -81,12 +81,12 @@ public final class QWERTZcore extends JavaPlugin {
         } else {
             getLogger().warning("[EXTENSION] WorldGuard not found. No security commands will be provided.");
         }
-        this.scoreboardManager = new ScoreboardManager(this, eventManager, configManager);
-        this.tablistManager = new TablistManager(this);
+        this.messageManager = new MessageManager(this);
+        this.scoreboardManager = new ScoreboardManager(this, eventManager, configManager, messageManager);
+        this.tablistManager = new TablistManager(this, messageManager);
         this.chatManager = new ChatManager(this);
         this.databaseManager = new DatabaseManager(this);
         this.databaseManager.initializeSpecialBlocks();
-        this.messageManager = new MessageManager(this);
         this.vanishManager = new VanishManager(this);
         this.soundManager = new SoundManager(this);
         this.updateChecker = new UpdateChecker(this);
@@ -116,39 +116,39 @@ public final class QWERTZcore extends JavaPlugin {
     private void printAsciiArt() {
         ConsoleCommandSender console = Bukkit.getConsoleSender();
         String[] asciiArt = {
-                "§6⣼⣿⣿⠟⠁⠀⠀⢀⣤⣾⣿⡿⠟⠉⠀⠀⠀⠀⠀⠀⣀⣤⣴⡾⠿⠛⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠿⠿⣿⣶⣦⣄⣀⠀⠀⠀⠉⠛⠿⣿⣿⣶⣄⡀⠀⠀⠈⠻⢿⣿⣦",
-                "§5⣿⠟⠁⠀⠀⢀⣴⣿⣿⠿⠋⠀⠀⠀⠀⠀⢀⣤⣶⣿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⢿⣿⣶⣤⡀⠀⠀⠈⠙⢿⣿⣿⣶⣄⠀⠀⠀⠘⢿",
-                "§4⠋⠀⠀⢠⣴⣿⣿⠟⠁⠀⠀⠀⠀⣀⣴⣾⡿⠛⠉⠀⠀⠀⣀⣠⣤⣴⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣄⡀⠀⠀⠀⠀⠈⠙⠿⣿⣷⣦⡀⠀⠀⠈⠻⣿⣿⣷⣄⠀⠀⠈",
-        "§3⠀⢀⣴⣿⣿⠟⠁⠀⠀⠀⢀⣠⣾⣿⠟⠁⠀⠀⢀⣤⣶⣿⣿⣿⣿⠿⠟⠛⠉⠁⠀⠀⠀⠀⠀⠀⠈⠉⠙⠛⠿⢿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠙⢿⣿⣶⣄⠀⠀⠀⠛⢿⣿⣷⡀⠀",
-        "§2⢀⣾⣿⡿⠃⠀⠀⠀⢀⣴⣿⡿⠋⠀⠀⢀⣴⣾⣿⣿⣿⠿⠛⠉⠀⣀⣤⣴⣶⣾⣶⣿⣿⣿⣿⣶⣶⣶⣦⣤⣀⡀⠀⠉⠛⠿⣿⣷⣦⣄⡀⠀⠀⠈⠻⣿⣷⣄⠀⠀⠀⠛⢿⣿⣄",
-        "§1⣿⣿⠟⠁⠀⠀⢀⣴⣿⠟⠁⠀⠀⣠⣶⣿⣿⡿⠟⠋⠀⢀⣤⣶⣿⣿⡿⠿⠛⠛⠛⠉⠉⠙⠛⠛⠻⠿⠿⣿⣿⣿⣷⣦⣄⡀⠀⠙⠻⣿⣿⣦⣀⠀⠀⠉⢻⣿⣷⡄⠀⠀⠀⠹⣿",
-        "§r⣿⠋⠀⠀⠀⣰⣿⡟⠁⠀⠀⣠⣾⣿⣿⠟⠉⠀⢀⣤⣾⣿⠿⠛⠉⠀⣀⣤⣤⣶⣶⣶⣿⣶⣶⣶⣦⣤⣤⣀⡀⠈⠙⠿⣿⣿⣷⣤⡀⠀⠙⢿⣿⣦⡀⠀⠀⠹⣿⣿⣆⠀⠀⠀⠘",
-        "§9⠇⠀⠀⢀⣾⡿⠋⠀⢀⣰⣿⣿⣿⠟⠁⢀⣠⣾⣿⠿⠋⠁⢀⣠⣴⣾⣿⠿⠟⠛⠛⠛⠉⠉⠉⠙⠛⠛⠛⠿⠿⣷⣦⣄⡀⠙⠻⣿⣿⣦⡀⠀⠙⣿⣷⡄⠀⠀⠘⣿⣿⣧⠀⠀⠀",
-        "§8⠀⠀⢀⣿⡿⠃⠀⠀⣼⣿⣿⡟⠃⠀⣠⣼⣿⠟⠃⠀⢀⣤⣿⣿⠿⠛⠀⣀⣤⣤⣼⣿⣿⣿⣿⣿⣿⣿⣤⣀⡀⠀⠛⢿⣿⣧⡀⠀⠻⣿⣿⣄⠀⠘⣿⣿⡄⠀⠀⠸⣿⣿⣧⠀⠀",
-        "§7⠀⢠⣿⡿⠁⠀⢀⣾⣿⡿⠏⠀⣠⣾⣿⠟⠁⠀⣠⣶⣿⠿⠋⣡⣴⣾⣿⡿⠿⠿⠛⠛⠛⠛⠛⠛⠻⠿⢿⣿⣿⣶⣤⡀⠈⠻⣿⣦⣀⠈⠻⣿⣧⡀⠈⢻⣿⡄⠀⠀⠙⣿⣿⣆⠀",
-        "§a⢠⣿⡟⠀⠀⢠⣿⣿⡟⠁⢀⣾⣿⡿⠁⠀⣠⣾⣿⠟⢁⣴⣿⣿⠟⠋⠀⠀⠀⣀⣠⣤⣤⣤⣤⣤⣀⠀⠀⠈⠙⠻⣿⣿⣶⣄⠈⠻⣿⣦⡀⠈⢿⣷⡀⠀⢻⣿⡄⠀⠀⠘⣿⣿⡄",
-        "§b⡟⠀⠀⢠⣿⣿⠏⠀⣰⣿⣿⠋⠀⢀⣼⣿⡿⠁⣴⣿⡿⠋⠀⠀⣀⣴⣾⣿⡿⠟⠛⠛⠛⠛⠿⠿⣿⣷⣦⣄⡀⠀⠹⣿⣿⣦⡀⠉⢿⣷⡄⠀⢻⣷⡀⠀⢻⣿⡄⠀⠀⠘⣿⣿",
-        "§c⡿⠀⠀⢀⣾⣿⠋⠀⢸⣿⡿⠃⠀⢠⣾⣿⠋⢀⣾⣿⠟⠀⠀⣠⣾⣿⡿⠟⢉⣀⣠⣤⣤⣤⣤⣀⡀⠀⠉⠻⢿⣿⣦⠀⠈⢿⣿⣷⡄⠈⢻⣿⡆⠀⢻⣧⠀⠀⢻⣿⠀⠀⠀⠘⣿",
-        "§d⠃⠀⠀⣾⣿⠇⠀⢠⣿⣿⠁⠀⣰⣿⣿⠃⢠⣾⡿⠃⠀⢀⣾⣿⡿⢋⣤⣾⣿⣿⡿⠿⠿⠿⠿⢿⣿⣿⣦⣄⠀⠹⣿⣷⣄⠈⢻⣿⣿⡄⠀⢻⣿⡀⠀⢿⡆⠀⠈⢿⣇⠀⠀⠀⢻",
-        "§e⠀⠀⣼⣿⣟⠀⢀⣾⣿⠇⠀⢠⣿⣿⠏⢠⣿⡿⠁⠀⣠⣿⣿⠏⣠⣾⣿⠟⢋⣡⣤⣶⣾⣿⣶⣦⣄⠙⢿⣿⣷⡄⠘⣿⣿⣆⠀⢻⣿⣿⡀⠀⢿⣧⠀⠘⣷⠀⠀⢸⣿⠀⠀⠀⠘",
-        "§f⠀⠠⣿⣿⠇⠀⣼⣿⡟⠀⠀⣼⣿⡟⠀⣺⣿⠃⠀⢰⣿⣿⠃⣰⣿⠿⢁⣴⣿⡿⠛⢉⣉⠉⠉⠻⣿⣧⡀⢻⣿⣿⡆⠘⣿⣿⡄⠀⢿⣿⣧⠀⠘⣿⡆⠀⢻⡇⠀⠀⢿⡇⠀⠀⠀",
-        "§6⠀⢸⣿⡿⠀⣸⣿⣿⠃⠀⢰⣿⡟⠀⢰⣿⡏⠀⢠⣿⣿⠇⣰⣿⠏⣴⣿⠟§6/¯¯¯¯¯\\§6⣄⠘⢿⣧⠀⢻⣿⣇⠀⢹⣿⣷⠀⢸⣿⣿⠀⠰⣿⣇⠀⢹⣿⠀⠀⢸⣇⠀⠀⠀",
-        "§5⠀⣾⣿⠇⠀⣽⣿⡿⠀⠀⣿⣿⠃⠀⣼⣿⠀⠀⣺⣿⡟⢠⣿⡟⣼⡿⠁⣼§6|     |§5⣿⡆⢸⣿⠆⠈⣿⣿⠀⢸⣿⣿⠀⠀⣿⣿⠀⢨⣿⣿⠀⢸⣿⠀⠀⢸⣿⠀⠀⢠",
-        "§4⠀⣿⣿⠀⠠⣿⣿⡇⠀⠀⣿⡟⠀⠀⣿⡏⠀⢠⣿⣿⠁⣼⣿⢠⣿⡇⢰⣿§6|     |§4⣿⡇⢸⣿⡇⠀⣿⣟⠀⢸⣿⣿⠀⢸⣿⣿⠀⢰⣿⡇⠀⢻⣿⠀⠀⢸⣿⠀⠀⢸",
-        "§3⠀⣿⣿⠀⢀⣿⣿⡇⠀⠀⣿⡟⠀⠀⣿⡧⠀⢸⣿⡏⠀⣿⡏⢸⣿⡇⢸⣿§6|     |§3⠟⢡⣿⣿⠀⣼⣿⡏⠀⣼⣿⡟⢀⣾⣿⡇⠀⣾⣿⡇⠀⣿⣿⠀⠀⣿⣿⠀⠀⢸",
-        "§2⠀⣿⣿⠀⠠⣿⣿⡇⠀⠀⣿⡇⠀⠀⣿⡇⠀⢸⣿⠁⠀⣿⣇⠘⣿⣧⠘⣿§6\\_____/¯\\§2⡿⠁⣴⣿⣿⠃⣼⣿⣿⠃⣼⣿⡿⠀⣼⣿⡿⠀⣼⣿⡏⠀⢸⣿⡿⠀⠀⣼",
-        "§1⠀⢿⣿⡀⠀⢿⣿⣧⠀⠀⣿⡆⠀⠀⣿⡆⠀⢸⣿⡀⠀⣿⣿⡀⠹⣿⣦⡘⠿⣿⣿⣿§6\\    \\§1⣾⣿⡿⠋⣼⣿⡿⠃⣼⣿⣿⠃⣼⣿⣿⠁⣰⣿⡿⠁⢀⣿⣿⡇⠀⠀⣾",
-        "§r⠀⢸⣿⡇⠀⢹⣿⣿⠀⠀⢸⣟⠀⠀⢹⣇⠀⢸⣿⣧⠀⠹⣿⣧⡀⠹⣿⣿⣷⣦⣬⣭⣤§6\\____\\§r⠋⣠⣾⣿⠟⢀⣼⣿⡿⠃⣰⣿⣿⠃⣰⣿⣿⠁⠀⣼⣿⣿⠀⠀⢰⣿",
-        "§9⠀⠈⣿⣿⠀⠈⣿⣿⡄⠀⠈⣿⡆⠀⠸⣿⡀⠀⢿⣿⣧⡀⠹⣿⣷⣄⡈⠙⠿⠿⢿⣿⣿⡿⠿⠟⠛⣁⣤⣾⡿⠟⠁⣰⣾⣿⠟⢡⣾⣿⡿⠃⢠⣿⣿⠃⠀⣰⣿⣿⠇⠀⠀⣼⡿",
-        "§8⠀⠀⣿⣿⡇⠀⢹⣿⣧⠀⠀⢻⣿⠀⠀⢻⣷⠀⠈⣿⣿⣿⣦⠈⢻⣿⣿⣶⣦⣤⣤⡄⢠⣤⣤⣴⣾⣿⡟⠋⠀⢠⣾⣿⡟⠁⣴⣿⣿⡟⠀⢰⣿⣿⠃⠀⢰⣿⣿⡏⠀⠀⣼⣿⠃",
-        "§7⠀⠀⠘⣿⣷⠀⠀⢿⣿⡄⠀⠘⣿⣧⠀⠘⣿⣧⡀⠈⠻⣿⣿⣷⣤⡉⠛⠿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠉⢀⣤⣶⣿⠟⠉⢀⣴⣿⡿⠋⢀⣴⣿⡿⠃⠀⢠⣿⡿⡿⠁⠀⣰⣿⠏⠀",
-        "§a⣇⠀⠀⠹⣿⣧⠀⠈⣿⣿⣆⠀⠹⣿⣷⡀⠘⢿⣿⣦⡀⠈⠛⢿⣿⣿⣷⣦⣄⣀⣈⣁⣀⣀⣠⣤⣶⣾⡿⠟⠋⠀⣠⣶⣿⡿⠋⢀⣤⣿⣿⠟⠁⠀⣰⣿⣿⠟⠁⠀⣼⣿⠏⠀⠀",
-        "§b⣿⡆⠀⠀⢻⣿⣷⡀⠈⢿⣿⣦⠀⠘⢿⣷⣄⠀⠹⢿⣿⣶⣄⡀⠀⠉⠛⠛⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⢀⣠⣴⣾⡿⠟⠉⣠⣶⣿⣿⡿⠉⠀⣠⣾⣿⣿⠃⠀⢀⣾⣿⠋⠀⠀⣼",
-        "§c⢻⣿⣆⠀⠀⠻⣿⣷⡀⠈⠻⣿⣿⣄⠀⠙⠿⣷⣤⡀⠉⠛⠿⣿⣷⣦⣤⣀⣀⣀⣀⣀⣀⣀⣤⣤⣶⣾⠿⠟⠛⢉⣠⣴⣿⣿⣿⠟⠋⠀⣠⣶⣿⡿⠛⠁⠀⣴⣿⠟⠁⠀⢠⣾⢿",
-        "§d⠀⢻⣿⣧⡀⠀⠙⣿⣿⣄⠀⠈⢿⣿⣷⣄⠀⠈⠻⢿⣷⣦⣄⡀⠉⠙⠛⠛⠻⠿⠛⠛⠛⠛⠉⠉⠀⢀⣠⣴⣾⣿⣿⣿⡿⠟⠁⠀⣠⣾⣿⡿⠋⠀⠀⣠⣾⡿⠋⠀⢀⣴⣿⡟⠁",
-        "§e⠀⠀⠻⣿⣷⡄⠀⠘⢿⣿⣦⡄⠀⠉⠿⣿⣷⣤⣀⠀⠈⠙⠻⠿⣿⣶⣶⣴⣦⣴⣶⣴⣤⣶⣶⣾⣿⣿⠿⠿⠟⠛⠉⠀⠀⣀⣴⣿⡿⠟⠁⠀⠀⣠⣾⡿⠋⠀⢀⣴⣿⣿⠃⠀⠀",
-        "§f⡄⠀⠀⠙⢿⣿⣦⡀⠀⠙⢿⣿⣦⡀⠀⠈⠛⢿⣿⣿⣶⣤⣀⡀⠀⠈⠉⠉⠉⠛⠛⠛⠛⠋⠉⠉⠀⠀⠀⠀⢀⣀⣤⣶⣿⡿⠟⠋⠀⠀⢀⣠⣾⠿⠋⠀⣠⣴⣿⡿⠛⠀⠀⢀⣴",
-        "§6⣿⣆⠀⠀⠈⠛⣿⣿⣦⡀⠀⠙⠿⣿⣷⣤⣀⡀⠈⠙⠻⢿⣿⣿⣿⣷⣶⣶⣶⣤⣤⣤⣤⣤⣴⣶⣶⣿⣾⣿⠿⠟⠛⠉⠀⠀⣀⣠⣴⣶⡿⠋⠁⣀⣤⣾⣿⡿⠋⠀⠀⣠⣴⣿⡿"
+            "§6⣼⣿⣿⠟⠁⠀⠀⢀⣤⣾⣿⡿⠟⠉⠀⠀⠀⠀⠀⠀⣀⣤⣴⡾⠿⠛⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠿⠿⣿⣶⣦⣄⣀⠀⠀⠀⠉⠛⠿⣿⣿⣶⣄⡀⠀⠀⠈⠻⢿⣿⣦",
+            "§5⣿⠟⠁⠀⠀⢀⣴⣿⣿⠿⠋⠀⠀⠀⠀⠀⢀⣤⣶⣿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⢿⣿⣶⣤⡀⠀⠀⠈⠙⢿⣿⣿⣶⣄⠀⠀⠀⠘⢿",
+            "§4⠋⠀⠀⢠⣴⣿⣿⠟⠁⠀⠀⠀⠀⣀⣴⣾⡿⠛⠉⠀⠀⠀⣀⣠⣤⣴⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣄⡀⠀⠀⠀⠀⠈⠙⠿⣿⣷⣦⡀⠀⠀⠈⠻⣿⣿⣷⣄⠀⠀⠈",
+            "§3⠀⢀⣴⣿⣿⠟⠁⠀⠀⠀⢀⣠⣾⣿⠟⠁⠀⠀⢀⣤⣶⣿⣿⣿⣿⠿⠟⠛⠉⠁⠀⠀⠀⠀⠀⠀⠈⠉⠙⠛⠿⢿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠙⢿⣿⣶⣄⠀⠀⠀⠛⢿⣿⣷⡀⠀",
+            "§2⢀⣾⣿⡿⠃⠀⠀⠀⢀⣴⣿⡿⠋⠀⠀⢀⣴⣾⣿⣿⣿⠿⠛⠉⠀⣀⣤⣴⣶⣾⣶⣿⣿⣿⣿⣶⣶⣶⣦⣤⣀⡀⠀⠉⠛⠿⣿⣷⣦⣄⡀⠀⠀⠈⠻⣿⣷⣄⠀⠀⠀⠛⢿⣿⣄",
+            "§1⣿⣿⠟⠁⠀⠀⢀⣴⣿⠟⠁⠀⠀⣠⣶⣿⣿⡿⠟⠋⠀⢀⣤⣶⣿⣿⡿⠿⠛⠛⠛⠉⠉⠙⠛⠛⠻⠿⠿⣿⣿⣿⣷⣦⣄⡀⠀⠙⠻⣿⣿⣦⣀⠀⠀⠉⢻⣿⣷⡄⠀⠀⠀⠹⣿",
+            "§r⣿⠋⠀⠀⠀⣰⣿⡟⠁⠀⠀⣠⣾⣿⣿⠟⠉⠀⢀⣤⣾⣿⠿⠛⠉⠀⣀⣤⣤⣶⣶⣶⣿⣶⣶⣶⣦⣤⣤⣀⡀⠈⠙⠿⣿⣿⣷⣤⡀⠀⠙⢿⣿⣦⡀⠀⠀⠹⣿⣿⣆⠀⠀⠀⠘",
+            "§9⠇⠀⠀⢀⣾⡿⠋⠀⢀⣰⣿⣿⣿⠟⠁⢀⣠⣾⣿⠿⠋⠁⢀⣠⣴⣾⣿⠿⠟⠛⠛⠛⠉⠉⠉⠙⠛⠛⠛⠿⠿⣷⣦⣄⡀⠙⠻⣿⣿⣦⡀⠀⠙⣿⣷⡄⠀⠀⠘⣿⣿⣧⠀⠀⠀",
+            "§8⠀⠀⢀⣿⡿⠃⠀⠀⣼⣿⣿⡟⠃⠀⣠⣼⣿⠟⠃⠀⢀⣤⣿⣿⠿⠛⠀⣀⣤⣤⣼⣿⣿⣿⣿⣿⣿⣿⣤⣀⡀⠀⠛⢿⣿⣧⡀⠀⠻⣿⣿⣄⠀⠘⣿⣿⡄⠀⠀⠸⣿⣿⣧⠀⠀",
+            "§7⠀⢠⣿⡿⠁⠀⢀⣾⣿⡿⠏⠀⣠⣾⣿⠟⠁⠀⣠⣶⣿⠿⠋⣡⣴⣾⣿⡿⠿⠿⠛⠛⠛⠛⠛⠛⠻⠿⢿⣿⣿⣶⣤⡀⠈⠻⣿⣦⣀⠈⠻⣿⣧⡀⠈⢻⣿⡄⠀⠀⠙⣿⣿⣆⠀",
+            "§a⢠⣿⡟⠀⠀⢠⣿⣿⡟⠁⢀⣾⣿⡿⠁⠀⣠⣾⣿⠟⢁⣴⣿⣿⠟⠋⠀⠀⠀⣀⣠⣤⣤⣤⣤⣤⣀⠀⠀⠈⠙⠻⣿⣿⣶⣄⠈⠻⣿⣦⡀⠈⢿⣷⡀⠀⢻⣿⡄⠀⠀⠘⣿⣿⡄",
+            "§b⡟⠀⠀⢠⣿⣿⠏⠀⣰⣿⣿⠋⠀⢀⣼⣿⡿⠁⣴⣿⡿⠋⠀⠀⣀⣴⣾⣿⡿⠟⠛⠛⠛⠛⠿⠿⣿⣷⣦⣄⡀⠀⠹⣿⣿⣦⡀⠉⢿⣷⡄⠀⢻⣷⡀⠀⢻⣿⡄⠀⠀⠘⣿⣿",
+            "§c⡿⠀⠀⢀⣾⣿⠋⠀⢸⣿⡿⠃⠀⢠⣾⣿⠋⢀⣾⣿⠟⠀⠀⣠⣾⣿⡿⠟⢉⣀⣠⣤⣤⣤⣤⣀⡀⠀⠉⠻⢿⣿⣦⠀⠈⢿⣿⣷⡄⠈⢻⣿⡆⠀⢻⣧⠀⠀⢻⣿⠀⠀⠀⠘⣿",
+            "§d⠃⠀⠀⣾⣿⠇⠀⢠⣿⣿⠁⠀⣰⣿⣿⠃⢠⣾⡿⠃⠀⢀⣾⣿⡿⢋⣤⣾⣿⣿⡿⠿⠿⠿⠿⢿⣿⣿⣦⣄⠀⠹⣿⣷⣄⠈⢻⣿⣿⡄⠀⢻⣿⡀⠀⢿⡆⠀⠈⢿⣇⠀⠀⠀⢻",
+            "§e⠀⠀⣼⣿⣟⠀⢀⣾⣿⠇⠀⢠⣿⣿⠏⢠⣿⡿⠁⠀⣠⣿⣿⠏⣠⣾⣿⠟⢋⣡⣤⣶⣾⣿⣶⣦⣄⠙⢿⣿⣷⡄⠘⣿⣿⣆⠀⢻⣿⣿⡀⠀⢿⣧⠀⠘⣷⠀⠀⢸⣿⠀⠀⠀⠘",
+            "§f⠀⠠⣿⣿⠇⠀⣼⣿⡟⠀⠀⣼⣿⡟⠀⣺⣿⠃⠀⢰⣿⣿⠃⣰⣿⠿⢁⣴⣿⡿⠛⢉⣉⠉⠉⠻⣿⣧⡀⢻⣿⣿⡆⠘⣿⣿⡄⠀⢿⣿⣧⠀⠘⣿⡆⠀⢻⡇⠀⠀⢿⡇⠀⠀⠀",
+            "§6⠀⢸⣿⡿⠀⣸⣿⣿⠃⠀⢰⣿⡟⠀⢰⣿⡏⠀⢠⣿⣿⠇⣰⣿⠏⣴⣿⠟§6/¯¯¯¯¯\\§6⣄⠘⢿⣧⠀⢻⣿⣇⠀⢹⣿⣷⠀⢸⣿⣿⠀⠰⣿⣇⠀⢹⣿⠀⠀⢸⣇⠀⠀⠀",
+            "§5⠀⣾⣿⠇⠀⣽⣿⡿⠀⠀⣿⣿⠃⠀⣼⣿⠀⠀⣺⣿⡟⢠⣿⡟⣼⡿⠁⣼§6|     |§5⣿⡆⢸⣿⠆⠈⣿⣿⠀⢸⣿⣿⠀⠀⣿⣿⠀⢨⣿⣿⠀⢸⣿⠀⠀⢸⣿⠀⠀⢠",
+            "§4⠀⣿⣿⠀⠠⣿⣿⡇⠀⠀⣿⡟⠀⠀⣿⡏⠀⢠⣿⣿⠁⣼⣿⢠⣿⡇⢰⣿§6|     |§4⣿⡇⢸⣿⡇⠀⣿⣟⠀⢸⣿⣿⠀⢸⣿⣿⠀⢰⣿⡇⠀⢻⣿⠀⠀⢸⣿⠀⠀⢸",
+            "§3⠀⣿⣿⠀⢀⣿⣿⡇⠀⠀⣿⡟⠀⠀⣿⡧⠀⢸⣿⡏⠀⣿⡏⢸⣿⡇⢸⣿§6|     |§3⠟⢡⣿⣿⠀⣼⣿⡏⠀⣼⣿⡟⢀⣾⣿⡇⠀⣾⣿⡇⠀⣿⣿⠀⠀⣿⣿⠀⠀⢸",
+            "§2⠀⣿⣿⠀⠠⣿⣿⡇⠀⠀⣿⡇⠀⠀⣿⡇⠀⢸⣿⠁⠀⣿⣇⠘⣿⣧⠘⣿§6\\_____/¯\\§2⡿⠁⣴⣿⣿⠃⣼⣿⣿⠃⣼⣿⡿⠀⣼⣿⡿⠀⣼⣿⡏⠀⢸⣿⡿⠀⠀⣼",
+            "§1⠀⢿⣿⡀⠀⢿⣿⣧⠀⠀⣿⡆⠀⠀⣿⡆⠀⢸⣿⡀⠀⣿⣿⡀⠹⣿⣦⡘⠿⣿⣿⣿§6\\    \\§1⣾⣿⡿⠋⣼⣿⡿⠃⣼⣿⣿⠃⣼⣿⣿⠁⣰⣿⡿⠁⢀⣿⣿⡇⠀⠀⣾",
+            "§r⠀⢸⣿⡇⠀⢹⣿⣿⠀⠀⢸⣟⠀⠀⢹⣇⠀⢸⣿⣧⠀⠹⣿⣧⡀⠹⣿⣿⣷⣦⣬⣭⣤§6\\____\\§r⠋⣠⣾⣿⠟⢀⣼⣿⡿⠃⣰⣿⣿⠃⣰⣿⣿⠁⠀⣼⣿⣿⠀⠀⢰⣿",
+            "§9⠀⠈⣿⣿⠀⠈⣿⣿⡄⠀⠈⣿⡆⠀⠸⣿⡀⠀⢿⣿⣧⡀⠹⣿⣷⣄⡈⠙⠿⠿⢿⣿⣿⡿⠿⠟⠛⣁⣤⣾⡿⠟⠁⣰⣾⣿⠟⢡⣾⣿⡿⠃⢠⣿⣿⠃⠀⣰⣿⣿⠇⠀⠀⣼⡿",
+            "§8⠀⠀⣿⣿⡇⠀⢹⣿⣧⠀⠀⢻⣿⠀⠀⢻⣷⠀⠈⣿⣿⣿⣦⠈⢻⣿⣿⣶⣦⣤⣤⡄⢠⣤⣤⣴⣾⣿⡟⠋⠀⢠⣾⣿⡟⠁⣴⣿⣿⡟⠀⢰⣿⣿⠃⠀⢰⣿⣿⡏⠀⠀⣼⣿⠃",
+            "§7⠀⠀⠘⣿⣷⠀⠀⢿⣿⡄⠀⠘⣿⣧⠀⠘⣿⣧⡀⠈⠻⣿⣿⣷⣤⡉⠛⠿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠉⢀⣤⣶⣿⠟⠉⢀⣴⣿⡿⠋⢀⣴⣿⡿⠃⠀⢠⣿⡿⡿⠁⠀⣰⣿⠏⠀",
+            "§a⣇⠀⠀⠹⣿⣧⠀⠈⣿⣿⣆⠀⠹⣿⣷⡀⠘⢿⣿⣦⡀⠈⠛⢿⣿⣿⣷⣦⣄⣀⣈⣁⣀⣀⣠⣤⣶⣾⡿⠟⠋⠀⣠⣶⣿⡿⠋⢀⣤⣿⣿⠟⠁⠀⣰⣿⣿⠟⠁⠀⣼⣿⠏⠀⠀",
+            "§b⣿⡆⠀⠀⢻⣿⣷⡀⠈⢿⣿⣦⠀⠘⢿⣷⣄⠀⠹⢿⣿⣶⣄⡀⠀⠉⠛⠛⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⢀⣠⣴⣾⡿⠟⠉⣠⣶⣿⣿⡿⠉⠀⣠⣾⣿⣿⠃⠀⢀⣾⣿⠋⠀⠀⣼",
+            "§c⢻⣿⣆⠀⠀⠻⣿⣷⡀⠈⠻⣿⣿⣄⠀⠙⠿⣷⣤⡀⠉⠛⠿⣿⣷⣦⣤⣀⣀⣀⣀⣀⣀⣀⣤⣤⣶⣾⠿⠟⠛⢉⣠⣴⣿⣿⣿⠟⠋⠀⣠⣶⣿⡿⠛⠁⠀⣴⣿⠟⠁⠀⢠⣾⢿",
+            "§d⠀⢻⣿⣧⡀⠀⠙⣿⣿⣄⠀⠈⢿⣿⣷⣄⠀⠈⠻⢿⣷⣦⣄⡀⠉⠙⠛⠛⠻⠿⠛⠛⠛⠛⠉⠉⠀⢀⣠⣴⣾⣿⣿⣿⡿⠟⠁⠀⣠⣾⣿⡿⠋⠀⠀⣠⣾⡿⠋⠀⢀⣴⣿⡟⠁",
+            "§e⠀⠀⠻⣿⣷⡄⠀⠘⢿⣿⣦⡄⠀⠉⠿⣿⣷⣤⣀⠀⠈⠙⠻⠿⣿⣶⣶⣴⣦⣴⣶⣴⣤⣶⣶⣾⣿⣿⠿⠿⠟⠛⠉⠀⠀⣀⣴⣿⡿⠟⠁⠀⠀⣠⣾⡿⠋⠀⢀⣴⣿⣿⠃⠀⠀",
+            "§f⡄⠀⠀⠙⢿⣿⣦⡀⠀⠙⢿⣿⣦⡀⠀⠈⠛⢿⣿⣿⣶⣤⣀⡀⠀⠈⠉⠉⠉⠛⠛⠛⠛⠋⠉⠉⠀⠀⠀⠀⢀⣀⣤⣶⣿⡿⠟⠋⠀⠀⢀⣠⣾⠿⠋⠀⣠⣴⣿⡿⠛⠀⠀⢀⣴",
+            "§6⣿⣆⠀⠀⠈⠛⣿⣿⣦⡀⠀⠙⠿⣿⣷⣤⣀⡀⠈⠙⠻⢿⣿⣿⣿⣷⣶⣶⣶⣤⣤⣤⣤⣤⣴⣶⣶⣿⣾⣿⠿⠟⠛⠉⠀⠀⣀⣠⣴⣶⡿⠋⠁⣀⣤⣾⣿⡿⠋⠀⠀⣠⣴⣿⡿"
         };
         console.sendMessage("");
         for (String line : asciiArt) {
@@ -261,6 +261,7 @@ public final class QWERTZcore extends JavaPlugin {
             getCommand("falldamage").setExecutor(worldGuardCommands);
             WorldGuardTabCompleter worldGuardTabCompleter = new WorldGuardTabCompleter();
             getCommand("pvp").setTabCompleter(worldGuardTabCompleter);
+            getCommand("flow").setTabCompleter(worldGuardTabCompleter);
             getCommand("break").setTabCompleter(worldGuardTabCompleter);
             getCommand("place").setTabCompleter(worldGuardTabCompleter);
             getCommand("hunger").setTabCompleter(worldGuardTabCompleter);
@@ -273,7 +274,7 @@ public final class QWERTZcore extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(eventManager, vanishManager, configManager, scoreboardManager, tablistManager, hideCommand, updateChecker, messageManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(eventManager, configManager), this);
-        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(configManager), this);
+        getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(this, configManager), this);
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
     }
     public EventManager getEventManager() {

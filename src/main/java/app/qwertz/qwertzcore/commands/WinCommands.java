@@ -22,6 +22,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class WinCommands implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -46,14 +48,14 @@ public class WinCommands implements CommandExecutor {
 
     private boolean handleAddWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /addwin <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /addwin <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -61,29 +63,36 @@ public class WinCommands implements CommandExecutor {
         plugin.getDatabaseManager().addWin(target.getUniqueId());
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorAlive") + " Added a win for " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorAlive") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
-        target.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "You have been awarded a win! You now have " +  plugin.getConfigManager().getColor("colorPrimary") + wins + plugin.getConfigManager().getColor("colorAlive") + " wins.");
-        plugin.getSoundManager().broadcastConfigSound();
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%wins%", String.valueOf(wins));
+        localMap.put("%name%", target.getName());
+
+        HashMap<String, String> localMap2 = new HashMap<>();
+        localMap2.put("%wins%", String.valueOf(wins));
+        plugin.getMessageManager().broadcastMessage("wins.win-broadcast", localMap);
+        plugin.getMessageManager().sendMessage(target, "wins.give", localMap2);        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
     private boolean handleRemoveWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /removewin <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /removewin <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int currentWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
         if (currentWins <= 0) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + target.getName() + " has no wins to remove.");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", target.getName());
+            plugin.getMessageManager().sendMessage((Player) sender, "wins.no-wins", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -91,8 +100,14 @@ public class WinCommands implements CommandExecutor {
         plugin.getDatabaseManager().removeWin(target.getUniqueId());
         int newWins = plugin.getDatabaseManager().getWins(target.getUniqueId());
 
-        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed a win from " + plugin.getConfigManager().getColor("colorPrimary") + target.getName() + plugin.getConfigManager().getColor("colorDead") + ". They now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
-        target.sendMessage(plugin.getConfigManager().getColor("colorDead") + "A win has been removed from your record. You now have " + plugin.getConfigManager().getColor("colorPrimary") + newWins + plugin.getConfigManager().getColor("colorDead") + " wins.");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%wins%", String.valueOf(newWins));
+        localMap.put("%name%", target.getName());
+
+        HashMap<String, String> localMap2 = new HashMap<>();
+        localMap2.put("%wins%", String.valueOf(newWins));
+        plugin.getMessageManager().broadcastMessage("wins.win-removed-broadcast", localMap);
+        plugin.getMessageManager().sendMessage(target, "wins.remove", localMap2);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -104,18 +119,21 @@ public class WinCommands implements CommandExecutor {
         } else if (args.length == 1) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+                plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /wins [player]");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /wins [player]");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         int wins = plugin.getDatabaseManager().getWins(target.getUniqueId());
-        sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + target.getName() + plugin.getConfigManager().getColor("colorAlive") + " has " + wins + " wins.");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%wins%", String.valueOf(wins));
+        localMap.put("%name%", target.getName());
+        plugin.getMessageManager().sendMessage((Player) sender, "wins.show-wins", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }

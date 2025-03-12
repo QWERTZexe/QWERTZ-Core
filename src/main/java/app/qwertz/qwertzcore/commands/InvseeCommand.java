@@ -33,13 +33,13 @@ public class InvseeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /invsee <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/invsee <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -48,7 +48,7 @@ public class InvseeCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getMessageManager().sendMessage(viewer, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

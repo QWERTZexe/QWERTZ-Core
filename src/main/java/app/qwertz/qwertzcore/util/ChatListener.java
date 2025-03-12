@@ -22,6 +22,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.HashMap;
+
 public class ChatListener implements Listener {
 
     private final QWERTZcore plugin;
@@ -59,12 +61,14 @@ public class ChatListener implements Listener {
     }
 
     private void announceWinner(String playerName) {
-        plugin.getMessageManager().broadcastMessage(String.format("%s %s%s %shas won the chat revival game!",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorAlive"), playerName, plugin.getConfigManager().getColor("colorPrimary")));
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%player%", playerName);
+        plugin.getMessageManager().broadcastMessage("chatrevive.winner", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         if (gameType.equals("guess") || gameType.equals("math")) {
-            plugin.getMessageManager().broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
-                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            HashMap<String, String> localMap2 = new HashMap<>();
+            localMap2.put("%answer%", String.valueOf(answer));
+            plugin.getMessageManager().broadcastMessage("chatrevive.correct-answer", localMap2);
             plugin.getSoundManager().broadcastConfigSound();
         }
 
@@ -73,12 +77,14 @@ public class ChatListener implements Listener {
 
     public void cancelGame() {
         if (gameType.equals("guess") || gameType.equals("math")) {
-            plugin.getMessageManager().broadcastMessage(String.format("%s %sThe correct answer was: %s%d",
-                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%answer%", String.valueOf(answer));
+            plugin.getMessageManager().broadcastMessage("chatrevive.correct-answer", localMap);
             plugin.getSoundManager().broadcastConfigSound();
         } else if (gameType.equals("typer")) {
-            plugin.getMessageManager().broadcastMessage(String.format("%s %sThe correct sentence was: %s%s",
-                    QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorAlive"), answer));
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%sentence%", String.valueOf(answer));
+            plugin.getMessageManager().broadcastMessage("chatrevive.correct-sentence", localMap);
             plugin.getSoundManager().broadcastConfigSound();
         }
         endGame();

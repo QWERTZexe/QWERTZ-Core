@@ -22,6 +22,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class VanishCommands implements CommandExecutor {
     private final QWERTZcore plugin;
 
@@ -42,26 +44,28 @@ public class VanishCommands implements CommandExecutor {
 
     public boolean vanish(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
         if (!plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
                 if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount - 1;
-                plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
-                        plugin.getConfigManager().getColor("colorDead") + " just left us! " + ChatColor.GRAY +
-                        "[" + plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
-                        " -> " + plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+
+                HashMap<String, String> localMap = new HashMap<>();
+                localMap.put("%name%", sender.getName());
+                localMap.put("%fakeCount%", String.valueOf(fakeCount));
+                localMap.put("%newCount%", String.valueOf(newCount));
+                plugin.getMessageManager().broadcastMessage("vanish.leave-msg", localMap);
                 plugin.getSoundManager().broadcastConfigSound();
             }
-            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " You have been vanished!");
+            plugin.getMessageManager().sendMessage((Player) sender, "vanish.you-got-vanished");
             plugin.getVanishManager().addVanishedPlayer((Player) sender);
             for (Player loop : Bukkit.getOnlinePlayers()) {
                 loop.hidePlayer((Player) sender);
             }
         } else {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are already vanished!");
+            plugin.getMessageManager().sendMessage((Player) sender, "vanish.already-vanished");
             plugin.getSoundManager().playSoundToSender(sender);
         }
 
@@ -70,27 +74,28 @@ public class VanishCommands implements CommandExecutor {
 
     public boolean unVanish(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
         if (plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
             if (plugin.getConfigManager().getMsgsOnVanish()) {
                 int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
                 int newCount = fakeCount + 1;
-                plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " " + sender.getName() +
-                        plugin.getConfigManager().getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
-                        plugin.getConfigManager().getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
-                        plugin.getConfigManager().getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+                HashMap<String, String> localMap = new HashMap<>();
+                localMap.put("%name%", sender.getName());
+                localMap.put("%fakeCount%", String.valueOf(fakeCount));
+                localMap.put("%newCount%", String.valueOf(newCount));
+                plugin.getMessageManager().broadcastMessage("vanish.join-msg", localMap);
                 plugin.getSoundManager().broadcastConfigSound();
             }
-            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " You have been unvanished!");
+            plugin.getMessageManager().sendMessage((Player) sender, "vanish.you-got-unvanished");
             plugin.getSoundManager().playSoundToSender(sender);
             plugin.getVanishManager().removeVanishedPlayer((Player) sender);
             for (Player loop : Bukkit.getOnlinePlayers()) {
                 loop.showPlayer((Player) sender);
             }
         } else {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You are not vanished!");
+            plugin.getMessageManager().sendMessage((Player) sender, "vanish.not-vanished");
             plugin.getSoundManager().playSoundToSender(sender);
         }
 

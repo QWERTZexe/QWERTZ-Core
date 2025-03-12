@@ -1,76 +1,141 @@
-/*
-        Copyright (C) 2024 QWERTZ_EXE
-
-        This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License
-        as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-        without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-        See the GNU Affero General Public License for more details.
-
-        You should have received a copy of the GNU Affero General Public License along with this program.
-        If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Objects;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class TablistManager {
     private final QWERTZcore plugin;
+    private final MessageManager messageManager;
+    private FileConfiguration tabConfig;
+    private FileConfiguration fileTabConfig;
+    private FileConfiguration internalTabConfig;
+    private final Map<Integer, String> pingColors = new TreeMap<>(Comparator.reverseOrder());
 
-    public TablistManager(QWERTZcore plugin) {
+    public TablistManager(QWERTZcore plugin, MessageManager messageManager) {
         this.plugin = plugin;
+        this.messageManager = messageManager;
+        loadTabConfig();
+        this.tabConfig = getConfigToUse();
+        setupPingColors();
+        setupPingColors();
         startTablistUpdater();
     }
-
-    public void updateTablist(Player player) {
-
-        if (plugin.getConfigManager().getTabList()) {
-        String header = plugin.getConfigManager().getColor("colorSecondary") + ChatColor.BOLD + plugin.getConfigManager().getServerName() + "\n\n" +
-                plugin.getConfigManager().getColor("colorPrimary") + "Event: " + plugin.getConfigManager().getEventName() + "\n" +
-                plugin.getConfigManager().getColor("colorTertiary") + "Players: " + plugin.getVanishManager().getNonVanishedPlayerCount() + "\n";
-
-        String footer = "\n" + QWERTZcore.CORE_ICON + ChatColor.GOLD + " QWERTZ Core";
-
-        player.setPlayerListHeaderFooter(header, footer);
-
-        updatePlayerListName(player);
+    private void setupPingColors() {
+        // Load ping colors
+        ConfigurationSection pingSection = tabConfig.getConfigurationSection("ping-colors");
+        if (pingSection != null) {
+            pingSection.getKeys(false).forEach(key -> {
+                try {
+                    if (!key.equals("default")) {
+                        int threshold = Integer.parseInt(key);
+                        pingColors.put(threshold, pingSection.getString(key));
+                    }
+                } catch (NumberFormatException e) {
+                    plugin.getLogger().warning("Invalid ping threshold in tab.yml: " + key);
+                }
+            });
+        }
+    }
+    // Helper method to determine which config to use
+    private FileConfiguration getConfigToUse() {
+        String activeTheme = messageManager.messagesConfig.getString("active-theme");
+        if (Objects.equals(activeTheme, "file")) {
+            return fileTabConfig;
+        } else if (Objects.equals(activeTheme, "internal")) {
+            return internalTabConfig;
+        } else {
+            // Attempt to load from repo
+            FileConfiguration repoConfig = messageManager.loadFromRepo(activeTheme, "tab");
+            if (repoConfig != null) {
+                return repoConfig;
+            } else {
+                plugin.getLogger().warning("Failed to load theme from repo, using internal.");
+                return internalTabConfig; // Fallback to default
+            }
+        }
+    }
+    private void loadTabConfig() {
+        File tabFile = new File(plugin.getDataFolder(), "tab.yml");
+        if (!tabFile.exists()) {
+            plugin.saveResource("tab.yml", false);
+        }
+        fileTabConfig = YamlConfiguration.loadConfiguration(tabFile);
+        // Load default messages from JAR
+        InputStream defaultStream = plugin.getResource("tab.yml");
+        if (defaultStream != null) {
+            internalTabConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
         }
     }
 
+    public void updateTablist(Player player) {
+        if (plugin.getConfigManager().getTabList()) {
+            String header = buildHeaderFooter("header");
+            String footer = buildHeaderFooter("footer");
+            player.setPlayerListHeaderFooter(header, footer);
+            updatePlayerListName(player);
+        }
+    }
+
+    private String buildHeaderFooter(String path) {
+        List<String> lines = tabConfig.getStringList(path);
+        StringBuilder builder = new StringBuilder();
+
+        for (String line : lines) {
+            builder.append(prepareLine(line))
+                    .append("\n");
+        }
+        return builder.toString();
+    }
+
+    private String prepareLine(String line) {
+        return plugin.getMessageManager().prepareMessage(line, new HashMap<>()).replace("%server%", plugin.getConfigManager().getServerName())
+                .replace("%event%", plugin.getConfigManager().getEventName())
+                .replace("%player%", String.valueOf(plugin.getVanishManager().getNonVanishedPlayerCount()));
+    }
+
     private void updatePlayerListName(Player player) {
-        String prefix = plugin.getRankManager().getPrefix(player);
-        String suffix = plugin.getRankManager().getSuffix(player);
+        String format = tabConfig.getString("player-list-name", "%prefix%%player_name%%suffix% %ping_color%%ping%ms");
         String pingColor = getPingColor(player.getPing());
-        String listName;
-        listName = prefix + player.getName() + suffix + " " + pingColor + player.getPing();
+
+        String listName = format
+                .replace("%prefix%", plugin.getRankManager().getPrefix(player))
+                .replace("%suffix%", plugin.getRankManager().getSuffix(player))
+                .replace("%player%", player.getName())
+                .replace("%ping_color%", pingColor)
+                .replace("%ping%", String.valueOf(player.getPing()));
+
         Scoreboard scoreboard = player.getScoreboard();
         Team team = scoreboard.getTeam(player.getName());
         if (team == null) {
             team = scoreboard.registerNewTeam(player.getName());
         }
 
-        team.setPrefix(prefix);
-        team.setSuffix(suffix + " " + pingColor + player.getPing());
+        team.setPrefix(plugin.getRankManager().getPrefix(player));
+        team.setSuffix(plugin.getRankManager().getSuffix(player) + " " + pingColor + player.getPing());
         team.addEntry(player.getName());
 
-        player.setPlayerListName(listName);
+        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', listName));
     }
 
     private String getPingColor(int ping) {
-        if (ping <= 40) return ChatColor.DARK_GREEN + "";
-        if (ping <= 100) return ChatColor.GREEN + "";
-        if (ping <= 160) return ChatColor.YELLOW + "";
-        if (ping <= 250) return ChatColor.RED + "";
-        return ChatColor.DARK_RED + "";
+        for (Map.Entry<Integer, String> entry : pingColors.entrySet()) {
+            if (ping <= entry.getKey()) {
+                return entry.getValue();
+            }
+        }
+        return tabConfig.getString("ping-colors.default", "&4");
     }
 
     private void startTablistUpdater() {
@@ -78,6 +143,6 @@ public class TablistManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 updateTablist(player);
             }
-        }, 20L, 20L); // Update every second
+        }, 20L, 20L);
     }
 }

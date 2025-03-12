@@ -22,10 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class KitCommand implements CommandExecutor {
     private final QWERTZcore plugin;
@@ -37,7 +34,7 @@ public class KitCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -45,21 +42,21 @@ public class KitCommand implements CommandExecutor {
 
         if (label.equalsIgnoreCase("createkit")) {
             if (args.length != 1) {
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /createkit <kitname>");
+                plugin.getMessageManager().sendInvalidUsage(player, "/createkit <kitname>");
                 plugin.getSoundManager().playSound(player);
                 return true;
             }
             createKit(player, args[0]);
         } else if (label.equalsIgnoreCase("kit")) {
             if (args.length != 2) {
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /kit <kitname> <player|alive|dead|all>");
+                plugin.getMessageManager().sendInvalidUsage(player, "/kit <kitname> <player|alive|dead|all>");
                 plugin.getSoundManager().playSound(player);
                 return true;
             }
             giveKit(player, args[0], args[1]);
         } else if (label.equalsIgnoreCase("delkit")) {
             if (args.length != 1) {
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /delkit <kitname>");
+                plugin.getMessageManager().sendInvalidUsage(player, "/delkit <kitname>");
                 plugin.getSoundManager().playSound(player);
                 return true;
             }
@@ -88,14 +85,18 @@ public class KitCommand implements CommandExecutor {
         items.add(player.getInventory().getItemInOffHand().clone());
 
         plugin.getConfigManager().saveKit(kitName, items);
-        player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been created!");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", kitName);
+        plugin.getMessageManager().sendMessage(player, "kit.created", localMap);
         plugin.getSoundManager().playSound(player);
     }
 
     private void giveKit(Player sender, String kitName, String target) {
         List<ItemStack> items = plugin.getConfigManager().getKit(kitName);
         if (items == null) {
-            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + "Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " does not exist!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", kitName);
+            plugin.getMessageManager().sendMessage(sender, "kit.nonexistent", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return;
         }
@@ -127,7 +128,7 @@ public class KitCommand implements CommandExecutor {
                 if (targetPlayer != null) {
                     targetPlayers.add(targetPlayer);
                 } else {
-                    sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Player " + plugin.getConfigManager().getColor("colorPrimary") + "'" + target + "'" + plugin.getConfigManager().getColor("colorError") + " not found!");
+                    plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return;
                 }
@@ -158,34 +159,44 @@ public class KitCommand implements CommandExecutor {
             if (items.size() > 40) {
                 targetPlayer.getInventory().setItemInOffHand(items.get(40) != null ? items.get(40).clone() : null);
             }
-
-            targetPlayer.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " You have received the kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + "!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", kitName);
+            plugin.getMessageManager().sendMessage(targetPlayer, "kit.received", localMap);
             plugin.getSoundManager().playSound(targetPlayer);
         }
-
-        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorSuccess") + " has been given to " + plugin.getConfigManager().getColor("colorPrimary") + targetPlayers.size() + plugin.getConfigManager().getColor("colorSuccess") + " players!");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", kitName);
+        localMap.put("%amount%", String.valueOf(targetPlayers.size()));
+        plugin.getMessageManager().broadcastMessage("kit.broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
     }
 
     private void deleteKit(Player player, String kitName) {
         if (plugin.getConfigManager().getKit(kitName) == null) {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " does not exist.");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", kitName);
+            plugin.getMessageManager().sendMessage(player, "kit.nonexistent", localMap);
             plugin.getSoundManager().playSound(player);
             return;
         }
 
         plugin.getConfigManager().deleteKit(kitName);
-        player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Kit " + plugin.getConfigManager().getColor("colorPrimary") + "'" + kitName + "'" + plugin.getConfigManager().getColor("colorError") + " has been deleted.");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", kitName);
+        plugin.getMessageManager().sendMessage(player, "kit.deleted", localMap);
         plugin.getSoundManager().playSound(player);
     }
 
     private void listKits(Player player) {
         Set<String> kitNames = plugin.getConfigManager().getKitNames();
         if (kitNames.isEmpty()) {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " There are no kits available.");
+            plugin.getMessageManager().sendMessage(player, "kit.no-kits");
             plugin.getSoundManager().playSound(player);
         } else {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Available kits: " + plugin.getConfigManager().getColor("colorPrimary") + String.join(", ", kitNames));
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%list%", String.join(", ", kitNames));
+
+            plugin.getMessageManager().sendMessage(player, "kit.list", localMap);
             plugin.getSoundManager().playSound(player);
         }
     }

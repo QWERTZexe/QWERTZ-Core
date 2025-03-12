@@ -19,6 +19,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 public class ChatMuteCommand implements CommandExecutor {
 
@@ -33,22 +36,18 @@ public class ChatMuteCommand implements CommandExecutor {
         boolean isMuting = label.equalsIgnoreCase("mutechat");
         if (((Boolean) plugin.getConfigManager().get("chat") == isMuting)) {
             plugin.getConfigManager().set("chat", !isMuting);
-
-            String message = String.format("%s %sChat has been %s%s",
-                    QWERTZcore.CORE_ICON,
-                    plugin.getConfigManager().getColor("colorPrimary"),
-                    isMuting ? plugin.getConfigManager().getColor("colorDead") + "muted" : plugin.getConfigManager().getColor("colorAlive") + "unmuted",
-                    plugin.getConfigManager().getColor("colorPrimary") + "!");
-            plugin.getMessageManager().broadcastMessage(message);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%state%", isMuting ? "muted" : "unmuted");
+            localMap.put("%stateColor%", isMuting ? "%colorDead%" : "%colorAlive%");
+            plugin.getMessageManager().broadcastMessage("chatmute.broadcast", localMap);
             plugin.getSoundManager().broadcastConfigSound();
             return true;
         }
         else {
-            if (isMuting) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Chat is already muted!");
-            } else {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Chat is already unmuted!");
-            }
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%state%", isMuting ? "muted" : "unmuted");
+
+            plugin.getMessageManager().sendMessage((Player) sender, "chatmute.is-already", localMap);
         }
         return true;
     }

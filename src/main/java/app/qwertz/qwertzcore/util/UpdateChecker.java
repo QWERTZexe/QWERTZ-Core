@@ -80,8 +80,8 @@ public class UpdateChecker {
 
     public void notifyPlayer(Player player) {
         if (updateAvailable) {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " A new version of " + ChatColor.GOLD + ChatColor.BOLD + "QWERTZ Core" + plugin.getConfigManager().getColor("colorPrimary") + " is available: " + plugin.getConfigManager().getColor("colorTertiary") + latestVersion);
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " Download it from: " + plugin.getConfigManager().getColor("colorTertiary") + ChatColor.UNDERLINE + "https://modrinth.com/plugin/qwertz-core/version/" + latestVersion);
+            player.sendMessage(QWERTZcore.CORE_ICON + "§6 A new version of " + ChatColor.GOLD + ChatColor.BOLD + "QWERTZ Core §6is available: " + ChatColor.AQUA + latestVersion);
+            player.sendMessage(QWERTZcore.CORE_ICON + "§6 Download it from: " + ChatColor.AQUA + ChatColor.UNDERLINE + "https://modrinth.com/plugin/qwertz-core/version/" + latestVersion);
         }
     }
 }

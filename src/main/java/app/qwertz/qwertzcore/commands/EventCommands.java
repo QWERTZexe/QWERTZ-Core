@@ -26,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -79,20 +80,22 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleRevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /revive <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/revive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
+            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if  (!eventManager.revivePlayer(target, (Player) sender)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already alive!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%player%", target.getName());
+            plugin.getMessageManager().sendMessage((Player) sender, "event.alreadyalive", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -100,20 +103,22 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleUnrevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /unrevive <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/unrevive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found!");
+            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if (!eventManager.unrevivePlayer(target)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + target.getName() + " is already dead!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%player%", target.getName());
+            plugin.getMessageManager().sendMessage((Player) sender, "event.alreadydead", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -121,13 +126,13 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleReviveAll(CommandSender sender) {
         eventManager.reviveAll((Player) sender);
-        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "All players have been revived!");
+        plugin.getMessageManager().broadcastMessage("event.revivedall");
         return true;
     }
 
     private boolean handleUnReviveAll(CommandSender sender) {
         eventManager.unReviveAll();
-        sender.sendMessage(plugin.getConfigManager().getColor("colorDead") + "All players have been unrevived!");
+        plugin.getMessageManager().broadcastMessage("event.unrevivedall");
         return true;
     }
 
@@ -139,10 +144,12 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (aliveList.isEmpty()) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no alive players!");
+            plugin.getMessageManager().sendMessage((Player) sender, "event.noalive");
             plugin.getSoundManager().playSoundToSender(sender);
         } else {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorAlive") + "Alive players: " + aliveList);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%list%", aliveList);
+            plugin.getMessageManager().sendMessage((Player) sender, "event.listalive", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -156,10 +163,12 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (deadList.isEmpty()) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "There are no dead players!");
+            plugin.getMessageManager().sendMessage((Player) sender, "event.nodead");
             plugin.getSoundManager().playSoundToSender(sender);
         } else {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorDead") + "Dead players: " + deadList);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%list%", deadList);
+            plugin.getMessageManager().sendMessage((Player) sender, "event.listdead", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -167,14 +176,16 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleGive(CommandSender sender, String[] args, boolean isDead) {
         if (args.length < 1 || args.length > 3) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Material material = Material.matchMaterial(args[0]);
         if (material == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid item: " + args[0]);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%item%", args[0]);
+            plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-item", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -184,18 +195,23 @@ public class EventCommands implements CommandExecutor {
             try {
                 amount = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid amount: " + args[1]);
+                HashMap<String, String> localMap = new HashMap<>();
+                localMap.put("%amount%", args[1]);
+                plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-amount", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
         }
 
+        // Data will be removed from command soon
+        @Deprecated(since = "2.0", forRemoval = true)
         short data = 0;
         if (args.length == 3) {
             try {
                 data = Short.parseShort(args[2]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid data value: " + args[2]);
+                // dont use new system here, will be removed soon anyways
+                sender.sendMessage("§cInvalid data value: " + args[2]);
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
@@ -212,30 +228,24 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = isDead ? "dead" : "alive";
-        String playerTypeColor = isDead ? plugin.getConfigManager().getColor("colorDead") : plugin.getConfigManager().getColor("colorAlive");
+        String playerTypeColor = isDead ? "%colorDead%" : "%colorAlive%";
         String itemName = itemStack.getType().toString().toLowerCase().replace("_", " ");
 
-        String message = String.format("%s %s%d %s%s %splayers have received %s%d %s%s",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                playersAffected,
-                playerTypeColor,
-                playerType,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                plugin.getConfigManager().getColor("colorPrimary"),
-                itemStack.getAmount(),
-                plugin.getConfigManager().getColor("colorPrimary"),
-                itemName);
-
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%affected%", String.valueOf(playersAffected));
+        localMap.put("%type%", playerType);
+        localMap.put("%typeColor%", playerTypeColor);
+        localMap.put("%amount%", String.valueOf(amount));
+        localMap.put("%item%", itemName);
         // Broadcast the message to all players
-        plugin.getMessageManager().broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage("event.give-broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
     private boolean handleTeleport(CommandSender sender, boolean isDead, boolean filter) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be executed by a player!");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -257,39 +267,29 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = isDead ? "dead" : "alive";
-        String playerTypeColor = isDead ? plugin.getConfigManager().getColor("colorDead") : plugin.getConfigManager().getColor("colorAlive");
-        String broadcastMessage = "";
+        String playerTypeColor = isDead ? "%colorDead%" : "%colorAlive%";
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", executor.getName());
+        plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-item", localMap);
         if (filter) {
-            // Broadcast a message to all players
-            broadcastMessage = String.format("%s %s%s %steleported all %s%s %splayers to their location!",
-                    QWERTZcore.CORE_ICON,
-                    plugin.getConfigManager().getColor("colorPrimary"),
-                    executor.getName(),
-                    plugin.getConfigManager().getColor("colorSuccess"),
-                    playerTypeColor,
-                    playerType,
-                    plugin.getConfigManager().getColor("colorSuccess"));
-            plugin.getSoundManager().broadcastConfigSound();
+            localMap.put("%typeColor%", playerTypeColor);
+            localMap.put("%type%", playerType);
+            plugin.getMessageManager().broadcastMessage("event.tp-group", localMap);
         } else {
-            broadcastMessage = String.format("%s %s%s %steleported all players to their location!",
-                    QWERTZcore.CORE_ICON,
-                    plugin.getConfigManager().getColor("colorPrimary"),
-                    executor.getName(),
-                    plugin.getConfigManager().getColor("colorSuccess"));
+            plugin.getMessageManager().broadcastMessage("event.tpall", localMap);
         }
-        plugin.getMessageManager().broadcastMessage(broadcastMessage);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;
     }
     private boolean handleTpHere(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /tphere <player>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/tphere <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -298,31 +298,25 @@ public class EventCommands implements CommandExecutor {
         Player targetPlayer = Bukkit.getPlayer(args[0]);
 
         if (targetPlayer == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (targetPlayer == commandSender) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You can't teleport yourself to yourself!");
+            plugin.getMessageManager().sendMessage((Player) sender, "event.canttptoyourself");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         targetPlayer.teleport(commandSender.getLocation());
-
-        String message = String.format("%s %s%s %shas been teleported to you!",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorPrimary"), targetPlayer.getName(),
-                plugin.getConfigManager().getColor("colorSuccess"));
-
-        commandSender.sendMessage(message);
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%name%", targetPlayer.getName());
+        HashMap<String, String> localMap2 = new HashMap<>();
+        localMap2.put("%name%", commandSender.getName());
+        plugin.getMessageManager().sendMessage(commandSender, "event.tphere-sender-msg", localMap);
         plugin.getSoundManager().playSound(commandSender);
-        String targetmessage = String.format("%s %sYou have been teleported to %s%s%s!",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                plugin.getConfigManager().getColor("colorPrimary"), commandSender.getName(), plugin.getConfigManager().getColor("colorSuccess"));
-        targetPlayer.sendMessage(targetmessage);
+        plugin.getMessageManager().sendMessage(targetPlayer, "event.tphere-target-msg", localMap2);
         plugin.getSoundManager().playSound(targetPlayer);
 
         return true;
@@ -334,12 +328,12 @@ public class EventCommands implements CommandExecutor {
             try {
                 seconds = Integer.parseInt(args[0]);
                 if (seconds <= 0 || seconds > 60) {
-                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Please specify a number of seconds between 1 and 60.");
+                    plugin.getMessageManager().sendMessage((Player) sender, "event.revivelast.no-number");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } catch (NumberFormatException e) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number of seconds. Using default of 30 seconds.");
+                plugin.getMessageManager().sendMessage((Player) sender, "event.revivelast.invalid-number");
                 plugin.getSoundManager().playSoundToSender(sender);
                 seconds = 30;
             }
@@ -353,16 +347,11 @@ public class EventCommands implements CommandExecutor {
             revivedCount++;
         }
 
-        String message = String.format("%s %s%d %splayers who died in the last %s%d %sseconds have been revived",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                revivedCount,
-                plugin.getConfigManager().getColor("colorPrimary"),
-                plugin.getConfigManager().getColor("colorSuccess"),
-                seconds,
-                plugin.getConfigManager().getColor("colorPrimary"));
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%amount%", String.valueOf(revivedCount));
+        localMap.put("%seconds%", String.valueOf(seconds));
 
-        plugin.getMessageManager().broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage("event.revivelast.broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
@@ -379,17 +368,13 @@ public class EventCommands implements CommandExecutor {
         }
 
         String playerType = healAlive ? "alive" : "dead";
-        String playerTypeColor = healAlive ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead");
+        String playerTypeColor = healAlive ? "%colorAlive%" : "%colorDead%";
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%amount%", String.valueOf(healedCount));
+        localMap.put("%type%", playerType);
+        localMap.put("%typeColor%", playerTypeColor);
 
-        String message = String.format("%s %s%d %s%s %splayers have been healed",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                healedCount,
-                playerTypeColor,
-                playerType,
-                plugin.getConfigManager().getColor("colorSuccess"));
-
-        plugin.getMessageManager().broadcastMessage(message);
+        plugin.getMessageManager().broadcastMessage("event.heal-broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;

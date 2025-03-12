@@ -43,7 +43,9 @@ public class EventManager {
                 target.teleport(executor.getLocation());
             }
             deathTimes.remove(targetUUID);
-            broadcastMessage(plugin.getConfigManager().getColor("colorAlive") + target.getName() + " has been revived!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", target.getName());
+            broadcastMessage("event.revive", localMap);
             return true;
         }
         else {
@@ -60,7 +62,9 @@ public class EventManager {
             if (plugin.getConfigManager().getTpOnUnrevive()) {
                 target.teleport(plugin.getConfigManager().getSpawnLocation());
             }
-            broadcastMessage(plugin.getConfigManager().getColor("colorDead") + target.getName() + " has been marked as dead!");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", target.getName());
+            broadcastMessage("event.unrevive", localMap);
             return true;
         }
         else {
@@ -79,10 +83,9 @@ public class EventManager {
         if (alivePlayers.remove(playerUUID)) {
             deathTimes.put(playerUUID, System.currentTimeMillis());
             deadPlayers.add(playerUUID);
-            broadcastMessage(String.format("%s%s %sDIED!",
-                    plugin.getConfigManager().getColor("colorDead"), player.getName(),
-                    ChatColor.DARK_RED));
-            plugin.getSoundManager().broadcastConfigSound();
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", player.getName());
+            broadcastMessage("chatting.death", localMap);
         } else if (!deadPlayers.contains(playerUUID)) {
             // If the player wasn't in either list (e.g., new player who died immediately)
             deadPlayers.add(playerUUID);
@@ -101,7 +104,6 @@ public class EventManager {
             alivePlayers.add(uuid);
         }
         deadPlayers.clear();
-        broadcastMessage(plugin.getConfigManager().getColor("colorAlive") + "All players have been revived!");
     }
 
     public void unReviveAll() {
@@ -113,7 +115,6 @@ public class EventManager {
             deadPlayers.add(uuid);
         }
         alivePlayers.clear();
-        broadcastMessage(plugin.getConfigManager().getColor("colorDead") + "All players have been unrevived!");
     }
 
     public boolean isPlayerDead(Player player) {
@@ -178,8 +179,8 @@ public class EventManager {
         return recentlyDead;
     }
 
-    private void broadcastMessage(String message) {
-        plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + " " + message);
+    private void broadcastMessage(String message, HashMap<String, String> localMap) {
+        plugin.getMessageManager().broadcastMessage(message, localMap);
         plugin.getSoundManager().broadcastConfigSound();
     }
 }

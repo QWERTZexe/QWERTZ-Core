@@ -20,7 +20,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +46,7 @@ public class ChatReviveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /chatrevive <math|typer|guess|cancel> [max]");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/chatrevive <math|typer|guess|cancel> [max]");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -55,7 +57,7 @@ public class ChatReviveCommand implements CommandExecutor {
         }
 
         if (activeGame != null && !activeGame.isGameOver()) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "A game is already in progress. Use /chatrevive cancel to end it.");
+            plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.already-going");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -73,14 +75,14 @@ public class ChatReviveCommand implements CommandExecutor {
                     try {
                         max = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
-                        sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format for max value. Using default of 40.");
+                        plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.invalid-number");
                         plugin.getSoundManager().playSoundToSender(sender);
                     }
                 }
                 startGuessGame(max);
                 break;
             default:
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid game type. Use math, typer, or guess.");
+                plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.invalid-game");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
         }
@@ -98,10 +100,10 @@ public class ChatReviveCommand implements CommandExecutor {
 
         String question = String.format("%d %c %d %c %d", num1, op1, num2, op2, num3);
         int answer = evaluateExpression(num1, num2, num3, op1, op2);
-
-        broadcastMessage(String.format("%s %sMath Question: %s%s",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), question));
-        broadcastMessage(plugin.getConfigManager().getColor("colorPrimary") + "Type the correct answer in chat!");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%question%", question);
+        plugin.getMessageManager().broadcastMessage("chatrevive.math-question", localMap);
+        plugin.getMessageManager().broadcastMessage("chatrevive.math-howto");
         plugin.getSoundManager().broadcastConfigSound();
 
         activeGame = new ChatListener(plugin, answer, "math", this);
@@ -115,10 +117,9 @@ public class ChatReviveCommand implements CommandExecutor {
             sentence.append(WORDS.get(random.nextInt(WORDS.size()))).append(" ");
         }
         String finalSentence = sentence.toString().trim();
-
-        broadcastMessage(String.format("%s %sType this sentence: %s%s",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), finalSentence));
-
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%sentence%", finalSentence);
+        plugin.getMessageManager().broadcastMessage("chatrevive.typer-question", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         activeGame = new ChatListener(plugin, finalSentence, "typer", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -127,9 +128,9 @@ public class ChatReviveCommand implements CommandExecutor {
     private void startGuessGame(int max) {
         int target = random.nextInt(max) + 1;
 
-        broadcastMessage(String.format("%s %sGuess a number between %s1 %sand %s%d",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), max));
-
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%number%", String.valueOf(max));
+        plugin.getMessageManager().broadcastMessage("chatrevive.guess-question", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         activeGame = new ChatListener(plugin, target, "guess", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -160,18 +161,14 @@ public class ChatReviveCommand implements CommandExecutor {
         }
     }
 
-    private void broadcastMessage(String message) {
-        this.plugin.getMessageManager().broadcastMessage(message);
-    }
-
     private void cancelGame(CommandSender sender) {
         if (activeGame != null) {
             activeGame.cancelGame();
             activeGame = null;
-            broadcastMessage(plugin.getConfigManager().getColor("colorPrimary") + "The chat revival game has been cancelled.");
+            plugin.getMessageManager().broadcastMessage("chatrevive.cancelled");
             plugin.getSoundManager().broadcastConfigSound();
         } else {
-            sender.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " There is no active chat revival game to cancel.");
+            plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.no-active-game");
             plugin.getSoundManager().playSoundToSender(sender);
         }
     }

@@ -20,7 +20,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
 
 public class EventCountdownCommand implements CommandExecutor {
 
@@ -35,7 +38,7 @@ public class EventCountdownCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /eventcountdown <time|cancel>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/eventcountdown <time|cancel>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -60,7 +63,8 @@ public class EventCountdownCommand implements CommandExecutor {
         } else if (timeArg.matches("\\d+")) {
             minutes = Integer.parseInt(timeArg);
         } else {
-            throw new IllegalArgumentException("Invalid time format. Use: <number>[s|sec|m|min] or just <number> for minutes.");
+            plugin.getMessageManager().sendMessage((Player) sender, "eventcountdown.invalid-time");
+            return true;
         }
 
 
@@ -72,7 +76,7 @@ public class EventCountdownCommand implements CommandExecutor {
             }
             cancelCountdown();
             plugin.getScoreboardManager().updateCountdown("...");
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid time. Please specify a time between 1 second and 60 minutes.");
+            plugin.getMessageManager().sendMessage((Player) sender, "eventcountdown.out-of-range");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -82,7 +86,9 @@ public class EventCountdownCommand implements CommandExecutor {
         }
 
         startCountdown();
-        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Event countdown started for " + formatTime(remainingSeconds));
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%time%", formatTime(remainingSeconds));
+        plugin.getMessageManager().broadcastMessage("eventcountdown.started-countdown", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
@@ -92,7 +98,10 @@ public class EventCountdownCommand implements CommandExecutor {
             @Override
             public void run() {
                 if (remainingSeconds <= 0) {
-                    plugin.getMessageManager().broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Event " + plugin.getConfigManager().getEventName() + " is starting now!");
+
+                    HashMap<String, String> localMap = new HashMap<>();
+                    localMap.put("%event%", plugin.getConfigManager().getEventName());
+                    plugin.getMessageManager().broadcastMessage("eventcountdown.starting-now", localMap);
                     plugin.getSoundManager().broadcastConfigSound();
                     updateScoreboard(0);
                     this.cancel();
@@ -115,8 +124,10 @@ public class EventCountdownCommand implements CommandExecutor {
 
     private void broadcastCountdown() {
         String timeLeft = formatTime(remainingSeconds);
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " Event " + plugin.getConfigManager().getEventName() +
-                " starts in " + ChatColor.RED + timeLeft + plugin.getConfigManager().getColor("colorPrimary") + "!");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%event%", plugin.getConfigManager().getEventName());
+        localMap.put("%time%", timeLeft);
+        plugin.getMessageManager().broadcastMessage("eventcountdown.broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
     }
 

@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class EventBlockCommand implements CommandExecutor {
     private final QWERTZcore plugin;
@@ -37,15 +38,17 @@ public class EventBlockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players!");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
-
+        HashMap<String, String> localMap = new HashMap<>();
+        String types = Arrays.toString(QWERTZcoreBlockType.values());
+        localMap.put("%types%", types);
         Player player = (Player) sender;
 
         if (args.length < 1) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /eventblock <blocktype> [material]");
-            player.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "Available block types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            plugin.getMessageManager().sendInvalidUsage(player, "/eventblock <blocktype> [material]");
+            plugin.getMessageManager().sendMessage(player, "specialblocks.info", localMap);
             plugin.getSoundManager().playSound(player);
             return true;
         }
@@ -56,14 +59,14 @@ public class EventBlockCommand implements CommandExecutor {
         if (args.length > 1) {
             material = Material.matchMaterial(args[1]);
             if (material == null || !material.isBlock()) {
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid material specified!");
+                plugin.getMessageManager().sendMessage(player, "specialblocks.invalid-material");
                 plugin.getSoundManager().playSound(player);
                 return true;
             }
         }
 
         if (!plugin.getBlockManager().isValidBlockType(blockType)) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid block type! " + plugin.getConfigManager().getColor("colorPrimary") + "Available types: " + Arrays.toString(QWERTZcoreBlockType.values()));
+            plugin.getMessageManager().sendMessage(player, "specialblocks.invalid-type", localMap);
             plugin.getSoundManager().playSound(player);
             return true;
         }
@@ -77,7 +80,11 @@ public class EventBlockCommand implements CommandExecutor {
 
             player.getInventory().addItem(item);
             plugin.getSoundManager().playSound(player);
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " You have received a " + ChatColor.GOLD + "QWERTZ Core " + plugin.getConfigManager().getColor("colorPrimary") + blockType + plugin.getConfigManager().getColor("colorSuccess") + " with material " + plugin.getConfigManager().getColor("colorPrimary") + item.getType().name() + plugin.getConfigManager().getColor("colorSuccess") + "!");
+            HashMap<String, String> localMap2 = new HashMap<>();
+            localMap2.put("%blockType%", blockType);
+            localMap2.put("%material%", item.getType().name());
+            plugin.getMessageManager().sendMessage(player, "specialblocks.receive", localMap2);
+
         }
 
         return true;

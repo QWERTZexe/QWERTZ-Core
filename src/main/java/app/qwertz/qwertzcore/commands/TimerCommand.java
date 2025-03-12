@@ -25,6 +25,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
+
 public class TimerCommand implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -37,14 +39,14 @@ public class TimerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /timer <seconds> or /timer cancel");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/timer <seconds> or /timer cancel");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
             cancelTimer();
-            sender.sendMessage(plugin.getConfigManager().getColor("colorPrimary") + "Timer cancelled.");
+            plugin.getMessageManager().sendMessage((Player) sender, "timer.cancelled");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -52,14 +54,14 @@ public class TimerCommand implements CommandExecutor {
         try {
             int seconds = Integer.parseInt(args[0]);
             if (seconds <= 0) {
-                sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Please provide a positive number of seconds.");
+                plugin.getMessageManager().sendMessage((Player) sender, "timer.no-number");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
             startTimer(seconds);
             return true;
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid number format. Please provide a valid number of seconds.");
+            plugin.getMessageManager().sendMessage((Player) sender, "timer.invalid-number");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -67,9 +69,8 @@ public class TimerCommand implements CommandExecutor {
 
     private void startTimer(int seconds) {
         cancelTimer(); // Cancel any existing timer
+        String startMessage = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("timer.started"), new HashMap<>());
 
-        String startMessage = String.format("%s %s%s%sA timer just got started!",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), plugin.getConfigManager().getColor("colorPrimary"));
         broadcastMessage(startMessage);
         broadcastActionBar(startMessage);
 
@@ -79,17 +80,20 @@ public class TimerCommand implements CommandExecutor {
             @Override
             public void run() {
                 if (timeLeft <= 0) {
-                    broadcastMessage(plugin.getConfigManager().getColor("colorSecondary") + "Time's up!");
-                    broadcastActionBar(plugin.getConfigManager().getColor("colorSecondary") + "Time's up!");
+                    String msg = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("timer.time-up"), new HashMap<>());
+                    broadcastMessage(msg);
+                    broadcastActionBar(msg);
                     currentTimer = null;
                     cancel();
                     return;
                 }
 
-                String message = String.format("%s %s%d %sseconds",
-                        QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorSuccess"), timeLeft, plugin.getConfigManager().getColor("colorPrimary"));
-
-                Bukkit.broadcastMessage(message);
+                HashMap<String, String> localMap = new HashMap<>();
+                localMap.put("%timeLeft%", String.valueOf(timeLeft));
+                String message = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("timer.countdown"), localMap);
+                if ((Boolean) plugin.getConfigManager().get("chatTimer")) {
+                    Bukkit.broadcastMessage(message);
+                }
                 broadcastActionBar(message);
 
                 timeLeft--;
@@ -101,7 +105,8 @@ public class TimerCommand implements CommandExecutor {
         if (currentTimer != null) {
             currentTimer.cancel();
             currentTimer = null;
-            broadcastMessage(plugin.getConfigManager().getColor("colorPrimary") + "Timer has been cancelled.");
+            plugin.getMessageManager().broadcastMessage("timer.broadcast-cancel");
+            plugin.getSoundManager().broadcastConfigSound();
         }
     }
 

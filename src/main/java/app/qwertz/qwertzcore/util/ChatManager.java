@@ -22,6 +22,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import javax.print.attribute.HashAttributeSet;
+import java.util.HashMap;
+
 public class ChatManager implements Listener {
     private final QWERTZcore plugin;
 
@@ -33,7 +36,7 @@ public class ChatManager implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (!plugin.getConfigManager().getChat() && !event.getPlayer().hasPermission("qwertzcore.chat.bypass")) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorError") + " Chat is disabled!");
+            plugin.getMessageManager().sendMessage(event.getPlayer(), "chatting.disabled");
             plugin.getSoundManager().playSound(event.getPlayer());
             return;
         }
@@ -44,25 +47,12 @@ public class ChatManager implements Listener {
             String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
             String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
             String message = event.getMessage();
-            String formattedMessage = "";
-            if ((Boolean) plugin.getConfigManager().get("forceWhiteMessages")) {
-                formattedMessage = String.format("%s%s%s:§r %s",
-                        prefix,
-                        player.getName(),
-                        suffix,
-                        message
-                );
-            }
-            else {
-                formattedMessage = String.format("%s%s%s: %s",
-                        prefix,
-                        player.getName(),
-                        suffix,
-                        message
-                );
-            }
-
-            plugin.getServer().broadcastMessage(formattedMessage);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", player.getName());
+            localMap.put("%prefix%", prefix);
+            localMap.put("%suffix%", suffix);
+            localMap.put("%message%", message);
+            plugin.getMessageManager().broadcastMessage("chatting.chat", localMap);
         }
     }
 }

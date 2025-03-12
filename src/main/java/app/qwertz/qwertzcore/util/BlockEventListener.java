@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class BlockEventListener implements Listener {
@@ -53,7 +54,13 @@ public class BlockEventListener implements Listener {
                 if (blockManager.isValidBlockType(blockType)) {
                     blockManager.setSpecialBlock(block.getLocation(), blockType, block.getType());
                     if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                        player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " Placed a " + plugin.getConfigManager().getColor("colorSecondary") + blockType + plugin.getConfigManager().getColor("colorPrimary") + " at X: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockX() + plugin.getConfigManager().getColor("colorPrimary") + " Y: " +  plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockY() + plugin.getConfigManager().getColor("colorPrimary") + " Z: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockZ() + plugin.getConfigManager().getColor("colorPrimary") + " WORLD: " + plugin.getConfigManager().getColor("colorSecondary") + block.getWorld().getName());
+                        HashMap<String, String> localMap = new HashMap<>();
+                        localMap.put("%blockType%", blockType);
+                        localMap.put("%x%", String.valueOf(block.getLocation().getBlockX()));
+                        localMap.put("%y%", String.valueOf(block.getLocation().getBlockY()));
+                        localMap.put("%z%", String.valueOf(block.getLocation().getBlockZ()));
+                        localMap.put("%world%", block.getWorld().getName());
+                        plugin.getMessageManager().sendMessage(player, "specialblocks.place", localMap);
                     }
                 }
             }
@@ -76,7 +83,12 @@ public class BlockEventListener implements Listener {
                     // The block was successfully broken
                     blockManager.removeSpecialBlock(block.getLocation());
                     if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                        event.getPlayer().sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorDead") + " Removed special block at X: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockX() + plugin.getConfigManager().getColor("colorDead") +  " Y: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockY() + plugin.getConfigManager().getColor("colorDead") + " Z: " + plugin.getConfigManager().getColor("colorSecondary") + block.getLocation().getBlockZ() + plugin.getConfigManager().getColor("colorDead") + " WORLD: " + plugin.getConfigManager().getColor("colorSecondary") + Objects.requireNonNull(block.getLocation().getWorld()).getName());
+                        HashMap<String, String> localMap = new HashMap<>();
+                        localMap.put("%x%", String.valueOf(block.getLocation().getBlockX()));
+                        localMap.put("%y%", String.valueOf(block.getLocation().getBlockY()));
+                        localMap.put("%z%", String.valueOf(block.getLocation().getBlockZ()));
+                        localMap.put("%world%", block.getWorld().getName());
+                        plugin.getMessageManager().sendMessage(event.getPlayer(), "specialblocks.remove", localMap);
                     }
                 }
             });

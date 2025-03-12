@@ -33,12 +33,12 @@ public class PollVoteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /pollvote <option>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/pollvote <option>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -47,7 +47,7 @@ public class PollVoteCommand implements CommandExecutor {
             int option = Integer.parseInt(args[0]);
             pollCommand.vote((Player) sender, option);
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid option. Please provide a number.");
+            plugin.getMessageManager().sendMessage((Player) sender, "poll.invalid-option");
             plugin.getSoundManager().playSoundToSender(sender);
         }
 

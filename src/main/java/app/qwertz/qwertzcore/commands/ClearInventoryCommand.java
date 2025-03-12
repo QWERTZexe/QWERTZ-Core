@@ -22,6 +22,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class ClearInventoryCommand implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -39,24 +41,19 @@ public class ClearInventoryCommand implements CommandExecutor {
             boolean isDead = plugin.getEventManager().isPlayerDead(player);
             if ((clearAlive && !isDead) || (!clearAlive && isDead)) {
                 player.getInventory().clear();
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Your inventory has been cleared by an admin.");
+                plugin.getMessageManager().sendMessage(player, "clearinv.got-cleared");
                 plugin.getSoundManager().playSound(player);
                 clearedCount++;
             }
         }
 
         String playerType = clearAlive ? "alive" : "dead";
-        String playerTypeColor = clearAlive ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead");
-
-        String message = String.format("%s %s%d %s%s %splayers have had their inventories cleared",
-                QWERTZcore.CORE_ICON,
-                plugin.getConfigManager().getColor("colorSuccess"),
-                clearedCount,
-                playerTypeColor,
-                playerType,
-                plugin.getConfigManager().getColor("colorSuccess"));
-
-        plugin.getMessageManager().broadcastMessage(message);
+        String playerTypeColor = clearAlive ? "%colorAlive%" : "%colorDead%";
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%amount%", String.valueOf(clearedCount));
+        localMap.put("%group%", playerType);
+        localMap.put("%groupColor%", playerTypeColor);
+        plugin.getMessageManager().broadcastMessage("clearinv.broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;

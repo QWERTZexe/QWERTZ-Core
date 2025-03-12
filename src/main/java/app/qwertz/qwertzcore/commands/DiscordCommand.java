@@ -25,6 +25,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class DiscordCommand implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -38,14 +40,14 @@ public class DiscordCommand implements CommandExecutor {
         String discordLink = plugin.getConfigManager().getDiscordLink();
 
         if (discordLink == null || discordLink.isEmpty()) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Discord link is not set in the configuration.");
+            plugin.getMessageManager().sendMessage((Player) sender, "discord.no-discord");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         TextComponent message = new TextComponent(QWERTZcore.CORE_ICON + " ");
 
-        TextComponent clickHere = new TextComponent("CLICK HERE TO JOIN OUR DISCORD!");
+        TextComponent clickHere = new TextComponent(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("discord.clickhere"), new HashMap<>()));
 
         // Split the message into text and link parts
         String[] parts = discordLink.split(" ");
@@ -56,7 +58,7 @@ public class DiscordCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
+            plugin.getMessageManager().sendMessage((Player) sender, "discord.invalid-url");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -65,7 +67,7 @@ public class DiscordCommand implements CommandExecutor {
         clickHere.setBold(true);
         clickHere.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
         clickHere.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new ComponentBuilder("Click to join our Discord server!").create()));
+                new ComponentBuilder(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("discord.hover"), new HashMap<>())).create()));
 
         message.addExtra(clickHere);
 

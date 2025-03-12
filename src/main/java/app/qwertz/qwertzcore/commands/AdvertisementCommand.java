@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import com.ibm.icu.impl.locale.XLocaleMatcher;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,14 +61,14 @@ public class AdvertisementCommand implements CommandExecutor {
 
     private boolean handleAdCommand(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /ad <platform>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/ad <platform>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         String platform = args[0].toLowerCase();
         if (!platformColors.containsKey(platform)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
+            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-platform");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -74,7 +76,7 @@ public class AdvertisementCommand implements CommandExecutor {
         // Get the advertisement message
         String adMessage = (String) plugin.getConfigManager().get(platform);
         if (adMessage == null || adMessage.isEmpty()) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "No advertisement set for this platform.");
+            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.no-ad-set");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -88,7 +90,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "The last part of your advertisement must be a valid URL.");
+            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-url");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -129,7 +131,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
     private boolean handleSetAdCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /setad <platform> <message>");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender,  "/setad <platform> <message>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -138,7 +140,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Validate platform
         if (!platformColors.containsKey(platform)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other");
+            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-platform");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -146,8 +148,9 @@ public class AdvertisementCommand implements CommandExecutor {
         // Join all remaining arguments as the message
         String message = String.join(" ", args).substring(platform.length() + 1);
         plugin.getConfigManager().set(platform, message);
-
-        sender.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "Advertisement for " + platform + " has been set.");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%platform%", platform);
+        plugin.getMessageManager().sendMessage((Player) sender, "advertisement.setad-success", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }

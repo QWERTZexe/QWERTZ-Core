@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.HashMap;
+
 public class PlayerEventListener implements Listener {
     private final EventManager eventManager;
     private final ConfigManager configManager;
@@ -63,11 +65,11 @@ public class PlayerEventListener implements Listener {
         if (configManager.get("suppressVanilla").equals(true)) {
             int fakeCount = vanishManager.getNonVanishedPlayerCount()-1;
             int newCount = fakeCount + 1;
-            messageManager.broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
-                    configManager.getColor("colorAlive") + " just joined! " + ChatColor.GRAY + "[" +
-                    configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY + " -> " +
-                    configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
-
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", player.getName());
+            localMap.put("%count%", String.valueOf(fakeCount));
+            localMap.put("%newCount%", String.valueOf(newCount));
+            messageManager.broadcastMessage("chatting.join-msg", localMap);
             event.setJoinMessage(null);
         }
     }
@@ -81,10 +83,11 @@ public class PlayerEventListener implements Listener {
         if (configManager.get("suppressVanilla").equals(true)) {
             int fakeCount = vanishManager.getNonVanishedPlayerCount();
             int newCount = fakeCount - 1;
-            messageManager.broadcastMessage(QWERTZcore.CORE_ICON + configManager.getColor("colorPrimary") + " " + event.getPlayer().getName() +
-                     configManager.getColor("colorDead") + " just left us! " + ChatColor.GRAY +
-                    "[" + configManager.getColor("colorTertiary") + fakeCount + ChatColor.GRAY +
-                    " -> " + configManager.getColor("colorTertiary") + newCount + ChatColor.GRAY + "]");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", event.getPlayer().getName());
+            localMap.put("%count%", String.valueOf(fakeCount));
+            localMap.put("%newCount%", String.valueOf(newCount));
+            messageManager.broadcastMessage("chatting.join-msg", localMap);
             event.setQuitMessage(null);
         }
     }

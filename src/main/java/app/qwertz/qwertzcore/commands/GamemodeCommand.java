@@ -21,6 +21,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class GamemodeCommand implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -32,7 +34,7 @@ public class GamemodeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -54,13 +56,13 @@ public class GamemodeCommand implements CommandExecutor {
                 break;
             case "gm":
                 if (args.length == 0) {
-                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /gm <creative|survival|adventure|spectator>");
+                    plugin.getMessageManager().sendInvalidUsage((Player) sender, "/gm <creative|survival|adventure|spectator>");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }
                 targetGameMode = parseGameMode(args[0]);
                 if (targetGameMode == null) {
-                    sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid gamemode. Use creative, survival, adventure, or spectator.");
+                    plugin.getMessageManager().sendMessage((Player) sender, "gamemode.invalid");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }
@@ -70,8 +72,9 @@ public class GamemodeCommand implements CommandExecutor {
         }
 
         player.setGameMode(targetGameMode);
-        player.sendMessage(String.format("%s %sYour gamemode has been set to %s%s%s.",
-                QWERTZcore.CORE_ICON, plugin.getConfigManager().getColor("colorPrimary"), plugin.getConfigManager().getColor("colorSuccess"), targetGameMode.name(), plugin.getConfigManager().getColor("colorPrimary")));
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%gamemode%", targetGameMode.name());
+        plugin.getMessageManager().sendMessage(player, "gamemode.success", localMap);
         plugin.getSoundManager().playSound(player);
         return true;
     }

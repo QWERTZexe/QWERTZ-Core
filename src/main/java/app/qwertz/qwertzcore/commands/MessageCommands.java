@@ -22,6 +22,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class MessageCommands implements CommandExecutor {
 
     private final QWERTZcore plugin;
@@ -33,7 +35,7 @@ public class MessageCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -58,20 +60,22 @@ public class MessageCommands implements CommandExecutor {
 
     private boolean handleMessageCommand(Player sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /message <player> <message>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/message <player> <message>");
             plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         Player recipient = Bukkit.getPlayer(args[0]);
         if (recipient == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Player not found.");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + recipient.getName() + " has disabled private messages.");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", recipient.getName());
+            plugin.getMessageManager().sendMessage(sender, "messaging.cannot-message", localMap);
             plugin.getSoundManager().playSound(sender);
             return true;
         }
@@ -85,19 +89,21 @@ public class MessageCommands implements CommandExecutor {
 
     private boolean handleReplyCommand(Player sender, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /reply <message>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/reply <message>");
             return true;
         }
 
         Player recipient = plugin.getMessageManager().getReplyTarget(sender);
         if (recipient == null) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "You have no one to reply to.");
+            plugin.getMessageManager().sendMessage(sender, "messaging.cannot-reply");
             plugin.getSoundManager().playSound(sender);
             return true;
         }
 
         if (!plugin.getMessageManager().canReceiveMessages(recipient)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + recipient.getName() + " has disabled private messages.");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", recipient.getName());
+            plugin.getMessageManager().sendMessage(sender, "messaging.cannot-message", localMap);
             return true;
         }
 
@@ -111,15 +117,21 @@ public class MessageCommands implements CommandExecutor {
     private boolean handleMessageToggleCommand(Player player) {
         plugin.getMessageManager().toggleMessages(player);
         boolean enabled = plugin.getMessageManager().canReceiveMessages(player);
-        player.sendMessage(QWERTZcore.CORE_ICON + (enabled ? plugin.getConfigManager().getColor("colorAlive") : plugin.getConfigManager().getColor("colorDead")) + " Private messages have been " + (enabled ? "enabled" : "disabled") + "!");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%state%", enabled ? "enabled" : "disabled");
+        localMap.put("%stateColor%", enabled ? "%colorAlive%" : "%colorDead%");
+        plugin.getMessageManager().sendMessage(player, "messaging.togglemsg", localMap);
         plugin.getSoundManager().playSound(player);
         return true;
     }
 
     private void sendPrivateMessage(Player sender, Player recipient, String message) {
-        String formattedMessage = ChatColor.GRAY + "[" + plugin.getConfigManager().getColor("colorPrimary") + sender.getName() + ChatColor.GRAY + " -> " + plugin.getConfigManager().getColor("colorPrimary") + recipient.getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + message;
-        sender.sendMessage(formattedMessage);
-        recipient.sendMessage(formattedMessage);
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%sender%", sender.getName());
+        localMap.put("%recipient%", recipient.getName());
+        localMap.put("%message%", message);
+        plugin.getMessageManager().sendMessage(sender, "messaging.direct-message", localMap);
+        plugin.getMessageManager().sendMessage(recipient, "messaging.direct-message", localMap);
         plugin.getSoundManager().playSound(sender);
         plugin.getSoundManager().playSound(recipient);
         plugin.getMessageManager().setReplyTarget(sender, recipient);

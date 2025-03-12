@@ -37,7 +37,7 @@ public class HideCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -46,7 +46,7 @@ public class HideCommand implements CommandExecutor {
 
 
         if (args.length != 1) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /hide <host|staff|all|off>");
+            plugin.getMessageManager().sendInvalidUsage(player, "/hide <host|staff|all|off>");
             plugin.getSoundManager().playSound(player);
             return true;
         }
@@ -62,7 +62,7 @@ public class HideCommand implements CommandExecutor {
                 setHideMode(player, null);
                 break;
             default:
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid mode. Use host, staff, all, or off.");
+                plugin.getMessageManager().sendMessage(player, "hide.invalid");
                 plugin.getSoundManager().playSound(player);
                 return true;
         }
@@ -75,10 +75,12 @@ public class HideCommand implements CommandExecutor {
         updatePlayerVisibility(player);
 
         if (mode == null) {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " All " + plugin.getConfigManager().getColor("colorSuccess") + "players are now visible to you.");
+            plugin.getMessageManager().sendMessage(player, "hide.off");
             plugin.getSoundManager().playSound(player);
         } else {
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Hide mode set to: " + plugin.getConfigManager().getColor("colorPrimary") + mode);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%mode%", mode);
+            plugin.getMessageManager().sendMessage(player, "hide.on", localMap);
             plugin.getSoundManager().playSound(player);
         }
     }

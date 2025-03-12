@@ -44,18 +44,18 @@ public class PollCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
         if (args.length < 2 || args.length == 3) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Usage: /poll <duration> <question> [<answer1> <answer2>] [answer3] ...");
+            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /poll <duration> <question> [<answer1> <answer2>] [answer3] ...");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (pollActive) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "A poll is already active.");
+            plugin.getMessageManager().sendMessage((Player) sender, "poll.already-active");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -64,7 +64,7 @@ public class PollCommand implements CommandExecutor {
         try {
             duration = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid duration. Please provide a number in seconds.");
+            plugin.getMessageManager().sendMessage((Player) sender, "poll.invalid-duration");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -86,16 +86,21 @@ public class PollCommand implements CommandExecutor {
     }
 
     private void displayPoll() {
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " §lNew poll: " + plugin.getConfigManager().getColor("colorSecondary") + question);
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%question%", question);
+        Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.new-poll"), localMap));
         Bukkit.broadcastMessage("");
         for (int i = 0; i < options.size(); i++) {
-            TextComponent message = new TextComponent(plugin.getConfigManager().getColor("colorSecondary") + (i + 1) + ". " + plugin.getConfigManager().getColor("colorTertiary") + options.get(i));
+            HashMap<String, String> tempMap = new HashMap<>();
+            tempMap.put("%index%", String.valueOf(i + 1));
+            tempMap.put("%option%", options.get(i));
+            TextComponent message = new TextComponent(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.option"), tempMap));
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pollvote " + i));
-            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to vote for this option!").create()));
+            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.hover"), new HashMap<>())).create()));
             Bukkit.spigot().broadcast(message);
         }
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage("§7§oClick to vote!");
+        Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.click-to-vote"), new HashMap<>()));
         Bukkit.broadcastMessage("");
         plugin.getSoundManager().broadcastConfigSound();
     }
@@ -103,7 +108,7 @@ public class PollCommand implements CommandExecutor {
     private void endPoll() {
         pollActive = false;
         plugin.getSoundManager().broadcastConfigSound();
-        Bukkit.broadcastMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorPrimary") + " §lPoll ended! " + plugin.getConfigManager().getColor("colorPrimary") + "Results:");
+        Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.result-title"), new HashMap<>()));
         Bukkit.broadcastMessage("");
 
         Map<Integer, Long> voteCount = votes.values().stream()
@@ -116,26 +121,32 @@ public class PollCommand implements CommandExecutor {
         for (Map.Entry<Integer, Long> entry : sortedResults) {
             int optionIndex = entry.getKey();
             long count = entry.getValue();
-            Bukkit.broadcastMessage(plugin.getConfigManager().getColor("colorSecondary") + (optionIndex + 1) + ". " + plugin.getConfigManager().getColor("colorTertiary") + options.get(optionIndex) + ": " + plugin.getConfigManager().getColor("colorPrimary") + count + " votes");
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%index%", String.valueOf(optionIndex + 1));
+            localMap.put("%option%", options.get(optionIndex));
+            localMap.put("%amount%", String.valueOf(count));
+            Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("poll.result-option"), localMap));
         }
         Bukkit.broadcastMessage("");
     }
 
     public void vote(Player player, int option) {
         if (!pollActive) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "There is no active poll.");
+            plugin.getMessageManager().sendMessage(player, "poll.no-active-poll");
             plugin.getSoundManager().playSound(player);
             return;
         }
 
         if (option < 0 || option >= options.size()) {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Invalid option.");
+            plugin.getMessageManager().sendMessage(player, "poll.invalid-option");
             plugin.getSoundManager().playSound(player);
             return;
         }
 
         votes.put(player.getUniqueId(), option);
-        player.sendMessage(plugin.getConfigManager().getColor("colorSuccess") + "You voted for: " + options.get(option));
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%option%", options.get(option));
+        plugin.getMessageManager().sendMessage(player, "poll.vote-success", localMap);
         plugin.getSoundManager().playSound(player);
     }
 }

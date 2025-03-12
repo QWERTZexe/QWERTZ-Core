@@ -39,7 +39,7 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getConfigManager().getColor("colorError") + "This command can only be used by players.");
+            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
             return true;
         }
 
@@ -60,8 +60,8 @@ public class SpawnCommand implements CommandExecutor {
                 }
             } else {
                 // First time or cooldown expired, show warning
-                player.sendTitle(plugin.getConfigManager().getColor("colorError") + "WARNING", plugin.getConfigManager().getColor("colorPrimary") + "You are still alive!", 10, 70, 20);
-                player.sendMessage(plugin.getConfigManager().getColor("colorError") + "WARNING: " + plugin.getConfigManager().getColor("colorPrimary") + "You are still alive! Type /spawn again within 10 seconds to confirm teleportation.");
+                player.sendTitle(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("spawn.alive-title.title"), new HashMap<>()), plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("spawn.alive-title.subtitle"), new HashMap<>()), 10, 70, 20);
+                plugin.getMessageManager().sendMessage(player, "spawn.alive-message");
                 plugin.getSoundManager().playSound(player);
                 cooldowns.put(playerUUID, currentTime);
 
@@ -78,20 +78,20 @@ public class SpawnCommand implements CommandExecutor {
     }
     private void unrevivePlayer(Player player) {
         plugin.getEventManager().handlePlayerDeath(player, true);
-        player.sendMessage(plugin.getConfigManager().getColor("colorDead") + "You have been unrevived as you chose to teleport to spawn while alive.");
+        plugin.getMessageManager().sendMessage(player, "spawn.spawn-while-alive");
         plugin.getSoundManager().playSound(player);
     }
     private void teleportToSpawn(Player player, boolean wasAlive) {
         Location spawnLocation = plugin.getConfigManager().getSpawnLocation();
         if (spawnLocation != null) {
             player.teleport(spawnLocation);
-            player.sendMessage(QWERTZcore.CORE_ICON + plugin.getConfigManager().getColor("colorSuccess") + " Teleported to spawn!");
+            plugin.getMessageManager().sendMessage(player, "spawn.success");
             plugin.getSoundManager().playSound(player);
             if (wasAlive) {
                 unrevivePlayer(player);
             }
         } else {
-            player.sendMessage(plugin.getConfigManager().getColor("colorError") + "Spawn location is not set!");
+            plugin.getMessageManager().sendMessage(player, "spawn.no-spawn");
             plugin.getSoundManager().playSound(player);
         }
     }

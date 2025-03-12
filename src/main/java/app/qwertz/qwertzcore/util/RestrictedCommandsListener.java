@@ -14,6 +14,7 @@
 
 package app.qwertz.qwertzcore.util;
 
+import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,8 +31,9 @@ public class RestrictedCommandsListener implements Listener {
     private final Map<String, String> restrictedCommands = new HashMap<>();
 
     private final ConfigManager configManager;
+    private final QWERTZcore plugin;
 
-    public RestrictedCommandsListener(ConfigManager configManager) {
+    public RestrictedCommandsListener(QWERTZcore plugin, ConfigManager configManager) {
         restrictedCommands.put("/minecraft:me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/minecraft:tm", "qwertzcore.chat.bypasstm");
@@ -42,6 +44,7 @@ public class RestrictedCommandsListener implements Listener {
         restrictedCommands.put("/minecraft:w", "null");
         restrictedCommands.put("/minecraft:tell", "null");
         this.configManager = configManager;
+        this.plugin = plugin;
     }
 
     @EventHandler
@@ -54,12 +57,12 @@ public class RestrictedCommandsListener implements Listener {
             if (!bypassPermission.equals("null")) {
                 if (!player.isOp() && !player.hasPermission(bypassPermission)) {
                     event.setCancelled(true);
-                    player.sendMessage(configManager.getColor("colorError") + "You don't have permission to use this command.");
+                    plugin.getMessageManager().sendMessage(player, "general.no-permission");
                 }
             }
             else {
                 event.setCancelled(true);
-                player.sendMessage(configManager.getColor("colorError") + "This command is disabled!");
+                plugin.getMessageManager().sendMessage(player, "general.disabled-command");
             }
         }
     }
