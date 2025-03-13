@@ -76,16 +76,17 @@ public class ConfigCommand implements CommandExecutor {
             Object currentValue = plugin.getConfigManager().get(key);
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%key%", key);
-            localMap.put("%value%", String.valueOf(currentValue));
 
 
             if (currentValue instanceof Boolean) {
                 boolean boolValue = Boolean.parseBoolean(value);
                 plugin.getConfigManager().set(key, boolValue);
+                localMap.put("%value%", String.valueOf(boolValue));
                 plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof String) {
                 plugin.getConfigManager().set(key, value);
+                localMap.put("%value%", value);
                 plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof Number) {
@@ -93,11 +94,13 @@ public class ConfigCommand implements CommandExecutor {
                     if (value.contains(".")) {
                         double doubleValue = Double.parseDouble(value);
                         plugin.getConfigManager().set(key, doubleValue);
+                        localMap.put("%value%", String.valueOf(doubleValue));
                         plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     } else {
                         int intValue = Integer.parseInt(value);
                         plugin.getConfigManager().set(key, intValue);
+                        localMap.put("%value%", String.valueOf(intValue));
                         plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     }

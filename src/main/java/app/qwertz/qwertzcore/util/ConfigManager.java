@@ -176,6 +176,9 @@ public class ConfigManager {
         if (!config.containsKey("chatTimer")) {
             config.put("chatTimer", true);
         }
+        if (!config.containsKey("reviveStaff")) {
+            config.put("reviveStaff", false);
+        }
     }
 
 

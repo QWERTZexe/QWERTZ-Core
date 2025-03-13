@@ -111,7 +111,7 @@ public class TimerCommand implements CommandExecutor {
     }
 
     private void broadcastMessage(String message) {
-        plugin.getMessageManager().broadcastMessage(message);
+        Bukkit.broadcastMessage(message);
         plugin.getSoundManager().broadcastConfigSound();
     }
 

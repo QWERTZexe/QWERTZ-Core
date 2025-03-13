@@ -147,7 +147,7 @@ public class ScoreboardManager {
                     updateScoreboard(player, board, board.getObjective("qwertzcore"));
                 }
             }
-        }, 20L, 20L); // Update every second
+        }, 20L, 100L); // Update every second
     }
 
     public void updateCountdown(String timeLeft) {

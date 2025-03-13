@@ -162,9 +162,9 @@ gamemode:
 
 hide:
   invalid: "%colorError%Invalid mode. Use host, staff, all, or off."
-  off: "%CORE_ICON% %colorPrimary%All %colorSuccess%players are now visible to you."
+  mode-off: "%CORE_ICON% %colorPrimary%All %colorSuccess%players are now visible to you."
   # Valid placeholders: %mode%
-  on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%"
+  mode-on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%"
 
 kit:
   # Valid placeholders: %name%

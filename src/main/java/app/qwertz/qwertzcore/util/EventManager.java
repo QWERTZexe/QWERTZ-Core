@@ -96,14 +96,20 @@ public class EventManager {
     }
 
     public void reviveAll(Player sender) {
+        Set<UUID> toRemove = new HashSet<>();
         for (UUID uuid : deadPlayers) {
-            if (plugin.getConfigManager().getTpOnRevive()) {
-                Player player = Bukkit.getPlayer(uuid);
-                player.teleport(sender.getLocation());
+            Player player = Bukkit.getPlayer(uuid);
+            if ((Boolean) plugin.getConfigManager().get("reviveStaff") || !player.hasPermission("qwertzcore.staff")) {
+                if (plugin.getConfigManager().getTpOnRevive()) {
+                    player.teleport(sender.getLocation());
+                }
+                toRemove.add(uuid);
+                alivePlayers.add(uuid);
             }
-            alivePlayers.add(uuid);
         }
-        deadPlayers.clear();
+        for (UUID uuid : toRemove) {
+            deadPlayers.remove(uuid);
+        }
     }
 
     public void unReviveAll() {

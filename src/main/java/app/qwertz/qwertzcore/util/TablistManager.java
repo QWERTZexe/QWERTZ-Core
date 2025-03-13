@@ -21,7 +21,7 @@ public class TablistManager {
     private FileConfiguration tabConfig;
     private FileConfiguration fileTabConfig;
     private FileConfiguration internalTabConfig;
-    private final Map<Integer, String> pingColors = new TreeMap<>(Comparator.reverseOrder());
+    private final Map<Integer, String> pingColors = new TreeMap<>(Comparator.naturalOrder());
 
     public TablistManager(QWERTZcore plugin, MessageManager messageManager) {
         this.plugin = plugin;

@@ -75,12 +75,12 @@ public class HideCommand implements CommandExecutor {
         updatePlayerVisibility(player);
 
         if (mode == null) {
-            plugin.getMessageManager().sendMessage(player, "hide.off");
+            plugin.getMessageManager().sendMessage(player, "hide.mode-off");
             plugin.getSoundManager().playSound(player);
         } else {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%mode%", mode);
-            plugin.getMessageManager().sendMessage(player, "hide.on", localMap);
+            plugin.getMessageManager().sendMessage(player, "hide.mode-on", localMap);
             plugin.getSoundManager().playSound(player);
         }
     }

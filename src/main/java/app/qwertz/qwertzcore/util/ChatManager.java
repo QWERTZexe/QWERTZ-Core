@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +53,7 @@ public class ChatManager implements Listener {
             localMap.put("%prefix%", prefix);
             localMap.put("%suffix%", suffix);
             localMap.put("%message%", message);
-            plugin.getMessageManager().broadcastMessage("chatting.chat", localMap);
+            Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap));
         }
     }
 }

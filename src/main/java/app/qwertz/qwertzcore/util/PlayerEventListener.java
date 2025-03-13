@@ -87,7 +87,7 @@ public class PlayerEventListener implements Listener {
             localMap.put("%name%", event.getPlayer().getName());
             localMap.put("%count%", String.valueOf(fakeCount));
             localMap.put("%newCount%", String.valueOf(newCount));
-            messageManager.broadcastMessage("chatting.join-msg", localMap);
+            messageManager.broadcastMessage("chatting.leave-msg", localMap);
             event.setQuitMessage(null);
         }
     }
