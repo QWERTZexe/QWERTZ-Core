@@ -194,15 +194,16 @@ public class ConfigManager {
     }
 
     public void saveConfig() {
-        try (Writer writer = new FileWriter(configFile)) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile))) {
             gson.toJson(config, writer);
+            writer.flush();
         } catch (IOException e) {
             plugin.getLogger().warning("Could not save config file: " + e.getMessage());
         }
-        loadConfig();
     }
 
-        public Location getSpawnLocation() {
+
+    public Location getSpawnLocation() {
         Map<String, Object> spawnMap = (Map<String, Object>) config.get("spawn");
         if (spawnMap != null) {
             World world = Bukkit.getWorld((String) spawnMap.get("world"));
@@ -277,12 +278,18 @@ public class ConfigManager {
         List<Map<String, Object>> serializedItems = new ArrayList<>();
 
         for (ItemStack item : items) {
-            if (item != null) {
-                serializedItems.add(item.serialize());
-            } else {
-                serializedItems.add(null);
+            try {
+                if (item != null) {
+                    serializedItems.add(item.serialize());
+                } else {
+                    serializedItems.add(null);
+                }
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error serializing item in kit " + kitName + ": " + e.getMessage());
+                serializedItems.add(null);  // Add null instead of the problematic item
             }
         }
+
 
         kitsMap.put(kitName, serializedItems);
         config.put("kits", kitsMap);
