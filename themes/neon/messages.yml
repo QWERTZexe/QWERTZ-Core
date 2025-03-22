@@ -4,15 +4,15 @@
 ## This config populates itself on updates
 
 placeholders:
-  colorPrimary: "\u00a7e"
-  colorSecondary: "\u00a76"
-  colorTertiary: "\u00a7b"
-  colorError: "\u00a7c"
-  colorSuccess: "\u00a7a"
-  colorAlive: "\u00a7a"
-  colorDead: "\u00a7c"
-  CORE_ICON_RAW: "\u2747"
-  CORE_ICON: "\u00a7e\u2747\u00a7r"
+  colorPrimary: "\u00a75"
+  colorSecondary: "\u00a77"
+  colorTertiary: "\u00a75"
+  colorError: "\u00a77"
+  colorSuccess: "\u00a77"
+  colorAlive: "\u00a77"
+  colorDead: "\u00a77"
+  CORE_ICON_RAW: "\u2604"
+  CORE_ICON: "\u00a77\u2604\u00a7r"
 
 # Active theme, set to "file" if you wish to use this file!
 # Built-in: "internal" or "file"
