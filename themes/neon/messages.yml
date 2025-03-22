@@ -305,3 +305,7 @@ worldguard:
     place: "building"
     falldamage: "fall damage"
     hunger: "hunger"
+
+messages:
+  invalid-theme: "%colorError%Invalid theme!"
+  successful: "%colorSuccess%Set the new theme! Reload the core for the changes to be visible!"

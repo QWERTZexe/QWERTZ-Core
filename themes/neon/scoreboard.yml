@@ -9,17 +9,17 @@
 
 # TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
 
-title: "&5☄ Neon [theme]" # Scoreboard Title
+title: "&5%server%" # Scoreboard Title
 
 lines:
-  12: " " 
+  12: "&a&r "
   11: "&5%player%"
-  10: " &8| &7ᴛᴏᴋᴇɴꜱ: &5%tokens%"
-  9: " &8| &7ꜱᴛᴀʀᴛɪɴɢ ɪɴ: &5%countdown%"
-  6: " " 
-  5: "&5ꜱᴇʀᴠᴇʀ"
-  4: " &8| &7ᴇᴠᴇɴᴛ: &5%event%"
-  3: " &8| &7ᴀʟɪᴠᴇ: &5%alive%"
-  2: " &8| &7ᴅᴇᴀᴅ: &5%dead%"
-  1: " " 
-  0: "IP here" # Bottom line
+  10: " &8| &7\u1d1b\u1d0f\u1d0b\u1d07\u0274\ua731: &5%tokens%"
+  9: " &8| &7\ua731\u1d1b\u1d00\u0280\u1d1b\u026a\u0274\u0262\u0020\u026a\u0274: &5%countdown%"
+  6: "&l&r "
+  5: "&5ꜱ\ua731\u1d07\u0280\u1d20\u1d07\u0280"
+  4: " &8| &7\u1d07\u1d20\u1d07\u0274\u1d1b: &5%event%"
+  3: " &8| &7\u1d00\u029f\u026a\u1d20\u1d07: &5%alive%"
+  2: " &8| &7\u1d05\u1d07\u1d00\u1d05: &5%dead%"
+  1: "&r "
+  0: "&5%CORE_ICON% Neon [theme]" # Bottom line
