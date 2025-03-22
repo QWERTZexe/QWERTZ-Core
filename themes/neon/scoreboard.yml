@@ -9,20 +9,17 @@
 
 # TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
 
-title: "&e%server%" # Scoreboard Title
+title: "&5☄ Neon [theme]" # Scoreboard Title
 
 lines:
-  12: "&r&m----------------&r"  # Strikethrough line
-  11: "&eEVENT"
-  10: "&8| &fName: &6%event%"
-  9:  "&8| &fAlive: &a%alive%"
-  8:  "&8| &fDead: &c%dead%"
-  7:  "&8| &fStarting in: &3%countdown%"
-  6:  " " # Empty line
-  5:  "&e%player%"
-  4:  "&8| &fRank: &6%rank%"
-  3:  "&8| &fWins: &d%wins%"
-  2:  "&8| &fRevive Tokens: &b%tokens%"
-  1: "&m----------------&r" # Strikethrough line
-  0: "%CORE_ICON%&6 QWERTZ Core" # Bottom line
-
+  12: " " 
+  11: "&5%player%"
+  10: " &8| &7ᴛᴏᴋᴇɴꜱ: &5%tokens%"
+  9: " &8| &7ꜱᴛᴀʀᴛɪɴɢ ɪɴ: &5%countdown%"
+  6: " " 
+  5: "&5ꜱᴇʀᴠᴇʀ"
+  4: " &8| &7ᴇᴠᴇɴᴛ: &5%event%"
+  3: " &8| &7ᴀʟɪᴠᴇ: &5%alive%"
+  2: " &8| &7ᴅᴇᴀᴅ: &5%dead%"
+  1: " " 
+  0: "IP here" # Bottom line
