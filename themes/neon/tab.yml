@@ -9,13 +9,13 @@
 header:
   - " "
   - "&5&l%server%"
-  - "&7*%event%*"
   - " "
+  - "&7*%event%*"
 footer:
   - " "
   - "&5%discord%"
-  - "&5%CORE_ICON% Neon [Theme]"
   - " "
+  - "&5%CORE_ICON% Neon [Theme]"
 
 # Valid placeholders: %prefix%, %player%, %suffix%, %ping_color%, %ping%
 player-list-name: "%prefix%%player%%suffix% %ping_color%%ping%ms"
