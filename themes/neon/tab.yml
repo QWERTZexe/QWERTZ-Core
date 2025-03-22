@@ -7,14 +7,16 @@
 # TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
 
 header:
-  - "&e&l%server%"
   - " "
-  - "&6Event: &e%event%"
-  - "&bPlayers: &3%player%"
+  - "&5&lSERVER"
+  - "&7*description here*"
+  - " "
 
 footer:
   - " "
-  - "%CORE_ICON% &6QWERTZ Core"
+  - "&5discord.gg/???"
+  - "&7Server IP here"
+  - " "
 
 # Valid placeholders: %prefix%, %player%, %suffix%, %ping_color%, %ping%
 player-list-name: "%prefix%%player%%suffix% %ping_color%%ping%ms"
