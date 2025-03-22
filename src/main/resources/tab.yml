@@ -1,7 +1,7 @@
 ## QWERTZ Core Tablist Configuration
 ## https://modrinth.com/plugin/qwertz-core
 
-# Valid placeholders: %event%, %player%, %server%
+# Valid placeholders: %event%, %player%, %server%, %discord%
 # Also all placeholders in "messages.yml"
 
 # TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!

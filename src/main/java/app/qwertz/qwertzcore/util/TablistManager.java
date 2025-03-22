@@ -101,6 +101,7 @@ public class TablistManager {
     private String prepareLine(String line) {
         return plugin.getMessageManager().prepareMessage(line, new HashMap<>()).replace("%server%", plugin.getConfigManager().getServerName())
                 .replace("%event%", plugin.getConfigManager().getEventName())
+                .replace("%discord%", plugin.getConfigManager().getDiscordLink())
                 .replace("%player%", String.valueOf(plugin.getVanishManager().getNonVanishedPlayerCount()));
     }
 
