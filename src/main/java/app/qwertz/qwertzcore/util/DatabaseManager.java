@@ -212,7 +212,7 @@ public class DatabaseManager {
         }
     }
     private void loadSpecialBlocks() {
-        Map<String, String> loadedBlocks = plugin.getDatabaseManager().getSpecialBlocks();
+        Map<String, String> loadedBlocks = getSpecialBlocks();
         if (loadedBlocks != null && !loadedBlocks.isEmpty()) {
             specialBlocks.clear();
             specialBlocks.putAll(loadedBlocks);

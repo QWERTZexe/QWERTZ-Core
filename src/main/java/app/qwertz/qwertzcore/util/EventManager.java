@@ -30,8 +30,15 @@ public class EventManager {
     public EventManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.deadPlayers = new HashSet<>();
+        initDead();
         this.alivePlayers = new HashSet<>();
         this.deathTimes = new HashMap<>();
+    }
+
+    private void initDead() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            deadPlayers.add(player.getUniqueId());
+        }
     }
 
     public boolean revivePlayer(Player target, Player executor) {

@@ -33,11 +33,9 @@ import java.util.stream.Collectors;
 
 public class EventCommands implements CommandExecutor {
     private final QWERTZcore plugin;
-    private final EventManager eventManager;
 
-    public EventCommands(QWERTZcore plugin, EventManager eventManager) {
+    public EventCommands(QWERTZcore plugin) {
         this.plugin = plugin;
-        this.eventManager = eventManager;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class EventCommands implements CommandExecutor {
             return false;
         }
 
-        if  (!eventManager.revivePlayer(target, (Player) sender)) {
+        if  (!plugin.getEventManager().revivePlayer(target, (Player) sender)) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%player%", target.getName());
             plugin.getMessageManager().sendMessage((Player) sender, "event.alreadyalive", localMap);
@@ -115,7 +113,7 @@ public class EventCommands implements CommandExecutor {
             return false;
         }
 
-        if (!eventManager.unrevivePlayer(target)) {
+        if (!plugin.getEventManager().unrevivePlayer(target)) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%player%", target.getName());
             plugin.getMessageManager().sendMessage((Player) sender, "event.alreadydead", localMap);
@@ -125,19 +123,19 @@ public class EventCommands implements CommandExecutor {
     }
 
     private boolean handleReviveAll(CommandSender sender) {
-        eventManager.reviveAll((Player) sender);
+        plugin.getEventManager().reviveAll((Player) sender);
         plugin.getMessageManager().broadcastMessage("event.revivedall");
         return true;
     }
 
     private boolean handleUnReviveAll(CommandSender sender) {
-        eventManager.unReviveAll();
+        plugin.getEventManager().unReviveAll();
         plugin.getMessageManager().broadcastMessage("event.unrevivedall");
         return true;
     }
 
     private boolean handleListAlive(CommandSender sender) {
-        String aliveList = eventManager.getAlivePlayers().stream()
+        String aliveList = plugin.getEventManager().getAlivePlayers().stream()
                 .map(Bukkit::getPlayer)
                 .filter(player -> player != null)
                 .map(Player::getName)
@@ -156,7 +154,7 @@ public class EventCommands implements CommandExecutor {
     }
 
     private boolean handleListDead(CommandSender sender) {
-        String deadList = eventManager.getDeadPlayers().stream()
+        String deadList = plugin.getEventManager().getDeadPlayers().stream()
                 .map(Bukkit::getPlayer)
                 .filter(player -> player != null)
                 .map(Player::getName)
@@ -221,7 +219,7 @@ public class EventCommands implements CommandExecutor {
         int playersAffected = 0;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if ((isDead && eventManager.isPlayerDead(player)) || (!isDead && eventManager.isPlayerAlive(player))) {
+            if ((isDead && plugin.getEventManager().isPlayerDead(player)) || (!isDead && plugin.getEventManager().isPlayerAlive(player))) {
                 player.getInventory().addItem(itemStack.clone());
                 playersAffected++;
             }
@@ -255,7 +253,7 @@ public class EventCommands implements CommandExecutor {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player != executor) {
                 if (filter) {
-                    if ((isDead && eventManager.isPlayerDead(player)) || (!isDead && eventManager.isPlayerAlive(player))) {
+                    if ((isDead && plugin.getEventManager().isPlayerDead(player)) || (!isDead && plugin.getEventManager().isPlayerAlive(player))) {
                         player.teleport(executor.getLocation());
                         teleportedCount++;
                     }

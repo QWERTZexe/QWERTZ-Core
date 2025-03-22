@@ -33,6 +33,12 @@ public class CoreCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender.hasPermission("qwertzcore.host.reloadcore")) {
+            if (args[0].equalsIgnoreCase("reload")) {
+                plugin.reloadCore(sender);
+                return true;
+            }
+        }
         sender.sendMessage(String.format(
                 "%s %s%sQWERTZ Core %sv%s\n" +
                         "%sMade by: %s%s\n" +

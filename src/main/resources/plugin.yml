@@ -279,6 +279,28 @@ commands:
     description: Vote in an active poll
     usage: /pollvote <option>
     permission: qwertzcore.player.pollvote
+  setspawn:
+    description: Set the spawn location to the current position
+    usage: /<command>
+    permission: qwertzcore.host.setspawn
+  setserver:
+    description: Set the server
+    usage: /<command> <name>
+    permission: qwertzcore.host.setserver
+  setevent:
+    description: Set the event
+    usage: /<command> <name>
+    permission: qwertzcore.host.setevent
+  reloadcore:
+    description: Reload the core
+    usage: /<command>
+    permission: qwertzcore.host.reloadcore
+    aliases: [core reload]
+  theme:
+    description: Set the theme
+    usage: /<command> <theme>
+    permission: qwertzcore.host.settheme
+    aliases: [settheme]
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -478,3 +500,18 @@ permissions:
   qwertzcore.player.pollvote:
     description: Allows the player to vote in polls
     default: true
+  qwertzcore.host.setspawn:
+    description: Allows the player to set the spawn
+    default: op
+  qwertzcore.host.setserver:
+    description: Allows the player to set the server
+    default: op
+  qwertzcore.host.setevent:
+    description: Allows the player to set the event
+    default: op
+  qwertzcore.host.reloadcore:
+    description: Allows the player to reload the core
+    default: op
+  qwertzcore.host.settheme:
+    description: Allows the player to change the theme
+    default: op

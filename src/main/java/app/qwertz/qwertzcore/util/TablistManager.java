@@ -17,15 +17,14 @@ import java.util.*;
 
 public class TablistManager {
     private final QWERTZcore plugin;
-    private final MessageManager messageManager;
     private FileConfiguration tabConfig;
     private FileConfiguration fileTabConfig;
     private FileConfiguration internalTabConfig;
     private final Map<Integer, String> pingColors = new TreeMap<>(Comparator.naturalOrder());
+    private int tabTaskID = -1; // Store the task ID.  -1 indicates no task is running.
 
-    public TablistManager(QWERTZcore plugin, MessageManager messageManager) {
+    public TablistManager(QWERTZcore plugin) {
         this.plugin = plugin;
-        this.messageManager = messageManager;
         loadTabConfig();
         this.tabConfig = getConfigToUse();
         setupPingColors();
@@ -50,14 +49,14 @@ public class TablistManager {
     }
     // Helper method to determine which config to use
     private FileConfiguration getConfigToUse() {
-        String activeTheme = messageManager.messagesConfig.getString("active-theme");
+        String activeTheme = plugin.getMessageManager().messagesConfig.getString("active-theme");
         if (Objects.equals(activeTheme, "file")) {
             return fileTabConfig;
         } else if (Objects.equals(activeTheme, "internal")) {
             return internalTabConfig;
         } else {
             // Attempt to load from repo
-            FileConfiguration repoConfig = messageManager.loadFromRepo(activeTheme, "tab");
+            FileConfiguration repoConfig = plugin.getMessageManager().loadFromRepo(activeTheme, "tab");
             if (repoConfig != null) {
                 return repoConfig;
             } else {
@@ -139,10 +138,18 @@ public class TablistManager {
     }
 
     private void startTablistUpdater() {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        stopTabUpdater();
+        tabTaskID = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 updateTablist(player);
             }
-        }, 20L, 20L);
+        }, 20L, 20L).getTaskId();
+    }
+
+    public void stopTabUpdater() {
+        if (tabTaskID != -1) {
+            Bukkit.getScheduler().cancelTask(tabTaskID);
+            tabTaskID = -1;
+        }
     }
 }

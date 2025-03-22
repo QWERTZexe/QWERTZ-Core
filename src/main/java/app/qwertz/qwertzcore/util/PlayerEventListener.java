@@ -26,68 +26,58 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.HashMap;
 
 public class PlayerEventListener implements Listener {
-    private final EventManager eventManager;
-    private final ConfigManager configManager;
-    private final ScoreboardManager scoreboardManager;
-    private final TablistManager tablistManager;
+    private final QWERTZcore plugin;
     private final HideCommand hideCommand;
     private final UpdateChecker updateChecker;
-    private final VanishManager vanishManager;
-    private final MessageManager messageManager;
 
 
 
-    public PlayerEventListener(EventManager eventManager, VanishManager vanishManager, ConfigManager configManager, ScoreboardManager scoreboardManager, TablistManager tablistManager, HideCommand hideCommand, UpdateChecker updateChecker, MessageManager messageManager) {
-        this.eventManager = eventManager;
-        this.configManager = configManager;
-        this.scoreboardManager = scoreboardManager;
-        this.tablistManager = tablistManager;
+    public PlayerEventListener(QWERTZcore plugin, HideCommand hideCommand, UpdateChecker updateChecker) {
+        this.plugin = plugin;
         this.hideCommand = hideCommand;
         this.updateChecker = updateChecker;
-        this.vanishManager = vanishManager;
-        this.messageManager = messageManager;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        vanishManager.hideVanishedPlayers(event.getPlayer());
-        if ((Boolean) configManager.get("checkForUpdates")) {
+        plugin.getVanishManager().hideVanishedPlayers(event.getPlayer());
+        if ((Boolean) plugin.getConfigManager().get("checkForUpdates")) {
             updateChecker.notifyPlayer(player);
         }
         hideCommand.handlePlayerJoin(event.getPlayer());
-        eventManager.addNewPlayer(event.getPlayer());
-        if (configManager.getTpOnJoin()) {
-            event.getPlayer().teleport(configManager.getSpawnLocation());
+        plugin.getEventManager().addNewPlayer(event.getPlayer());
+        if (plugin.getConfigManager().getTpOnJoin()) {
+            event.getPlayer().teleport(plugin.getConfigManager().getSpawnLocation());
         }
-        scoreboardManager.setScoreboard(event.getPlayer());
-        tablistManager.updateTablist(event.getPlayer());
-        if (configManager.get("suppressVanilla").equals(true)) {
-            int fakeCount = vanishManager.getNonVanishedPlayerCount()-1;
+        plugin.getScoreboardManager().setScoreboard(event.getPlayer());
+        plugin.getTablistManager().updateTablist(event.getPlayer());
+        if (plugin.getConfigManager().get("suppressVanilla").equals(true)) {
+            int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount()-1;
             int newCount = fakeCount + 1;
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", player.getName());
             localMap.put("%count%", String.valueOf(fakeCount));
             localMap.put("%newCount%", String.valueOf(newCount));
-            messageManager.broadcastMessage("chatting.join-msg", localMap);
+            plugin.getMessageManager().broadcastMessage("chatting.join-msg", localMap);
             event.setJoinMessage(null);
         }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        eventManager.removePlayer(event.getPlayer());
-        vanishManager.removeVanishedPlayer(event.getPlayer());
-        scoreboardManager.removeScoreboard(event.getPlayer());
+        plugin.getEventManager().removePlayer(event.getPlayer());
+        plugin.getVanishManager().removeVanishedPlayer(event.getPlayer());
+        plugin.getScoreboardManager().removeScoreboard(event.getPlayer());
 
-        if (configManager.get("suppressVanilla").equals(true)) {
-            int fakeCount = vanishManager.getNonVanishedPlayerCount();
+        if (plugin.getConfigManager().get("suppressVanilla").equals(true)) {
+            int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
             int newCount = fakeCount - 1;
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", event.getPlayer().getName());
             localMap.put("%count%", String.valueOf(fakeCount));
             localMap.put("%newCount%", String.valueOf(newCount));
-            messageManager.broadcastMessage("chatting.leave-msg", localMap);
+            plugin.getMessageManager().broadcastMessage("chatting.leave-msg", localMap);
             event.setQuitMessage(null);
         }
     }

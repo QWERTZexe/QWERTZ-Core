@@ -18,37 +18,33 @@ import java.util.UUID;
 
 public class ScoreboardManager {
     private final QWERTZcore plugin;
-    private final EventManager eventManager;
-    private final ConfigManager configManager;
-    private final MessageManager messageManager;
     private final Map<UUID, Scoreboard> playerScoreboards;
     public String eventcountdown;
     private FileConfiguration fileScoreboardConfig;
     private FileConfiguration scoreboardConfig;
     private FileConfiguration internalScoreboardConfig;
     private File scoreboardFile;
+    private int scoreboardTaskID = -1; // Store the task ID.  -1 indicates no task is running.
 
-    public ScoreboardManager(QWERTZcore plugin, EventManager eventManager, ConfigManager configManager, MessageManager messageManager) {
+    public ScoreboardManager(QWERTZcore plugin) {
         this.plugin = plugin;
-        this.eventManager = eventManager;
-        this.configManager = configManager;
         this.playerScoreboards = new HashMap<>();
         this.eventcountdown = "...";
-        this.messageManager = messageManager;
         loadScoreboardConfig();  // Load scoreboard config
         this.scoreboardConfig = getConfigToUse();
         startScoreboardUpdater();
+        initialScoreboards();
     }
     // Helper method to determine which config to use
     private FileConfiguration getConfigToUse() {
-        String activeTheme = messageManager.messagesConfig.getString("active-theme");
+        String activeTheme = plugin.getMessageManager().messagesConfig.getString("active-theme");
         if (Objects.equals(activeTheme, "file")) {
             return fileScoreboardConfig;
         } else if (Objects.equals(activeTheme, "internal")) {
             return internalScoreboardConfig;
         } else {
             // Attempt to load from repo
-            FileConfiguration repoConfig = messageManager.loadFromRepo(activeTheme, "scoreboard");
+            FileConfiguration repoConfig = plugin.getMessageManager().loadFromRepo(activeTheme, "scoreboard");
             if (repoConfig != null) {
                 return repoConfig;
             } else {
@@ -75,8 +71,8 @@ public class ScoreboardManager {
             Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
             String title = scoreboardConfig.getString("title", "&e" + plugin.getConfigManager().getServerName()); // Default title
             title = title.replace("%event%", plugin.getConfigManager().getEventName())
-                    .replace("%alive%", String.valueOf(eventManager.getAlivePlayerCountWithoutVanish()))
-                    .replace("%dead%", String.valueOf(eventManager.getDeadPlayerCountWithoutVanish()))
+                    .replace("%alive%", String.valueOf(plugin.getEventManager().getAlivePlayerCountWithoutVanish()))
+                    .replace("%dead%", String.valueOf(plugin.getEventManager().getDeadPlayerCountWithoutVanish()))
                     .replace("%countdown%", this.eventcountdown)
                     .replace("%player%", player.getName())
                     .replace("%server%", plugin.getConfigManager().getServerName())
@@ -104,8 +100,8 @@ public class ScoreboardManager {
                     // Replace placeholders
 
                     String formattedLine = lineValue.replace("%event%", plugin.getConfigManager().getEventName())
-                            .replace("%alive%", String.valueOf(eventManager.getAlivePlayerCountWithoutVanish()))
-                            .replace("%dead%", String.valueOf(eventManager.getDeadPlayerCountWithoutVanish()))
+                            .replace("%alive%", String.valueOf(plugin.getEventManager().getAlivePlayerCountWithoutVanish()))
+                            .replace("%dead%", String.valueOf(plugin.getEventManager().getDeadPlayerCountWithoutVanish()))
                             .replace("%countdown%", this.eventcountdown)
                             .replace("%player%", player.getName())
                             .replace("%server%", plugin.getConfigManager().getServerName())
@@ -140,14 +136,26 @@ public class ScoreboardManager {
     }
 
     private void startScoreboardUpdater() {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        stopScoreboardUpdater();
+        scoreboardTaskID = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Scoreboard board = playerScoreboards.get(player.getUniqueId());
                 if (board != null) {
                     updateScoreboard(player, board, board.getObjective("qwertzcore"));
                 }
             }
-        }, 20L, 100L); // Update every second
+        }, 20L, 100L).getTaskId(); // Update every second
+    }
+
+    public void stopScoreboardUpdater() {
+        if (scoreboardTaskID != -1) {
+            Bukkit.getScheduler().cancelTask(scoreboardTaskID);
+            scoreboardTaskID = -1;
+        }
+    }
+
+    public int getScoreboardTaskID() {
+        return scoreboardTaskID;
     }
 
     public void updateCountdown(String timeLeft) {
@@ -160,5 +168,16 @@ public class ScoreboardManager {
     }
     public void removeScoreboard(Player player) {
         playerScoreboards.remove(player.getUniqueId());
+    }
+    public void removeScoreboardFromAllPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            playerScoreboards.remove(player.getUniqueId());
+            player.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard()); // Set them to a blank scoreboard
+        }
+    }
+    private void initialScoreboards() {
+        for (Player player: Bukkit.getOnlinePlayers()) {
+            setScoreboard(player);
+        }
     }
 }

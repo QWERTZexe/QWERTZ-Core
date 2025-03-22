@@ -43,7 +43,7 @@ config:
   set-spawn: "%colorSuccess%Set spawn to your current location."
   invalid-spawn: "%colorError%Invalid value for spawn. Use 'currentpos'."
   # Valid placeholders: %key%, %value%
-  set-key: "%colorSuccess% Set %key% to %value%"
+  set-key: "%colorSuccess%Set %key% to %value%"
   # Valid placeholders: %value%
   invalid-number-format: "%colorError%Invalid number format: %value%"
   # Valid placeholders: %key%
@@ -305,3 +305,7 @@ worldguard:
     place: "BLOCK PLACING"
     falldamage: "FALL DAMAGE"
     hunger: "HUNGER"
+
+messages:
+  invalid-theme: "%colorError%Invalid theme!"
+  successful: "%colorSuccess%Set the new theme! Reload the core for the changes to be visible!"

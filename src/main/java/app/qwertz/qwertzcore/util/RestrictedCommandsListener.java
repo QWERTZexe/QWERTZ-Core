@@ -30,10 +30,9 @@ public class RestrictedCommandsListener implements Listener {
 
     private final Map<String, String> restrictedCommands = new HashMap<>();
 
-    private final ConfigManager configManager;
     private final QWERTZcore plugin;
 
-    public RestrictedCommandsListener(QWERTZcore plugin, ConfigManager configManager) {
+    public RestrictedCommandsListener(QWERTZcore plugin) {
         restrictedCommands.put("/minecraft:me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/me", "qwertzcore.chat.bypassme");
         restrictedCommands.put("/minecraft:tm", "qwertzcore.chat.bypasstm");
@@ -43,7 +42,6 @@ public class RestrictedCommandsListener implements Listener {
         restrictedCommands.put("/minecraft:msg", "null");
         restrictedCommands.put("/minecraft:w", "null");
         restrictedCommands.put("/minecraft:tell", "null");
-        this.configManager = configManager;
         this.plugin = plugin;
     }
 

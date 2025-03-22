@@ -40,6 +40,7 @@ dependencies {
     compileOnly("nl.svenar:powerranks:1.10.9r2")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.7")
+    implementation("org.kohsuke:github-api:1.327")
 }
 
 def targetJavaVersion = 17

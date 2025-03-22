@@ -14,6 +14,7 @@
 
 package app.qwertz.qwertzcore.util;
 
+import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,19 +23,18 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerDeathListener implements Listener {
-    private final EventManager eventManager;
-    private final ConfigManager configManager;
+    private QWERTZcore plugin;
 
-    public PlayerDeathListener(EventManager eventManager, ConfigManager configManager) {
-        this.eventManager = eventManager;
-        this.configManager = configManager;
+    public PlayerDeathListener(QWERTZcore plugin) {
+
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        eventManager.handlePlayerDeath(player, false);
-        if (configManager.get("suppressVanilla").equals(true)) {
+        plugin.getEventManager().handlePlayerDeath(player, false);
+        if (plugin.getConfigManager().get("suppressVanilla").equals(true)) {
             event.setDeathMessage(null);
         }
     }
@@ -43,9 +43,9 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (configManager.getTpOnDeath()) {
+        if (plugin.getConfigManager().getTpOnDeath()) {
             // Teleport them to the configured spawn location
-            Location spawnLocation = configManager.getSpawnLocation();
+            Location spawnLocation = plugin.getConfigManager().getSpawnLocation();
             if (spawnLocation != null) {
                 event.setRespawnLocation(spawnLocation);
             }

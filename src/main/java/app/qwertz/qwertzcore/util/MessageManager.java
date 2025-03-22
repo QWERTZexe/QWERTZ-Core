@@ -31,20 +31,59 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
+import org.kohsuke.github.GHContent;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+
 public class MessageManager {
     private final QWERTZcore plugin;
     private final Map<UUID, UUID> lastMessageSender;
     public FileConfiguration messagesConfig;
     private File messagesFile;
     private FileConfiguration defaultMessagesConfig;
+    private List<String> themes;
 
 
     public MessageManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.lastMessageSender = new HashMap<>();
+        themes = new ArrayList<>();
+        themes.add("internal");
+        themes.add("file");
         loadMessages();
+
+        // Fetch themes from GitHub
+        fetchThemesFromGitHub();
+    }
+    private void fetchThemesFromGitHub() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                GitHub github = GitHub.connectAnonymously();
+                GHRepository repo = github.getRepository("QWERTZexe/QWERTZ-Core");
+                List<GHContent> contents = repo.getDirectoryContent("themes");
+                for (GHContent content : contents) {
+                    if (content.isDirectory()) {
+                        themes.add(content.getName());
+                    }
+                }
+            } catch (IOException e) {
+                plugin.getLogger().warning("Failed to fetch themes from GitHub: " + e.getMessage());
+            }
+        });
     }
 
+    public List<String> getThemes() {
+        return themes;
+    }
+
+    public void setTheme(String theme) {
+        try {
+            messagesConfig.set("active-theme", theme);
+            messagesConfig.save(messagesFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private void loadMessages() {
         messagesFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messagesFile.exists()) {
