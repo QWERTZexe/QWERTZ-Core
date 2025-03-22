@@ -4,15 +4,15 @@
 ## This config populates itself on updates
 
 placeholders:
-  colorPrimary: "§e"
-  colorSecondary: "§6"
-  colorTertiary: "§b"
-  colorError: "§c"
-  colorSuccess: "§a"
-  colorAlive: "§a"
-  colorDead: "§c"
-  CORE_ICON_RAW: "❇"
-  CORE_ICON: "§e❇§r"
+  colorPrimary: "\u00a7e"
+  colorSecondary: "\u00a76"
+  colorTertiary: "\u00a7b"
+  colorError: "\u00a7c"
+  colorSuccess: "\u00a7a"
+  colorAlive: "\u00a7a"
+  colorDead: "\u00a7c"
+  CORE_ICON_RAW: "\u2747"
+  CORE_ICON: "\u00a7e\u2747\u00a7r"
 
 # Active theme, set to "file" if you wish to use this file!
 # Built-in: "internal" or "file"
@@ -30,12 +30,12 @@ general:
 chatting:
   disabled: "%colorError%Chat is disabled!"
   # Valid placeholders: %name%, %prefix%, %suffix%, %message%
-  chat: "%prefix%%name%%suffix%:§r %message%"
-  death: "%colorDead%%name% §4DIED!"
+  chat: "%prefix%%name%%suffix%:\u00a7r %message%"
+  death: "%colorDead%%name% \u00a74DIED!"
   # Valid placeholders: %name%, %count%, %newCount%
-  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! §7[%colorTertiary%%count%§7 -> %colorTertiary%%newCount%§7]"
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
   # Valid placeholders: %name%, %count%, %newCount%
-  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! §7[%colorTertiary%%count%§7 -> %colorTertiary%%newCount%§7]"
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
 
 config:
   # Valid placeholders: %key%
@@ -63,7 +63,7 @@ specialblocks:
   # Valid placeholders: %types%
   invalid-type: "%colorError%Invalid block type! %colorPrimary%Available types: %types%"
   # Valid placeholders: %blockType%, %material%
-  receive: "%CORE_ICON% %colorSuccess%You have received a §6QWERTZ Core %colorPrimary%%blockType% %colorSuccess%with material %colorPrimary%%material% %colorSuccess%!"
+  receive: "%CORE_ICON% %colorSuccess%You have received a \u00a76QWERTZ Core %colorPrimary%%blockType% %colorSuccess%with material %colorPrimary%%material% %colorSuccess%!"
   # Valid placeholders: %blockType%, %x%, %y%, %z%, %world%
   place: "%CORE_ICON% %colorPrimary%Placed a %colorSecondary%%blockType%%colorPrimary% at X: %colorSecondary%%x% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z: %colorSecondary%%z% %colorPrimary%WORLD: %colorSecondary%%world%"
   # Valid placeholders:%x%, %y%, %z%, %world%
@@ -77,7 +77,7 @@ event:
   revivedall: "%CORE_ICON% %colorSuccess%All players have been revived!"
   unrevivedall: "%CORE_ICON% %colorDead%All players have been unrevived!"
   revive: "%CORE_ICON% %colorAlive%%name% has been revived!"
-  unrevived: "%CORE_ICON% %colorDead%%name% has been unrevived!"
+  unrevive: "%CORE_ICON% %colorDead%%name% has been unrevived!"
   noalive: "%colorPrimary%There are no alive players!"
   nodead: "%colorPrimary%There are no dead players!"
   # Valid placeholders: %list%
@@ -115,7 +115,7 @@ eventcountdown:
   # Valid placeholders: %event%
   starting-now: "%CORE_ICON% %colorSuccess%Event %event% is starting now!"
   # Valid placeholders: %event%, %time%
-  broadcast: "%CORE_ICON% %colorPrimary%Event %event% starts in §c%time% %colorPrimary%!"
+  broadcast: "%CORE_ICON% %colorPrimary%Event %event% starts in \u00a7c%time% %colorPrimary%!"
 
 advertisement:
   invalid-platform: "%colorError%Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other"
@@ -185,12 +185,12 @@ poll:
   already-active: "%colorError%A poll is already active."
   invalid-duration: "%colorError%Invalid duration. Please provide a number in seconds."
   # Valid placeholders: %question%
-  new-poll: "%CORE_ICON% %colorPrimary%§lNew poll: %colorSecondary%%question%"
+  new-poll: "%CORE_ICON% %colorPrimary%\u00a7lNew poll: %colorSecondary%%question%"
   # Valid placeholders: %index%, %option%
   option: "%colorSecondary%%index%. %colorTertiary%%option%"
-  click-to-vote: "§7§oClick to vote!"
+  click-to-vote: "\u00a77\u00a7oClick to vote!"
   hover: "Click to vote for this option!"
-  result-title: "%CORE_ICON% %colorPrimary%§lPoll ended! %colorPrimary%Results:"
+  result-title: "%CORE_ICON% %colorPrimary%\u00a7lPoll ended! %colorPrimary%Results:"
   # Valid placeholders: %index%, %option%, %amount%
   result-option: "%colorSecondary%%index%. %option% %colorTertiary%: %colorPrimary%%amount% votes"
   no-active-poll: "%colorError%There is no active poll."
@@ -205,11 +205,11 @@ messaging:
   # Valid placeholders: %state% (enabled, disabled), %stateColor%
   togglemsg: "%CORE_ICON% %stateColor%Private messages have been %state%!"
   # Valid placeholders: %sender%, %recipient%, %message%
-  direct-message: "§7[%colorPrimary%%sender%§7 -> %colorPrimary%%recipient%§7] §f%message%"
+  direct-message: "\u00a77[%colorPrimary%%sender%\u00a77 -> %colorPrimary%%recipient%\u00a77] \u00a7f%message%"
 
 revivaltokens:
   # Valid placeholders: %name%, %tokens%
-  showrevives: "%CORE_ICON% %colorPrimary%%name% %colorAlivehas %tokens% revival tokens."
+  showrevives: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has %tokens% revival tokens."
   tokens-disabled: "%colorErrror%Revive tokens are currently disabled!"
   # Valid placeholders: %time%
   cooldown: "%colorError%You must wait %time% seconds again before requesting a revive!"
@@ -248,9 +248,9 @@ timer:
 
 vanish:
   # Valid placeholders: %name%, %fakeCount%, %newCount%
-  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! §7[%colorTertiary%%fakeCount%§7 -> %colorTertiary%%newCount%§7]"
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%fakeCount%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
   # Valid placeholders: %name%, %fakeCount%, %newCount%
-  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! §7[%colorTertiary%%fakeCount%§7 -> %colorTertiary%%newCount%§7]"
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%fakeCount%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
   you-got-vanished: "%CORE_ICON% %colorPrimary%You have been vanished!"
   you-got-unvanished: "%CORE_ICON% %colorPrimary%You have been unvanished!"
   already-vanished: "%colorError%You are already vanished!"
