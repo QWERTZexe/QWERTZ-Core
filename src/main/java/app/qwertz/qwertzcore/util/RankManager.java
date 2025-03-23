@@ -16,7 +16,10 @@ package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.WeightNode;
 import nl.svenar.powerranks.common.structure.PRPlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -141,6 +144,26 @@ public class RankManager {
         }
         return "";
     }
+    public int getWeight(Player player) {
+        if (usingLuckPerms) {
+            User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+            if (user != null) {
+                CachedMetaData metaData = user.getCachedData().getMetaData();
+                if (metaData != null) {
+                    return user.getNodes(NodeType.WEIGHT).stream()
+                        .mapToInt(WeightNode::getWeight)
+                        .max()
+                        .orElse(0);
+                }
+            }
+        }
+        if (player.isOp()) {
+            return 100;
+        } else {
+            return 0;
+        }
+    }
+
 
     public boolean isUsingLuckPerms() {
         return usingLuckPerms;

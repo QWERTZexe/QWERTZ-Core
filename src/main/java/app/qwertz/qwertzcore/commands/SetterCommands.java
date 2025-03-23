@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,16 +20,15 @@ public class SetterCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (command.getName().toLowerCase()) {
-            case "setspawn":
-                setSpawn(sender);
-            case "setserver":
-                setServer(sender, args);
-            case "setevent":
-                setEvent(sender, args);
+        if (command.getName().equalsIgnoreCase("setspawn")) {
+            setSpawn(sender);
+        } else if (command.getName().equalsIgnoreCase("setserver")) {
+            setServer(sender, args);
+        } else if (command.getName().equalsIgnoreCase("setevent")) {
+            setEvent(sender, args);
+
         }
         return true;
-
     }
 
     public void setSpawn(CommandSender sender) {

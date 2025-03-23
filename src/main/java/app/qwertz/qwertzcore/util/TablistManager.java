@@ -1,7 +1,7 @@
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

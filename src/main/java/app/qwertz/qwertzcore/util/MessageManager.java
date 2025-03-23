@@ -15,6 +15,10 @@
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import nl.svenar.lib.json.simple.JSONArray;
+import nl.svenar.lib.json.simple.JSONObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -23,17 +27,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
-
-import org.kohsuke.github.GHContent;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
 
 public class MessageManager {
     private final QWERTZcore plugin;
@@ -55,22 +53,42 @@ public class MessageManager {
         // Fetch themes from GitHub
         fetchThemesFromGitHub();
     }
+
     private void fetchThemesFromGitHub() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                GitHub github = GitHub.connectAnonymously();
-                GHRepository repo = github.getRepository("QWERTZexe/QWERTZ-Core");
-                List<GHContent> contents = repo.getDirectoryContent("themes");
-                for (GHContent content : contents) {
-                    if (content.isDirectory()) {
-                        themes.add(content.getName());
+                URL url = new URL("https://api.github.com/repos/QWERTZexe/QWERTZ-Core/contents/themes");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept", "application/vnd.github.v3+json");
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("HTTP error code: " + conn.getResponseCode());
+                }
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line);
+                }
+                br.close();
+                conn.disconnect();
+
+                Gson gson = new Gson();
+                List<Map<String, Object>> items = gson.fromJson(response.toString(), new TypeToken<List<Map<String, Object>>>(){}.getType());
+
+                for (Map<String, Object> item : items) {
+                    if ("dir".equals(item.get("type"))) {
+                        themes.add((String) item.get("name"));
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 plugin.getLogger().warning("Failed to fetch themes from GitHub: " + e.getMessage());
             }
         });
     }
+
 
     public List<String> getThemes() {
         return themes;

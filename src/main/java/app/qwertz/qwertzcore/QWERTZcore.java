@@ -28,14 +28,18 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.YELLOW + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "2.0";
+    public static final String VERSION = "2.1";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
+    private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     private Metrics metrics;
     public Boolean isUsingWorldGuard = false;
@@ -353,5 +357,23 @@ public final class QWERTZcore extends JavaPlugin {
 
     public void reloadCore(CommandSender sender) {
         reloadCoreCommand.reload(sender);
+    }
+
+    public String translateHexColorCodes(final String message) {
+        final char colorChar = ChatColor.COLOR_CHAR;
+
+        final Matcher matcher = HEX_PATTERN.matcher(message);
+        final StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+
+        while (matcher.find()) {
+            final String group = matcher.group(1);
+
+            matcher.appendReplacement(buffer, colorChar + "x"
+                    + colorChar + group.charAt(0) + colorChar + group.charAt(1)
+                    + colorChar + group.charAt(2) + colorChar + group.charAt(3)
+                    + colorChar + group.charAt(4) + colorChar + group.charAt(5));
+        }
+
+        return matcher.appendTail(buffer).toString();
     }
 }

@@ -53,7 +53,7 @@ public class ChatManager implements Listener {
             localMap.put("%prefix%", prefix);
             localMap.put("%suffix%", suffix);
             localMap.put("%message%", message);
-            Bukkit.broadcastMessage(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap));
+            Bukkit.broadcastMessage(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)));
         }
     }
 }

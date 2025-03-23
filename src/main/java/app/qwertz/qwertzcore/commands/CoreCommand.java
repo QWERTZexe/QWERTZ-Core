@@ -34,7 +34,7 @@ public class CoreCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission("qwertzcore.host.reloadcore")) {
-            if (args[0].equalsIgnoreCase("reload")) {
+            if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
                 plugin.reloadCore(sender);
                 return true;
             }

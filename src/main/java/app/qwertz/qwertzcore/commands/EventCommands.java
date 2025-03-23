@@ -113,7 +113,7 @@ public class EventCommands implements CommandExecutor {
             return false;
         }
 
-        if (!plugin.getEventManager().unrevivePlayer(target)) {
+        if (!plugin.getEventManager().unrevivePlayer(target, (Player) sender)) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%player%", target.getName());
             plugin.getMessageManager().sendMessage((Player) sender, "event.alreadydead", localMap);
@@ -124,13 +124,17 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleReviveAll(CommandSender sender) {
         plugin.getEventManager().reviveAll((Player) sender);
-        plugin.getMessageManager().broadcastMessage("event.revivedall");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%player%", sender.getName());
+        plugin.getMessageManager().broadcastMessage("event.revivedall", localMap);
         return true;
     }
 
     private boolean handleUnReviveAll(CommandSender sender) {
         plugin.getEventManager().unReviveAll();
-        plugin.getMessageManager().broadcastMessage("event.unrevivedall");
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%player%", sender.getName());
+        plugin.getMessageManager().broadcastMessage("event.unrevivedall", localMap);
         return true;
     }
 

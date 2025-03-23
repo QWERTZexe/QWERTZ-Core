@@ -74,9 +74,13 @@ event:
   alreadyalive: "%colorPrimary%%player% is already alive!"
   # Valid placeholders: %player%
   alreadydead: "%colorPrimary%%player% is already dead!"
+  # Valid placeholders: %player%
   revivedall: "%CORE_ICON% %colorSuccess%All players have been revived!"
+  # Valid placeholders: %player%
   unrevivedall: "%CORE_ICON% %colorDead%All players have been unrevived!"
+  # Valid placeholders: %player% (Executor), %name% (Target)
   revive: "%CORE_ICON% %colorAlive%%name% has been revived!"
+  # Valid placeholders: %player% (Executor), %name% (Target)
   unrevive: "%CORE_ICON% %colorDead%%name% has been unrevived!"
   noalive: "%colorPrimary%There are no alive players!"
   nodead: "%colorPrimary%There are no dead players!"

@@ -52,6 +52,8 @@ public class EventManager {
             deathTimes.remove(targetUUID);
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", target.getName());
+            localMap.put("%player%", executor.getName());
+
             broadcastMessage("event.revive", localMap);
             return true;
         }
@@ -61,7 +63,7 @@ public class EventManager {
     }
 
 
-    public boolean unrevivePlayer(Player target) {
+    public boolean unrevivePlayer(Player target, Player executor) {
         UUID targetUUID = target.getUniqueId();
 
         if (alivePlayers.remove(targetUUID)) {
@@ -71,6 +73,8 @@ public class EventManager {
             }
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", target.getName());
+            localMap.put("%player%", executor.getName());
+
             broadcastMessage("event.unrevive", localMap);
             return true;
         }
