@@ -272,7 +272,6 @@ public class EventCommands implements CommandExecutor {
         String playerTypeColor = isDead ? "%colorDead%" : "%colorAlive%";
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%name%", executor.getName());
-        plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-item", localMap);
         if (filter) {
             localMap.put("%typeColor%", playerTypeColor);
             localMap.put("%type%", playerType);
