@@ -4,15 +4,15 @@
 # # This config populates itself on updates
 
 placeholders:
-  colorPrimary: \u00a7e
-  colorSecondary: \u00a76
-  colorTertiary: \u00a7b
-  colorError: \u00a7c
-  colorSuccess: \u00a7a
-  colorAlive: \u00a7b
-  colorDead: \u00a7c
-  CORE_ICON_RAW: \ud83d\udde1
-  CORE_ICON: \u00a7e\ud83d\udde1
+  colorPrimary: "\u00a7e"
+  colorSecondary: "\u00a76"
+  colorTertiary: "\u00a7b"
+  colorError: "\u00a7c"
+  colorSuccess: "\u00a7a"
+  colorAlive: "\u00a7b"
+  colorDead: "\u00a7c"
+  CORE_ICON_RAW: "\ud83d\udde1"
+  CORE_ICON: "\u00a7e\ud83d\udde1"
 
 # Active theme, set to "file" if you wish to use this file!
 # Built-in: "internal" or "file"
@@ -20,347 +20,347 @@ placeholders:
 active-theme: "internal"
 
 general:
-  only-player-execute: '%colorError%This command can only be used by players.'
+  only-player-execute: "%colorError%This command can only be used by players."
   # Valid placeholders: %usage%
-  invalid-usage: '%colorError%Usage: %usage%'
-  player-not-found: '%colorError%Player not found!'
-  no-permission: '%colorError%You don''t have permission to use this command.'
-  disabled-command: '%colorError%This command is disabled!'
+  invalid-usage: "%colorError%Usage: %usage%"
+  player-not-found: "%colorError%Player not found!"
+  no-permission: "%colorError%You don't have permission to use this command."
+  disabled-command: "%colorError%This command is disabled!"
 
 chatting:
-  disabled: '%colorError%Chat is disabled!'
+  disabled: "%colorError%Chat is disabled!"
   # Valid placeholders: %name%, %prefix%, %suffix%, %message%
-  chat: '%prefix%%name%%suffix%:\u00a7r %message%'
-  death: '%colorDead%%name% \u00a74DIED!'
+  chat: "%prefix%%name%%suffix%:\u00a7r %message%"
+  death: "%colorDead%%name% \u00a74DIED!"
   # Valid placeholders: %name%, %count%, %newCount%
-  leave-msg: '%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%count%\u00a77
-    -> %colorTertiary%%newCount%\u00a77]'
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%count%\u00a77
+    -> %colorTertiary%%newCount%\u00a77]"
   # Valid placeholders: %name%, %count%, %newCount%
-  join-msg: '%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%count%\u00a77
-    -> %colorTertiary%%newCount%\u00a77]'
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%count%\u00a77
+    -> %colorTertiary%%newCount%\u00a77]"
 
 config:
   # Valid placeholders: %key%
-  key-not-found: '%colorError%Config key not found: %key%'
-  set-spawn: '%colorSuccess%Set spawn to your current location.'
-  invalid-spawn: '%colorError%Invalid value for spawn. Use ''currentpos''.'
+  key-not-found: "%colorError%Config key not found: %key%"
+  set-spawn: "%colorSuccess%Set spawn to your current location."
+  invalid-spawn: "%colorError%Invalid value for spawn. Use ""currentpos""."
   # Valid placeholders: %key%, %value%
-  set-key: '%colorSuccess%Set %key% to %value%'
+  set-key: "%colorSuccess%Set %key% to %value%"
   # Valid placeholders: %value%
-  invalid-number-format: '%colorError%Invalid number format: %value%'
+  invalid-number-format: "%colorError%Invalid number format: %value%"
   # Valid placeholders: %key%
-  invalid-type: '%colorError%Unsupported config value type for: %key%'
+  invalid-type: "%colorError%Unsupported config value type for: %key%"
 
 discord:
-  no-discord: '%colorError%Discord link is not set in the configuration.'
+  no-discord: "%colorError%Discord link is not set in the configuration."
   # Will always be blue and bold
-  clickhere: CLICK HERE TO JOIN OUR DISCORD!
-  hover: Click to join our Discord server!
-  invalid-url: '%colorError%The last part of your advertisement must be a valid URL.'
+  clickhere: "CLICK HERE TO JOIN OUR DISCORD!"
+  hover: "Click to join our Discord server!"
+  invalid-url: "%colorError%The last part of your advertisement must be a valid URL."
 
 specialblocks:
   # Valid placeholders: %types%
-  info: '%colorPrimary%Available block types: %types%'
-  invalid-material: '%colorError%Invalid material specified!'
+  info: "%colorPrimary%Available block types: %types%"
+  invalid-material: "%colorError%Invalid material specified!"
   # Valid placeholders: %types%
-  invalid-type: '%colorError%Invalid block type! %colorPrimary%Available types: %types%'
+  invalid-type: "%colorError%Invalid block type! %colorPrimary%Available types: %types%"
   # Valid placeholders: %blockType%, %material%
-  receive: '%CORE_ICON% %colorSuccess%You have received a \u00a76QWERTZ Core %colorPrimary%%blockType%
-    %colorSuccess%with material %colorPrimary%%material% %colorSuccess%!'
+  receive: "%CORE_ICON% %colorSuccess%You have received a \u00a76QWERTZ Core %colorPrimary%%blockType%
+    %colorSuccess%with material %colorPrimary%%material% %colorSuccess%!"
   # Valid placeholders: %blockType%, %x%, %y%, %z%, %world%
-  place: '%CORE_ICON% %colorPrimary%Placed a %colorSecondary%%blockType%%colorPrimary%
+  place: "%CORE_ICON% %colorPrimary%Placed a %colorSecondary%%blockType%%colorPrimary%
     at X: %colorSecondary%%x% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z:
-    %colorSecondary%%z% %colorPrimary%WORLD: %colorSecondary%%world%'
+    %colorSecondary%%z% %colorPrimary%WORLD: %colorSecondary%%world%"
   # Valid placeholders:%x%, %y%, %z%, %world%
-  remove: '%CORE_ICON% %colorDead%Removed special block at X: %colorSecondary%%x%%colorDead%
-    Y: %colorSecondary%%y%%colorDead% Z: %colorSecondary%%z%%colorDead% WORLD: %colorSecondary%%world%'
+  remove: "%CORE_ICON% %colorDead%Removed special block at X: %colorSecondary%%x%%colorDead%
+    Y: %colorSecondary%%y%%colorDead% Z: %colorSecondary%%z%%colorDead% WORLD: %colorSecondary%%world%"
 
 event:
   # Valid placeholders: %player%
-  alreadyalive: '%colorPrimary%%player% is already alive!'
+  alreadyalive: "%colorPrimary%%player% is already alive!"
   # Valid placeholders: %player%
-  alreadydead: '%colorPrimary%%player% is already dead!'
+  alreadydead: "%colorPrimary%%player% is already dead!"
   # Valid placeholders: %player%
-  revivedall: '%CORE_ICON% %colorSuccess%All players have been revived by %colorSuccess%%player%!'
+  revivedall: "%CORE_ICON% %colorSuccess%All players have been revived by %colorSuccess%%player%!"
   # Valid placeholders: %player%
-  unrevivedall: '%CORE_ICON% %colorDead%All players have been unrevived by %colorDead%%player%!!'
+  unrevivedall: "%CORE_ICON% %colorDead%All players have been unrevived by %colorDead%%player%!!"
   # Valid placeholders: %player% (Executor), %name% (Target)
-  revive: '%CORE_ICON% %colorAlive%%name% has been revived by %colorAlive%%player%!'
+  revive: "%CORE_ICON% %colorAlive%%name% has been revived by %colorAlive%%player%!"
   # Valid placeholders: %player% (Executor), %name% (Target)
-  unrevive: '%CORE_ICON% %colorDead%%name% has been unrevived by %colorDead%%player%!'
-  noalive: '%colorPrimary%There are no alive players!'
-  nodead: '%colorPrimary%There are no dead players!'
+  unrevive: "%CORE_ICON% %colorDead%%name% has been unrevived by %colorDead%%player%!"
+  noalive: "%colorPrimary%There are no alive players!"
+  nodead: "%colorPrimary%There are no dead players!"
   # Valid placeholders: %list%
-  listalive: '%colorAlive%Alive players: %list%'
+  listalive: "%colorAlive%Alive players: %list%"
   # Valid placeholders: %list%
-  listdead: '%colorDead%Dead players: %list%'
+  listdead: "%colorDead%Dead players: %list%"
   # Valid placeholders: %item%
-  invalid-item: '%colorError%Invalid item: %item%'
+  invalid-item: "%colorError%Invalid item: %item%"
   # Valid placeholders: %amount%
-  invalid-amount: '%colorError%Invalid amount: %amount%'
+  invalid-amount: "%colorError%Invalid amount: %amount%"
   # Valid placeholders: %affected%, %type% (alive, dead), %typeColor%, %amount%, %item%
-  give-broadcast: '%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
-    have received %colorPrimary%%amount% %colorPrimary%%item%!'
+  give-broadcast: "%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
+    have received %colorPrimary%%amount% %colorPrimary%%item%!"
   # Valid placeholders: %name%
-  tpall: '%CORE_ICON% %colorPrimary%%name% %colorSuccess%teleported all players to
-    their location!'
+  tpall: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%teleported all players to
+    their location!"
   # Valid placeholders: %name%, %type% (alive, dead), %typeColor%
-  tp-group: '%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
-    have been teleported to %colorPrimary%%name%!'
-  canttptoyourself: '%colorError%You can''t teleport yourself to yourself!'
+  tp-group: "%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
+    have been teleported to %colorPrimary%%name%!"
+  canttptoyourself: "%colorError%You can't teleport yourself to yourself!"
   # Valid placeholders: %name%
-  tphere-sender-msg: '%CORE_ICON% %colorPrimary%%name% %colorSuccess%has been teleported
-    to you!'
+  tphere-sender-msg: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%has been teleported
+    to you!"
   # Valid placeholders: %name%
-  tphere-target-msg: '%CORE_ICON% %colorSuccess%You have been teleported to %colorPrimary%%name%%colorSuccess%!'
+  tphere-target-msg: "%CORE_ICON% %colorSuccess%You have been teleported to %colorPrimary%%name%%colorSuccess%!"
   revivelast:
-    no-number: '%colorError%Please specify a number of seconds between 1 and 60.'
-    invalid-number: '%colorError%Invalid number of seconds. Using default of 30 seconds.'
+    no-number: "%colorError%Please specify a number of seconds between 1 and 60."
+    invalid-number: "%colorError%Invalid number of seconds. Using default of 30 seconds."
     # Valid placeholders: %amount%, %seconds%
-    broadcast: '%CORE_ICON% %colorSuccess%%amount% %colorPrimary%players who died
-      in the last %colorSuccess%%seconds% %colorPrimary%seconds have been revived'
+    broadcast: "%CORE_ICON% %colorSuccess%%amount% %colorPrimary%players who died
+      in the last %colorSuccess%%seconds% %colorPrimary%seconds have been revived"
   # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%
-  heal-broadcast: '%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
-    have been healed!'
+  heal-broadcast: "%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
+    have been healed!"
 
 eventcountdown:
-  invalid-time: '%colorError%Invalid time format. Use: <number>[s|sec|m|min] or just
-    <number> for minutes.'
-  out-of-range: '%colorError%Invalid time. Please specify a time between 1 second
-    and 60 minutes.'
+  invalid-time: "%colorError%Invalid time format. Use: <number>[s|sec|m|min] or just
+    <number> for minutes."
+  out-of-range: "%colorError%Invalid time. Please specify a time between 1 second
+    and 60 minutes."
   # Valid placeholders: %time%
-  started-countdown: '%colorSuccess%Event countdown started for %time%'
+  started-countdown: "%colorSuccess%Event countdown started for %time%"
   # Valid placeholders: %event%
-  starting-now: '%CORE_ICON% %colorSuccess%Event %event% is starting now!'
+  starting-now: "%CORE_ICON% %colorSuccess%Event %event% is starting now!"
   # Valid placeholders: %event%, %time%
-  broadcast: '%CORE_ICON% %colorPrimary%Event &6%event% %colorPrimary%starts in \u00a7c%time%%colorPrimary%!'
+  broadcast: "%CORE_ICON% %colorPrimary%Event &6%event% %colorPrimary%starts in \u00a7c%time%%colorPrimary%!"
 
 advertisement:
-  invalid-platform: '%colorError%Invalid platform. Available platforms: twitch, tiktok,
-    youtube, discord, store, website, other'
+  invalid-platform: "%colorError%Invalid platform. Available platforms: twitch, tiktok,
+    youtube, discord, store, website, other"
   # Valid placeholders: %platform%
-  setad-success: '%colorSuccess%Advertisement for %platform% has been set.'
-  no-ad-set: '%colorError%No advertisement set for this platform.'
-  invalid-url: '%colorError%The last part of your advertisement must be a valid URL.'
+  setad-success: "%colorSuccess%Advertisement for %platform% has been set."
+  no-ad-set: "%colorError%No advertisement set for this platform."
+  invalid-url: "%colorError%The last part of your advertisement must be a valid URL."
 
 chatmute:
   # Valid placeholders: %state% (enabled, disabled), %stateColor%
-  broadcast: '%CORE_ICON% %colorPrimary%Chat has been %stateColor%%state%%colorPrimary%!'
+  broadcast: "%CORE_ICON% %colorPrimary%Chat has been %stateColor%%state%%colorPrimary%!"
   # Valid placeholders: %state%
-  is-already: '%colorError%Chat is already %state%!'
+  is-already: "%colorError%Chat is already %state%!"
 
 chatrevive:
-  already-going: '%colorError%A game is already in progress. Use /chatrevive cancel
-    to end it.'
-  invalid-number: '%colorError%Invalid number format for max value. Using default
-    of 40.'
-  invalid-game: '%colorError%Invalid game type. Use math, typer, or guess.'
+  already-going: "%colorError%A game is already in progress. Use /chatrevive cancel
+    to end it."
+  invalid-number: "%colorError%Invalid number format for max value. Using default
+    of 40."
+  invalid-game: "%colorError%Invalid game type. Use math, typer, or guess."
   # Valid placeholders: %question%
-  math-question: '%CORE_ICON% %colorPrimary%Math Question: %colorSuccess%%question%'
-  math-howto: '%colorPrimary%Type the correct answer in chat!'
+  math-question: "%CORE_ICON% %colorPrimary%Math Question: %colorSuccess%%question%"
+  math-howto: "%colorPrimary%Type the correct answer in chat!"
   # Valid placeholders: %sentence%
-  typer-question: '%CORE_ICON% %colorPrimary%Type this sentence: %colorSuccess%%sentence%'
+  typer-question: "%CORE_ICON% %colorPrimary%Type this sentence: %colorSuccess%%sentence%"
   # Valid placeholders: %number%
-  guess-question: '%CORE_ICON% %colorPrimary%Guess a number between %colorSuccess%1
-    %colorPrimary%and %colorSuccess%%number%'
-  cancelled: '%colorPrimary%The chat revival game has been cancelled.'
-  no-active-game: '%colorError%There is no active chat revival game to cancel.'
+  guess-question: "%CORE_ICON% %colorPrimary%Guess a number between %colorSuccess%1
+    %colorPrimary%and %colorSuccess%%number%"
+  cancelled: "%colorPrimary%The chat revival game has been cancelled."
+  no-active-game: "%colorError%There is no active chat revival game to cancel."
   # Valid placeholders: %answer%
-  correct-answer: '%CORE_ICON% %colorPrimary%The correct answer was: %colorAlive%%answer%'
+  correct-answer: "%CORE_ICON% %colorPrimary%The correct answer was: %colorAlive%%answer%"
   # Valid placeholders: %sentence%
-  correct-sentence: '%CORE_ICON% %colorPrimary%The correct sentence was: %colorAlive%%sentence%'
+  correct-sentence: "%CORE_ICON% %colorPrimary%The correct sentence was: %colorAlive%%sentence%"
   # Valid placeholders: %player%
-  winner: '%CORE_ICON% %colorAlive%%player% %colorPrimary%has won the chat revival
-    game!'
+  winner: "%CORE_ICON% %colorAlive%%player% %colorPrimary%has won the chat revival
+    game!"
 
 clearinv:
-  got-cleared: '%colorError%Your inventory has been cleared by an admin.'
+  got-cleared: "%colorError%Your inventory has been cleared by an admin."
   # Valid placeholders: %amount%, %group% (alive, dead), %groupColor%
-  broadcast: '%CORE_ICON% %colorSuccess%%amount% %groupColor%%group% %colorSuccess%players
-    have had their inventories cleared'
+  broadcast: "%CORE_ICON% %colorSuccess%%amount% %groupColor%%group% %colorSuccess%players
+    have had their inventories cleared"
 
 gamemode:
-  invalid: '%colorError%Invalid gamemode. Use creative, survival, adventure, or spectator.'
+  invalid: "%colorError%Invalid gamemode. Use creative, survival, adventure, or spectator."
   # Valid placeholders: %gamemode%
-  success: '%CORE_ICON% %colorPrimary%Your gamemode has been set to %colorSuccess%%gamemode%%colorPrimary%.'
+  success: "%CORE_ICON% %colorPrimary%Your gamemode has been set to %colorSuccess%%gamemode%%colorPrimary%."
 
 hide:
-  invalid: '%colorError%Invalid mode. Use host, staff, all, or off.'
-  mode-off: '%CORE_ICON% %colorPrimary%All %colorSuccess%players are now visible to
-    you.'
+  invalid: "%colorError%Invalid mode. Use host, staff, all, or off."
+  mode-off: "%CORE_ICON% %colorPrimary%All %colorSuccess%players are now visible to
+    you."
   # Valid placeholders: %mode%
-  mode-on: '%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%'
+  mode-on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%"
 
 kit:
   # Valid placeholders: %name%
-  created: '%CORE_ICON% %colorSuccess%Kit %colorPrimary%''%name%'' %colorSuccess%has
-    been created!'
+  created: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%""%name%"" %colorSuccess%has
+    been created!"
   # Valid placeholders: %name%
-  deleted: '%CORE_ICON% %colorDead%Kit %colorPrimary%''%name%'' %colorDead%has been
-    deleted!'
+  deleted: "%CORE_ICON% %colorDead%Kit %colorPrimary%""%name%"" %colorDead%has been
+    deleted!"
   # Valid placeholders: %name%
-  nonexistent: '%CORE_ICON% %colorError%Kit %colorPrimary%''%name%'' %colorError%does
-    not exist!'
+  nonexistent: "%CORE_ICON% %colorError%Kit %colorPrimary%""%name%"" %colorError%does
+    not exist!"
   # Valid placeholders: %name%
-  received: '%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%''%name%''
-    %colorSuccess%!'
+  received: "%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%""%name%""
+    %colorSuccess%!"
   # Valid placeholders: %name%, %amount%
-  broadcast: '%CORE_ICON% %colorSuccess%Kit %colorPrimary%''%name%'' %colorSuccess%has
-    been given to %colorPrimary%%amount% %colorSuccess%players!'
-  no-kits: '%CORE_ICON% %colorPrimary%There are no kits available.'
+  broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%""%name%"" %colorSuccess%has
+    been given to %colorPrimary%%amount% %colorSuccess%players!"
+  no-kits: "%CORE_ICON% %colorPrimary%There are no kits available."
   # Valid placeholders: %list%
-  list: '%CORE_ICON% %colorSuccess%Available kits: %colorPrimary%%list%'
+  list: "%CORE_ICON% %colorSuccess%Available kits: %colorPrimary%%list%"
 
 poll:
-  already-active: '%colorError%A poll is already active.'
-  invalid-duration: '%colorError%Invalid duration. Please provide a number in seconds.'
+  already-active: "%colorError%A poll is already active."
+  invalid-duration: "%colorError%Invalid duration. Please provide a number in seconds."
   # Valid placeholders: %question%
-  new-poll: '%CORE_ICON% %colorPrimary%\u00a7lNew poll: %colorSecondary%%question%'
+  new-poll: "%CORE_ICON% %colorPrimary%\u00a7lNew poll: %colorSecondary%%question%"
   # Valid placeholders: %index%, %option%
-  option: '%colorSecondary%%index%. %colorTertiary%%option%'
+  option: "%colorSecondary%%index%. %colorTertiary%%option%"
   click-to-vote: "\u00a77\u00a7oClick to vote!"
-  hover: Click to vote for this option!
-  result-title: '%CORE_ICON% %colorPrimary%\u00a7lPoll ended! %colorPrimary%Results:'
+  hover: "Click to vote for this option!"
+  result-title: "%CORE_ICON% %colorPrimary%\u00a7lPoll ended! %colorPrimary%Results:"
   # Valid placeholders: %index%, %option%, %amount%
-  result-option: '%colorSecondary%%index%. %option% %colorTertiary%: %colorPrimary%%amount%
-    votes'
-  no-active-poll: '%colorError%There is no active poll.'
-  invalid-option: '%colorError%Invalid option.'
+  result-option: "%colorSecondary%%index%. %option% %colorTertiary%: %colorPrimary%%amount%
+    votes"
+  no-active-poll: "%colorError%There is no active poll."
+  invalid-option: "%colorError%Invalid option."
   # Valid placeholders: %option%
-  vote-success: '%colorSuccess%You voted for %option%'
+  vote-success: "%colorSuccess%You voted for %option%"
 
 messaging:
   # Valid placeholders: %name%
-  cannot-message: '%colorError%%name% has disabled private messages.'
-  cannot-reply: '%colorError%You have no one to reply to.'
+  cannot-message: "%colorError%%name% has disabled private messages."
+  cannot-reply: "%colorError%You have no one to reply to."
   # Valid placeholders: %state% (enabled, disabled), %stateColor%
-  togglemsg: '%CORE_ICON% %stateColor%Private messages have been %state%!'
+  togglemsg: "%CORE_ICON% %stateColor%Private messages have been %state%!"
   # Valid placeholders: %sender%, %recipient%, %message%
-  direct-message: \u00a77[%colorPrimary%%sender%\u00a77 -> %colorPrimary%%recipient%\u00a77] \u00a7f%message%
+  direct-message: "\u00a77[%colorPrimary%%sender%\u00a77 -> %colorPrimary%%recipient%\u00a77] \u00a7f%message%"
 
 revivaltokens:
   # Valid placeholders: %name%, %tokens%
-  showrevives: '%CORE_ICON% %colorPrimary%%name% %colorAlive%has %tokens% revival
-    tokens.'
-  tokens-disabled: '%colorErrror%Revive tokens are currently disabled!'
+  showrevives: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has %tokens% revival
+    tokens."
+  tokens-disabled: "%colorErrror%Revive tokens are currently disabled!"
   # Valid placeholders: %time%
-  cooldown: '%colorError%You must wait %time% seconds again before requesting a revive!'
-  no-tokens: '%colorError%You don''t have any revive tokens!'
-  already-alive: '%colorError%You are already alive!'
+  cooldown: "%colorError%You must wait %time% seconds again before requesting a revive!"
+  no-tokens: "%colorError%You don't have any revive tokens!"
+  already-alive: "%colorError%You are already alive!"
   # Valid placeholders: %name%
-  request-revive: '%CORE_ICON% %colorPrimary%%name%%colorAlive% is requesting to use
+  request-revive: "%CORE_ICON% %colorPrimary%%name%%colorAlive% is requesting to use
     a revive token! (%colorAlive%/reviveaccept %colorPrimary%%name%%colorAlive% or
-    %colorDead%/revivedeny %colorPrimary%%name%%colorAlive%)'
-  no-pending-request: '%colorError%There is no pending revive request for this player!'
+    %colorDead%/revivedeny %colorPrimary%%name%%colorAlive%)"
+  no-pending-request: "%colorError%There is no pending revive request for this player!"
   # Valid placeholders: %name%
-  revive-accepted: '%CORE_ICON% %colorPrimary%%name%''s %colorAlive%revive request
-    has been accepted!'
+  revive-accepted: "%CORE_ICON% %colorPrimary%%name%""s %colorAlive%revive request
+    has been accepted!"
   # Valid placeholders: %name%
-  revive-denied: '%CORE_ICON% %colorPrimary%%name%''s %colorDead%revive request has
-    been denied!'
+  revive-denied: "%CORE_ICON% %colorPrimary%%name%""s %colorDead%revive request has
+    been denied!"
   # Valid placeholders: %name%, %tokens%
-  token-given: '%CORE_ICON% %colorPrimary%%name% %colorAlive%has been given a revive
-    token! They now have %colorPrimary%%tokens% %colorAlive%tokens.'
+  token-given: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has been given a revive
+    token! They now have %colorPrimary%%tokens% %colorAlive%tokens."
   # Valid placeholders: %name%, %tokens%
-  token-removed: '%CORE_ICON% %colorDead%A revive token has been removed from %colorPrimary%%name%%colorDead%!
-    They now have %colorPrimary%%tokens% %colorDead%tokens.'
+  token-removed: "%CORE_ICON% %colorDead%A revive token has been removed from %colorPrimary%%name%%colorDead%!
+    They now have %colorPrimary%%tokens% %colorDead%tokens."
 
 spawn:
   alive-title:
-    title: '%colorError%WARNING'
-    subtitle: '%colorPrimary%You are still alive!'
-  alive-message: '%colorError%WARNING: %colorPrimary%You are still alive! Type /spawn
-    again within 10 seconds to confirm teleportation.'
-  spawn-while-alive: '%colorDead%You have been unrevived as you chose to teleport
-    to spawn while alive.'
-  success: '%CORE_ICON% %colorSuccess%Teleported to spawn!'
-  no-spawn: '%colorError%Spawn location is not set!'
+    title: "%colorError%WARNING"
+    subtitle: "%colorPrimary%You are still alive!"
+  alive-message: "%colorError%WARNING: %colorPrimary%You are still alive! Type /spawn
+    again within 10 seconds to confirm teleportation."
+  spawn-while-alive: "%colorDead%You have been unrevived as you chose to teleport
+    to spawn while alive."
+  success: "%CORE_ICON% %colorSuccess%Teleported to spawn!"
+  no-spawn: "%colorError%Spawn location is not set!"
 
 timer:
-  cancelled: '%colorPrimary%Timer cancelled.'
-  no-number: '%colorError%Please provide a positive number of seconds.'
-  invalid-number: '%colorError%Invalid number format. Please provide a valid number
-    of seconds.'
-  started: '%CORE_ICON% %colorPrimary%A timer just got started!'
-  time-up: '%colorSecondary%Time''s up!'
+  cancelled: "%colorPrimary%Timer cancelled."
+  no-number: "%colorError%Please provide a positive number of seconds."
+  invalid-number: "%colorError%Invalid number format. Please provide a valid number
+    of seconds."
+  started: "%CORE_ICON% %colorPrimary%A timer just got started!"
+  time-up: "%colorSecondary%Time""s up!"
   # Valid placeholders: %timeLeft%
-  countdown: '%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds'
-  broadcast-cancel: '%colorPrimary%Timer has been cancelled.'
+  countdown: "%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds"
+  broadcast-cancel: "%colorPrimary%Timer has been cancelled."
 
 vanish:
   # Valid placeholders: %name%, %fakeCount%, %newCount%
-  leave-msg: '%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%fakeCount%\u00a77
-    -> %colorTertiary%%newCount%\u00a77]'
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just left us! \u00a77[%colorTertiary%%fakeCount%\u00a77
+    -> %colorTertiary%%newCount%\u00a77]"
   # Valid placeholders: %name%, %fakeCount%, %newCount%
-  join-msg: '%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%fakeCount%\u00a77
-    -> %colorTertiary%%newCount%\u00a77]'
-  you-got-vanished: '%CORE_ICON% %colorPrimary%You have been vanished!'
-  you-got-unvanished: '%CORE_ICON% %colorPrimary%You have been unvanished!'
-  already-vanished: '%colorError%You are already vanished!'
-  not-vanished: '%colorError%You are not vanished!'
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%fakeCount%\u00a77
+    -> %colorTertiary%%newCount%\u00a77]"
+  you-got-vanished: "%CORE_ICON% %colorPrimary%You have been vanished!"
+  you-got-unvanished: "%CORE_ICON% %colorPrimary%You have been unvanished!"
+  already-vanished: "%colorError%You are already vanished!"
+  not-vanished: "%colorError%You are not vanished!"
 
 warps:
-  cannot-set: '%colorError%You don''t have permission to set warps!'
+  cannot-set: "%colorError%You don't have permission to set warps!"
   # Valid placeholders: %warp%
-  set: '%CORE_ICON% %colorSuccess%Warp %colorPrimary%''%warp%''%colorSuccess% has
-    been set at your current location!'
+  set: "%CORE_ICON% %colorSuccess%Warp %colorPrimary%""%warp%""%colorSuccess% has
+    been set at your current location!"
   # Valid placeholders: %warp%
-  delete: '%CORE_ICON% %colorError%Warp %colorPrimary%''%warpName%''%colorError% has
-    been deleted!'
+  delete: "%CORE_ICON% %colorError%Warp %colorPrimary%""%warpName%""%colorError% has
+    been deleted!"
   # Valid placeholders: %warp%
-  nonexistent: '%CORE_ICON% %colorError%Warp %colorPrimary%''%warp%''%colorError%
-    does not exist!'
+  nonexistent: "%CORE_ICON% %colorError%Warp %colorPrimary%""%warp%""%colorError%
+    does not exist!"
   alive-title:
-    title: '%colorError%WARNING'
-    subtitle: '%colorPrimary%You are still alive!'
-  alive-message: '%colorError%WARNING: %colorPrimary%You are still alive! Type /spawn
-    again within 10 seconds to confirm teleportation.'
-  cannot-delete: '%colorError%You don''t have permission to delete warps!'
-  no-warps: '%CORE_ICON% %colorPrimary%There are no warps set!'
+    title: "%colorError%WARNING"
+    subtitle: "%colorPrimary%You are still alive!"
+  alive-message: "%colorError%WARNING: %colorPrimary%You are still alive! Type /spawn
+    again within 10 seconds to confirm teleportation."
+  cannot-delete: "%colorError%You don't have permission to delete warps!"
+  no-warps: "%CORE_ICON% %colorPrimary%There are no warps set!"
   # Valid placeholders: %list%
-  list: '%CORE_ICON% %colorPrimary%Available warps: %list%'
-  warp-while-alive: '%colorDead%You have been unrevived as you chose to teleport to
-    a warp while alive.'
-  success: '%CORE_ICON% %colorSuccess%Teleported to warp!'
+  list: "%CORE_ICON% %colorPrimary%Available warps: %list%"
+  warp-while-alive: "%colorDead%You have been unrevived as you chose to teleport to
+    a warp while alive."
+  success: "%CORE_ICON% %colorSuccess%Teleported to warp!"
 
 wins:
   # Valid placeholders: %name%, %wins%
-  show-wins: '%CORE_ICON% %colorPrimary%%name%%colorAlive% has %wins% wins.'
+  show-wins: "%CORE_ICON% %colorPrimary%%name%%colorAlive% has %wins% wins."
   # Valid placeholders: %wins%
-  remove: '%colorDead%A win has been removed from your record. You now have %colorPrimary%%wins%%colorDead%
-    wins.'
+  remove: "%colorDead%A win has been removed from your record. You now have %colorPrimary%%wins%%colorDead%
+    wins."
   # Valid placeholders: %wins%
-  give: '%colorAlive%You have been awarded a win! You now have %colorPrimary%%wins%%colorAlive%
-    wins.'
+  give: "%colorAlive%You have been awarded a win! You now have %colorPrimary%%wins%%colorAlive%
+    wins."
   # Valid placeholders: %name%
-  no-wins: '%colorError%%name% has no wins to remove.'
+  no-wins: "%colorError%%name% has no wins to remove."
   # Valid placeholders: %name%, %wins%
-  win-broadcast: '%CORE_ICON% %colorAlive%Added a win for %colorPrimary%%name%%colorAlive%.
-    They now have %colorPrimary%%wins%%colorAlive% wins.'
+  win-broadcast: "%CORE_ICON% %colorAlive%Added a win for %colorPrimary%%name%%colorAlive%.
+    They now have %colorPrimary%%wins%%colorAlive% wins."
   # Valid placeholders: %name%, %wins%
-  win-removed-broadcast: '%CORE_ICON% %colorDead%Removed a win from %colorPrimary%%name%%colorDead%.
-    They now have %colorPrimary%%wins%%colorDead% wins.'
+  win-removed-broadcast: "%CORE_ICON% %colorDead%Removed a win from %colorPrimary%%name%%colorDead%.
+    They now have %colorPrimary%%wins%%colorDead% wins."
 
 worldguard:
-  no-regions: '%colorError%WorldGuard regions are not available in this world.'
+  no-regions: "%colorError%WorldGuard regions are not available in this world."
   # Valid placeholders: %name%
-  not-found: '%colorError%Region ''%name%'' not found.'
-  invalid-region: '%colorError%You need to be in a or specify a region!'
+  not-found: "%colorError%Region ""%name%"" not found."
+  invalid-region: "%colorError%You need to be in a or specify a region!"
   # Valid placeholders: %name%, %state% (ENABLED, DISABLED) %stateLower% (enabled, disabled), %stateColor%, %flag%
-  globally: '%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
-    %colorPrimary%%flag% %colorSecondary%GLOBALLY%colorSuccess%!'
+  globally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
+    %colorPrimary%%flag% %colorSecondary%GLOBALLY%colorSuccess%!"
   # Valid placeholders: %name%, %state% (ENABLED, DISABLED) %stateLower% (enabled, disabled), %stateColor%, %flag%, %region%
-  regionally: '%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
-    %colorPrimary%%flag% %colorSuccess%in region %colorSecondary%''%region%''%colorSuccess%!'
+  regionally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
+    %colorPrimary%%flag% %colorSuccess%in region %colorSecondary%""%region%""%colorSuccess%!"
   flags:
-    flow: FLOWING
-    pvp: PVP
-    break: BLOCK BREAKING
-    place: BLOCK PLACING
-    falldamage: FALL DAMAGE
-    hunger: HUNGER
+    flow: "FLOWING"
+    pvp: "PVP"
+    break: "BLOCK BREAKING"
+    place: "BLOCK PLACING"
+    falldamage: "FALL DAMAGE"
+    hunger: "HUNGER"
 
 messages:
-  invalid-theme: '%colorError%Invalid theme!'
-  successful: '%colorSuccess%Set the new theme! Reload the core for the changes to
-    be visible!'
+  invalid-theme: "%colorError%Invalid theme!"
+  successful: "%colorSuccess%Set the new theme! Reload the core for the changes to
+    be visible!"
