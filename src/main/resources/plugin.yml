@@ -80,6 +80,10 @@ commands:
     description: Teleport all dead players to you
     usage: /<command>
     permission: qwertzcore.host.tpdead
+  tpall:
+    description: Teleport all players to you
+    usage: /<command>
+    permission: qwertzcore.host.tpall
   tphere:
     description: Teleport the selected player to you
     usage: /<command> <player>
@@ -301,6 +305,11 @@ commands:
     usage: /<command> <theme>
     permission: qwertzcore.host.settheme
     aliases: [settheme]
+  emojis:
+    description: List all emojis
+    usage: /<command>
+    permission: qwertzcore.player.emojis
+    aliases: [emotes]
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -515,3 +524,6 @@ permissions:
   qwertzcore.host.settheme:
     description: Allows the player to change the theme
     default: op
+  qwertzcore.player.emojis:
+    description: Allows the player to use emojis
+    default: true

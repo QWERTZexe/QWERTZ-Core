@@ -282,4 +282,9 @@ public class MessageManager {
         message = prepareMessage(message, new HashMap<>());
         sender.sendMessage(message);
     }
+
+    public List<String> getStringList(String path) {
+        FileConfiguration config = getConfigToUse();
+        return config.getStringList(path);
+    }
 }

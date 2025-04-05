@@ -179,6 +179,9 @@ public class ConfigManager {
         if (!config.containsKey("reviveStaff")) {
             config.put("reviveStaff", false);
         }
+        if (!config.containsKey("emojis")) {
+            config.put("emojis", true);
+        }
     }
 
 
@@ -191,6 +194,7 @@ public class ConfigManager {
         spawnMap.put("yaw", 0.0f);
         spawnMap.put("pitch", 0.0f);
         config.put("spawn", spawnMap);
+        saveConfig();
     }
 
     public void saveConfig() {
@@ -272,6 +276,7 @@ public class ConfigManager {
 
     public void set(String key, Object value) {
         config.put(key, value);
+        saveConfig();
     }
     public void saveKit(String kitName, List<ItemStack> items) {
         Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());

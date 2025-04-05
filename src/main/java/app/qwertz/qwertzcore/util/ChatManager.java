@@ -25,6 +25,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import javax.print.attribute.HashAttributeSet;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatManager implements Listener {
     private final QWERTZcore plugin;
@@ -53,7 +54,18 @@ public class ChatManager implements Listener {
             localMap.put("%prefix%", prefix);
             localMap.put("%suffix%", suffix);
             localMap.put("%message%", message);
-            Bukkit.broadcastMessage(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)));
+            Bukkit.broadcastMessage(translateEmojis(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)), player));
         }
+    }
+
+    public String translateEmojis(String message, Player player) {
+        if (player.hasPermission("qwertzcore.player.emojis") && (Boolean) plugin.getConfigManager().get("emojis")) {
+            List<String> emojis = plugin.getMessageManager().getStringList("emojis.emojis");
+            for (String emoji : emojis) {
+                String[] parts = emoji.split("\\|");  // Escape pipe character
+                message = message.replace(parts[0], parts.length > 1 ? parts[1] : parts[0]);
+            }
+        }
+        return message;
     }
 }

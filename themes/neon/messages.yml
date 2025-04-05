@@ -313,3 +313,19 @@ worldguard:
 messages:
   invalid-theme: "%colorError%Invalid theme!"
   successful: "%colorSuccess%Set the new theme! Reload the core for the changes to be visible!"
+
+emojis:
+  list: "%CORE_ICON% %colorSecondary%QWERTZ Core emoji list: "
+  reminder: "\u00a77\u00a7oEmojis are dependent on the current theme"
+  # Valid placeholders: %code%, %emoji%
+  item: "%colorPrimary%- %colorSecondary%%code% %colorTertiary%-> %colorSecondary%%emoji%"
+  # Format: ":laugh:|:D"
+  emojis:
+    - ":neon:|\u00a75\u2604\u00a7r"
+    - ":fire:|\u00a76\ud83d\udd25\u00a7r"
+    - ":skull:|\u00a77\ud83d\udc80\u00a7r"
+    - ":cry:|\u00a7c\ud83d\ude22\u00a7r"
+    - ":D|\u00a7e\ud83d\ude04\u00a7r"
+    - "D:|\u00a7c\ud83d\ude26\u00a7r"
+    - ":)|\u00a7e\ud83d\ude42\u00a7r"
+    - "<3|\u00a7c\u2764\u00a7r"

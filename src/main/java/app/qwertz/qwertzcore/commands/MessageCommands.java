@@ -129,6 +129,7 @@ public class MessageCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%sender%", sender.getName());
         localMap.put("%recipient%", recipient.getName());
+        message = plugin.getChatManager().translateEmojis(message, sender);
         localMap.put("%message%", message);
         plugin.getMessageManager().sendMessage(sender, "messaging.direct-message", localMap);
         plugin.getMessageManager().sendMessage(recipient, "messaging.direct-message", localMap);

@@ -35,7 +35,7 @@ public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.YELLOW + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "2.1";
+    public static final String VERSION = "2.2";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -185,6 +185,7 @@ public final class QWERTZcore extends JavaPlugin {
         databaseManager = null;
         messageManager = null;
         blockManager = null;
+        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("QWERTZ Core has been disabled!");
     }
 
@@ -213,6 +214,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("givealive").setTabCompleter(new GiveCommandTabCompleter());
         getCommand("tpalive").setExecutor(eventCommands);
         getCommand("tpdead").setExecutor(eventCommands);
+        getCommand("tpall").setExecutor(eventCommands);
         getCommand("tphere").setExecutor(eventCommands);
         getCommand("revivelast").setExecutor(eventCommands);
         getCommand("revivelast").setTabCompleter(new ReviveLastTabCompleter());
@@ -305,6 +307,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("reloadcore").setExecutor(reloadCoreCommand);
         getCommand("theme").setExecutor(new ThemeCommand(this));
         getCommand("theme").setTabCompleter(new ThemeTabCompleter(this));
+        getCommand("emojis").setExecutor(new EmojiCommand(this));
 
 
 
