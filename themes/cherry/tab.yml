@@ -19,9 +19,9 @@ footer:
   - "&9&n%discord%"
   - "&r "
   - "&d\u1d1b\u029c\u1d07\u1d0d\u1d07:"
-  - "&d%CORE_ICON% &dᴄʜᴇʀʀʏ ʙʟᴏѕѕᴏᴍ &d[ᴛʜᴇᴍᴇ]"
+  - "&d%CORE_ICON% &d\u1d04\u029c\u1d07\u0280\u0280\u028f\u0020\u0299\u029f\u1d0f\u0455\u0455\u1d0f\u1d0d &d[\u1d1b\u029c\u1d07\u1d0d\u1d07]"
 
-player-list-name: "%prefix%%player%%suffix% %ping_color%%ping%ᴍѕ"
+player-list-name: "%prefix%%player%%suffix% %ping_color%%ping%\u1d0d\u0455"
 
 ping-colors:
   40: "&2"

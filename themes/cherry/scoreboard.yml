@@ -1,0 +1,27 @@
+## QWERTZ Core Scoreboard Configuration
+## https://modrinth.com/plugin/qwertz-core
+
+## 0 is the bottom line, higher numbers are higher on the scoreboard.
+## Set a line to "" to effectively remove it.  Use color codes (&)
+
+# Valid placeholders: %server%, %event%, %alive%, %dead%, %countdown%, %player%, %rank%, %wins%, %tokens%
+# Also all placeholders in "messages.yml"
+
+# TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
+
+title: "&d%server%" # Scoreboard Title
+
+lines:
+  12: "&a&r "
+  11: "&d%player%"
+  10: " &7| &f\u0280\u1d00\u0274\u1d0b: &d%rank%"
+  9: " &7| &f\u1d1b\u1d0f\u1d0b\u1d07\u0274\u0455: &d%tokens%"
+  8: " &7| &f\u1d21\u026a\u0274\u0455: &d%wins%"
+  7: " &7| &f\u0455\u1d1b\u1d00\u0280\u1d1b\u026a\u0274\u0262\u0020\u026a\u0274: &d%countdown%"
+  6: "&l&r "
+  5: "&d\u1d07\u1d20\u1d07\u0274\u1d1b\u0020"
+  4: " &7| &f\u1d04\u1d1c\u0280\u0280\u1d07\u0274\u1d1b \u1d07\u1d20\u1d07\u0274\u1d1b: &d%event%"
+  3: " &7| &f\u1d00\u029f\u026a\u1d20\u1d07: &d%alive%"
+  2: " &7| &f\u1d05\u1d07\u1d00\u1d05: &d%dead%"
+  1: "&r "
+  0: "&d%CORE_ICON% &d\u1d04\u029c\u1d07\u0280\u0280\u028f\u0020&f\u0299\u029f\u1d0f\u0455\u0455\u1d0f\u1d0d &d[\u1d1b\u029c\u1d07\u1d0d\u1d07]" # bottom line
