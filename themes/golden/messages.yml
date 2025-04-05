@@ -193,19 +193,19 @@ hide:
 
 kit:
   # Valid placeholders: %name%
-  created: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%""%name%"" %colorSuccess%has
+  created: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has
     been created!"
   # Valid placeholders: %name%
-  deleted: "%CORE_ICON% %colorDead%Kit %colorPrimary%""%name%"" %colorDead%has been
+  deleted: "%CORE_ICON% %colorDead%Kit %colorPrimary%'%name%' %colorDead%has been
     deleted!"
   # Valid placeholders: %name%
-  nonexistent: "%CORE_ICON% %colorError%Kit %colorPrimary%""%name%"" %colorError%does
+  nonexistent: "%CORE_ICON% %colorError%Kit %colorPrimary%'%name%' %colorError%does
     not exist!"
   # Valid placeholders: %name%
-  received: "%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%""%name%""
+  received: "%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%'%name%'
     %colorSuccess%!"
   # Valid placeholders: %name%, %amount%
-  broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%""%name%"" %colorSuccess%has
+  broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has
     been given to %colorPrimary%%amount% %colorSuccess%players!"
   no-kits: "%CORE_ICON% %colorPrimary%There are no kits available."
   # Valid placeholders: %list%
@@ -253,10 +253,10 @@ revivaltokens:
     %colorDead%/revivedeny %colorPrimary%%name%%colorAlive%)"
   no-pending-request: "%colorError%There is no pending revive request for this player!"
   # Valid placeholders: %name%
-  revive-accepted: "%CORE_ICON% %colorPrimary%%name%""s %colorAlive%revive request
+  revive-accepted: "%CORE_ICON% %colorPrimary%%name%'s %colorAlive%revive request
     has been accepted!"
   # Valid placeholders: %name%
-  revive-denied: "%CORE_ICON% %colorPrimary%%name%""s %colorDead%revive request has
+  revive-denied: "%CORE_ICON% %colorPrimary%%name%'s %colorDead%revive request has
     been denied!"
   # Valid placeholders: %name%, %tokens%
   token-given: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has been given a revive
@@ -282,7 +282,7 @@ timer:
   invalid-number: "%colorError%Invalid number format. Please provide a valid number
     of seconds."
   started: "%CORE_ICON% %colorPrimary%A timer just got started!"
-  time-up: "%colorSecondary%Time""s up!"
+  time-up: "%colorSecondary%Time's up!"
   # Valid placeholders: %timeLeft%
   countdown: "%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds"
   broadcast-cancel: "%colorPrimary%Timer has been cancelled."
@@ -302,13 +302,13 @@ vanish:
 warps:
   cannot-set: "%colorError%You don't have permission to set warps!"
   # Valid placeholders: %warp%
-  set: "%CORE_ICON% %colorSuccess%Warp %colorPrimary%""%warp%""%colorSuccess% has
+  set: "%CORE_ICON% %colorSuccess%Warp %colorPrimary%'%warp%'%colorSuccess% has
     been set at your current location!"
   # Valid placeholders: %warp%
-  delete: "%CORE_ICON% %colorError%Warp %colorPrimary%""%warpName%""%colorError% has
+  delete: "%CORE_ICON% %colorError%Warp %colorPrimary%'%warpName%'%colorError% has
     been deleted!"
   # Valid placeholders: %warp%
-  nonexistent: "%CORE_ICON% %colorError%Warp %colorPrimary%""%warp%""%colorError%
+  nonexistent: "%CORE_ICON% %colorError%Warp %colorPrimary%'%warp%'%colorError%
     does not exist!"
   alive-title:
     title: "%colorError%WARNING"
@@ -344,14 +344,14 @@ wins:
 worldguard:
   no-regions: "%colorError%WorldGuard regions are not available in this world."
   # Valid placeholders: %name%
-  not-found: "%colorError%Region ""%name%"" not found."
+  not-found: "%colorError%Region '%name%' not found."
   invalid-region: "%colorError%You need to be in a or specify a region!"
   # Valid placeholders: %name%, %state% (ENABLED, DISABLED) %stateLower% (enabled, disabled), %stateColor%, %flag%
   globally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
     %colorPrimary%%flag% %colorSecondary%GLOBALLY%colorSuccess%!"
   # Valid placeholders: %name%, %state% (ENABLED, DISABLED) %stateLower% (enabled, disabled), %stateColor%, %flag%, %region%
   regionally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state%
-    %colorPrimary%%flag% %colorSuccess%in region %colorSecondary%""%region%""%colorSuccess%!"
+    %colorPrimary%%flag% %colorSuccess%in region %colorSecondary%'%region%'%colorSuccess%!"
   flags:
     flow: "FLOWING"
     pvp: "PVP"
