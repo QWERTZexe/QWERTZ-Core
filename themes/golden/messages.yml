@@ -43,7 +43,7 @@ config:
   # Valid placeholders: %key%
   key-not-found: "%colorError%Config key not found: %key%"
   set-spawn: "%colorSuccess%Set spawn to your current location."
-  invalid-spawn: "%colorError%Invalid value for spawn. Use ""currentpos""."
+  invalid-spawn: "%colorError%Invalid value for spawn. Use 'currentpos'."
   # Valid placeholders: %key%, %value%
   set-key: "%colorSuccess%Set %key% to %value%"
   # Valid placeholders: %value%
