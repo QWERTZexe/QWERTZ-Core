@@ -1,0 +1,28 @@
+## QWERTZ Core Scoreboard Configuration
+## https://modrinth.com/plugin/qwertz-core
+
+## 0 is the bottom line, higher numbers are higher on the scoreboard.
+## Set a line to "" to effectively remove it.  Use color codes (&)
+
+# Valid placeholders: %server%, %event%, %alive%, %dead%, %countdown%, %player%, %rank%, %wins%, %tokens%
+# Also all placeholders in "messages.yml"
+
+# TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
+
+title: "&e\ud83d\udde1&e&l %server% &e\ud83d\udde1" # Scoreboard Title
+
+lines:
+  12: "&a"  # Strikethrough line
+  11: "&6Event info:"
+  10: "&7| &eName: &6%event%"
+  9:  "&7| &eAlive: &6%alive%"
+  8:  ""
+  7:  "&7| &eStarting in: &6%countdown%"
+  6:  " " # Empty line
+  5:  "&6%player%"
+  4:  "&7| &eRank: &6%rank%"
+  3:  "&7| &eWins: &6%wins%"
+  2:  "&7| &eRevive Tokens: &6%tokens%"
+  1:  "&6" # Strikethrough line
+  0:   "" # Bottom line
+
