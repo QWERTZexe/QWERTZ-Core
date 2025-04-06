@@ -119,7 +119,7 @@ eventcountdown:
   # Valid placeholders: %event%
   starting-now: "%CORE_ICON% %colorSuccess%Event %event% is starting now!"
   # Valid placeholders: %event%, %time%
-  broadcast: "%CORE_ICON% %colorPrimary%Event %event% starts in \u00a7c%time% %colorPrimary%!"
+  broadcast: "%CORE_ICON% %colorPrimary%Event %event% starts in \u00a7c%time%%colorPrimary%!"
 
 advertisement:
   invalid-platform: "%colorError%Invalid platform. Available platforms: twitch, tiktok, youtube, discord, store, website, other"
