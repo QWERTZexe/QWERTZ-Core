@@ -202,8 +202,7 @@ kit:
   none\u0078istent: "%CORE_ICON% %colorError%\u1d0b\u026a\u1d1b %colorPrimary%'%name%' %colorError%\u1d05\u1d0f\u1d07\u0455
     \u0274\u1d0f\u1d1b \u1d07х\u026a\u0455\u1d1b\u0455!"
   # Valid placeholders: %name%
-  received: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d1b\u029c\u1d07 \u1d0b\u026a\u1d1b %colorPrimary%'%name%'
-    %colorSuccess%!"
+  received: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d1b\u029c\u1d07 \u1d0b\u026a\u1d1b %colorPrimary%'%name%'%colorSuccess%!"
   # Valid placeholders: %name%, %amount%
   broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%\u029c\u1d00\u0455
     \u0299\u1d07\u1d07\u0274 \u0262\u026a\u1d20\u1d07\u0274 \u1d1b\u1d0f %colorPrimary%%amount% %colorSuccess%players!"

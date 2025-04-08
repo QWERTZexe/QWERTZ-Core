@@ -178,7 +178,7 @@ kit:
   # Valid placeholders: %name%
   nonexistent: "%CORE_ICON% %colorError%Kit %colorPrimary%'%name%' %colorError%does not exist!"
   # Valid placeholders: %name%
-  received: "%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%'%name%' %colorSuccess%!"
+  received: "%CORE_ICON% %colorSuccess%You have received the kit %colorPrimary%'%name%'%colorSuccess%!"
   # Valid placeholders: %name%, %amount%
   broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has been given to %colorPrimary%%amount% %colorSuccess%players!"
   no-kits: "%CORE_ICON% %colorPrimary%There are no kits available."
