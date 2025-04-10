@@ -93,7 +93,7 @@ event:
   # Valid placeholders: %amount%
   invalid-amount: "%colorError%Invalid amount: %amount%"
   # Valid placeholders: %affected%, %type% (alive, dead), %typeColor%, %amount%, %item%
-  give-broadcast: "%CORE_ICON% %%type%"
+  give-broadcast: "%CORE_ICON% %colorSuccess%%affected% %typeColor%%type% %colorSuccess%players have received %colorPrimary%%amount% %colorPrimary%%item%"
   # Valid placeholders: %name%
   tpall: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%teleported all players to their location!"
   # Valid placeholders: %name%, %type% (alive, dead), %typeColor%

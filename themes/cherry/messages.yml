@@ -98,7 +98,7 @@ event:
   # Valid placeholders: %amount%
   invalid-amount: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d00\u1d0d\u1d0f\u1d1c\u0274\u1d1b: %amount%"
   # Valid placeholders: %affected%, %type% (alive, dead), %typeColor%, %amount%, %item%
-  give-broadcast: "%CORE_ICON% %%type%"
+  give-broadcast: "%CORE_ICON% %colorSuccess%%affected% %typeColor%%type% %colorSuccess%\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0073\u0020\u029c\u1d00\u1d20\u1d07\u0020\u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 %colorPrimary%%amount% %colorPrimary%%item%"
   # Valid placeholders: %name%
   tpall: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%\u1d1b\u1d07\u029f\u1d07\u1d18\u1d0f\u0280\u1d1b\u1d07\u1d05 \u1d00\u029f\u029f \u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455 \u1d1b\u1d0f
     \u1d1b\u029c\u1d07\u026a\u0280 \u029f\u1d0f\u1d04\u1d00\u1d1b\u026a\u1d0f\u0274!"
