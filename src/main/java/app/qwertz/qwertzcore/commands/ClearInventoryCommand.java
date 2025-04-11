@@ -21,6 +21,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
@@ -40,7 +41,7 @@ public class ClearInventoryCommand implements CommandExecutor {
         for (Player player : Bukkit.getOnlinePlayers()) {
             boolean isDead = plugin.getEventManager().isPlayerDead(player);
             if ((clearAlive && !isDead) || (!clearAlive && isDead)) {
-                player.getInventory().clear();
+                clearPlayerInventory(player);
                 plugin.getMessageManager().sendMessage(player, "clearinv.got-cleared");
                 plugin.getSoundManager().playSound(player);
                 clearedCount++;
@@ -57,5 +58,18 @@ public class ClearInventoryCommand implements CommandExecutor {
         plugin.getSoundManager().broadcastConfigSound();
 
         return true;
+    }
+    private void clearPlayerInventory(Player player) {
+        // Clear main inventory
+        Inventory inventory = player.getInventory();
+        inventory.clear();
+
+        // Clear cursor item (item being held by the mouse)
+        player.setItemOnCursor(null);
+
+        // Clear crafting grid (if applicable)
+        player.getOpenInventory();
+        Inventory topInventory = player.getOpenInventory().getTopInventory();
+        topInventory.clear();
     }
 }

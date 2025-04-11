@@ -40,6 +40,10 @@ public class MessageManager {
     private File messagesFile;
     private FileConfiguration defaultMessagesConfig;
     private List<String> themes;
+    // Fields to store cached configuration and last load time
+    private FileConfiguration cachedRepoConfig = null;
+    private long lastRepoLoadTime = 0;
+    private static final long REPO_LOAD_INTERVAL = 60 * 5 * 1000; // 5 minutes in milliseconds
 
 
     public MessageManager(QWERTZcore plugin) {
@@ -200,6 +204,7 @@ public class MessageManager {
             return null;
         }
     }
+
     // Helper method to determine which config to use
     private FileConfiguration getConfigToUse() {
         String activeTheme = messagesConfig.getString("active-theme");
@@ -208,16 +213,22 @@ public class MessageManager {
         } else if (Objects.equals(activeTheme, "internal")) {
             return defaultMessagesConfig;
         } else {
-            // Attempt to load from repo
-            FileConfiguration repoConfig = loadFromRepo(activeTheme, "messages");
-            if (repoConfig != null) {
-                return repoConfig;
-            } else {
-                plugin.getLogger().warning("Failed to load theme from repo, using internal.");
-                return defaultMessagesConfig; // Fallback to default
+            // Check if it's time to reload from the repo
+            long currentTime = System.currentTimeMillis();
+            if (cachedRepoConfig == null || (currentTime - lastRepoLoadTime > REPO_LOAD_INTERVAL)) {
+                FileConfiguration repoConfig = loadFromRepo(activeTheme, "messages");
+                if (repoConfig != null) {
+                    cachedRepoConfig = repoConfig;
+                    lastRepoLoadTime = currentTime; // Update last load time
+                } else {
+                    plugin.getLogger().warning("Failed to load theme from repo, using internal.");
+                    cachedRepoConfig = defaultMessagesConfig; // Fallback to default
+                }
             }
+            return cachedRepoConfig;
         }
     }
+
 
     public String getMessage(String path) {
         FileConfiguration config = getConfigToUse();

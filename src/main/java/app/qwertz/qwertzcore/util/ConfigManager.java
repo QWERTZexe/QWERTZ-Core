@@ -17,19 +17,25 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ConfigManager {
     private final QWERTZcore plugin;
     private final File configFile;
+    private final File warpsFile; // New file for warps
+    private final File kitsFile; // New file for kits
     private final Gson gson;
     private Map<String, Object> config;
+    private Map<String, Map<String, Object>> warps; // Separate map for warps
+    private Map<String, List<Map<String, Object>>> kits; // Separate map for kits
 
     @Deprecated(since = "2.0", forRemoval = true)
     public static final String DEFAULT_FONT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -43,10 +49,20 @@ public class ConfigManager {
     public ConfigManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), "config.json");
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.warpsFile = new File(plugin.getDataFolder(), "warps.json"); // Initialize warps file
+        this.kitsFile = new File(plugin.getDataFolder(), "kits.json");
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Optional.class, new OptionalTypeAdapter())
+                .enableComplexMapKeySerialization()
+                .setPrettyPrinting()
+                .create();
         this.config = new HashMap<>();
+        this.warps = new HashMap<>();
+        this.kits = new HashMap<>();
         ensurePluginFolder();
         loadConfig();
+        loadWarps();
+        loadKits();
     }
 
 
@@ -69,7 +85,22 @@ public class ConfigManager {
         // Ensure all required settings exist
         ensureConfigDefaults();
     }
+    public void loadWarps() {
+        if (!warpsFile.exists()) {
+            saveWarps(); // Create an empty warps file if it doesn't exist
+        }
 
+        try (Reader reader = new FileReader(warpsFile)) {
+            warps = gson.fromJson(reader, Map.class);
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not load warps file: " + e.getMessage());
+            saveWarps();
+        }
+
+        if (warps == null) {
+            warps = new HashMap<>();
+        }
+    }
     private void createDefaultConfig() {
         config = new HashMap<>();
         ensureConfigDefaults();
@@ -154,9 +185,6 @@ public class ConfigManager {
         }
         if (!config.containsKey("doChat")) {
             config.put("doChat", true);
-        }
-        if (!config.containsKey("warps")) {
-            config.put("warps", new HashMap<String, Map<String, Object>>());
         }
         if (!config.containsKey("checkForUpdates")) {
             config.put("checkForUpdates", true);
@@ -278,32 +306,53 @@ public class ConfigManager {
         config.put(key, value);
         saveConfig();
     }
+    private void loadKits() {
+        if (!kitsFile.exists()) {
+            saveKits();
+            return;
+        }
+
+        try (Reader reader = new FileReader(kitsFile)) {
+            kits =
+                    gson.fromJson(
+                            reader, new TypeToken<Map<String, List<Map<String, Object>>>>() {}.getType());
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not load kits file: " + e.getMessage());
+            kits = new HashMap<>();
+        }
+    }
+
+    private void saveKits() {
+        try (Writer writer = new FileWriter(kitsFile)) {
+            gson.toJson(kits, writer);
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not save kits file: " + e.getMessage());
+        }
+    }
+
     public void saveKit(String kitName, List<ItemStack> items) {
-        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
         List<Map<String, Object>> serializedItems = new ArrayList<>();
 
         for (ItemStack item : items) {
             try {
                 if (item != null) {
-                    serializedItems.add(item.serialize());
+                    Map<String, Object> serializedItem = encodeStrings(item.serialize());
+                    serializedItems.add(serializedItem);
                 } else {
                     serializedItems.add(null);
                 }
             } catch (Exception e) {
                 plugin.getLogger().warning("Error serializing item in kit " + kitName + ": " + e.getMessage());
-                serializedItems.add(null);  // Add null instead of the problematic item
+                serializedItems.add(null);
             }
         }
 
-
-        kitsMap.put(kitName, serializedItems);
-        config.put("kits", kitsMap);
-        saveConfig();
+        kits.put(encodeString(kitName), serializedItems); // Encode kit name
+        saveKits();
     }
 
     public List<ItemStack> getKit(String kitName) {
-        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
-        List<Map<String, Object>> serializedItems = (List<Map<String, Object>>) kitsMap.get(kitName);
+        List<Map<String, Object>> serializedItems = kits.get(encodeString(kitName)); // Encode kit name for lookup
 
         if (serializedItems == null) {
             return null;
@@ -312,26 +361,77 @@ public class ConfigManager {
         List<ItemStack> items = new ArrayList<>();
         for (Map<String, Object> serializedItem : serializedItems) {
             if (serializedItem != null) {
-                items.add(ItemStack.deserialize(serializedItem));
+                items.add(ItemStack.deserialize(decodeStrings(serializedItem)));
             } else {
                 items.add(null);
             }
         }
-
         return items;
     }
 
     public void deleteKit(String kitName) {
-        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
-        kitsMap.remove(kitName);
-        config.put("kits", kitsMap);
-        saveConfig();
+        kits.remove(encodeString(kitName)); // Encode kit name for removal
+        saveKits();
     }
 
     public Set<String> getKitNames() {
-        Map<String, Object> kitsMap = (Map<String, Object>) config.getOrDefault("kits", new HashMap<>());
-        return kitsMap.keySet();
+        Set<String> encodedNames = kits.keySet();
+        Set<String> decodedNames = new HashSet<>();
+
+        for (String encodedName : encodedNames) {
+            decodedNames.add(decodeString(encodedName));
+        }
+
+        return decodedNames;
     }
+
+    // Helper method to encode strings using Base64
+    private String encodeString(String input) {
+        return Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_16));
+    }
+
+    // Helper method to decode strings from Base64
+    private String decodeString(String input) {
+        return new String(Base64.getDecoder().decode(input), StandardCharsets.UTF_16);
+    }
+
+    // Helper method to encode all string values in a map
+    private Map<String, Object> encodeStrings(Map<String, Object> map) {
+        Map<String, Object> encodedMap = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() instanceof String) {
+                encodedMap.put(entry.getKey(), encodeString((String) entry.getValue()));
+            } else {
+                encodedMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return encodedMap;
+    }
+
+    // Helper method to decode all string values in a map
+    private Map<String, Object> decodeStrings(Map<String, Object> map) {
+        Map<String, Object> decodedMap = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() instanceof String) {
+                decodedMap.put(entry.getKey(), decodeString((String) entry.getValue()));
+            } else {
+                decodedMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return decodedMap;
+    }
+    public void saveWarps() {
+        try (Writer writer = new FileWriter(warpsFile)) {
+            gson.toJson(warps, writer);
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not save warps file: " + e.getMessage());
+        }
+    }
+
     public void addWarp(String name, Location location) {
         Map<String, Object> warpMap = new HashMap<>();
         warpMap.put("world", location.getWorld().getName());
@@ -341,21 +441,16 @@ public class ConfigManager {
         warpMap.put("yaw", location.getYaw());
         warpMap.put("pitch", location.getPitch());
 
-        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
         warps.put(name, warpMap);
-        config.put("warps", warps);
-        saveConfig();
+        saveWarps(); // Save changes to the separate warps file
     }
 
     public void removeWarp(String name) {
-        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
         warps.remove(name);
-        config.put("warps", warps);
-        saveConfig();
+        saveWarps(); // Save changes to the separate warps file
     }
 
     public Location getWarp(String name) {
-        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
         Map<String, Object> warpMap = warps.get(name);
         if (warpMap != null) {
             World world = Bukkit.getWorld((String) warpMap.get("world"));
@@ -370,7 +465,6 @@ public class ConfigManager {
     }
 
     public Set<String> getWarpNames() {
-        Map<String, Map<String, Object>> warps = (Map<String, Map<String, Object>>) config.getOrDefault("warps", new HashMap<>());
         return warps.keySet();
     }
     public String getServerName() {
