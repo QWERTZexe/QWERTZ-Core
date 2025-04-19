@@ -1,4 +1,4 @@
-# # \u0051WERTZ Core Messages Configuration
+# # QWERTZ Core Messages Configuration
 # # https://modrinth.com/plugin/qwertz-core
 
 # # This config populates itself on updates
@@ -16,11 +16,11 @@ placeholders:
 
 # Active theme, set to "file" if you wish to use this file!
 # Built-in: "internal" or "file"
-# You can view a list of all themes at https://github.com/\u0051WERTZe\u0078e/\u0051WERTZ-Core/tree/main/themes
+# You can view a list of all themes at https://github.com/QWERTZexe/QWERTZ-Core/tree/main/themes
 active-theme: "internal"
 
 general:
-  only-player-e\u0078ecute: "%colorError%\u1d1b\u029c\u026a\u0455\u0020\u1d04\u1d0f\u1d0d\u1d0d\u1d00\u0274\u1d05\u0020\u1d04\u1d00\u0274\u0020\u0299\u1d07\u0020\u1d0f\u0274\u029f\u028f\u0020\u1d1c\u0455\u1d07\u1d05\u0020\u0299\u028f\u0020\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455."
+  only-player-execute: "%colorError%\u1d1b\u029c\u026a\u0455\u0020\u1d04\u1d0f\u1d0d\u1d0d\u1d00\u0274\u1d05\u0020\u1d04\u1d00\u0274\u0020\u0299\u1d07\u0020\u1d0f\u0274\u029f\u028f\u0020\u1d1c\u0455\u1d07\u1d05\u0020\u0299\u028f\u0020\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455."
   # Valid placeholders: %usage%
   invalid-usage: "%colorError%\u1d1c\u0455\u1d00\u0262\u1d07: %usage%"
   player-not-found: "%colorError%\u1d18\u029f\u1d00\u028f\u1d07\u0280 \u0274\u1d0f\u1d1b \ua730\u1d0f\u1d1c\u0274\u1d05!"
@@ -29,8 +29,8 @@ general:
 
 chatting:
   disabled: "%colorError%\u1d1b\u029c\u1d07 \u1d04\u029c\u1d00\u1d1b \u026a\u0455 \u1d04\u1d1c\u0280\u0280\u1d07\u0274\u1d1b\u029f\u028f \u1d0d\u1d1c\u1d1b\u1d07\u1d05."
-  # Valid placeholders: %name%, %prefi\u0078%, %suffi\u0078%, %message%
-  chat: "%prefi\u0078%%name%%suffi\u0078%:\u00a7r %message%"
+  # Valid placeholders: %name%, %prefix%, %suffix%, %message%
+  chat: "%prefix%%name%%suffix%:\u00a7r %message%"
   death: "\u00a74\u00a7o%name% \u1d05\u026a\u1d07\u1d05!"
   # Valid placeholders: %name%, %count%, %newCount%
   leave-msg: "%colorPrimary%%name%%colorSecondary% \u029c\u1d00\u0455 \u029f\u1d07\ua730\u1d1b."
@@ -63,14 +63,14 @@ specialblocks:
   # Valid placeholders: %types%
   invalid-type: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u0299\u029f\u1d0f\u1d04\u1d0b \u1d1b\u028f\u1d18\u1d07! %colorPrimary%\u1d00\u1d20\u1d00\u026a\u029f\u1d00\u0299\u029f\u1d07 \u1d1b\u028f\u1d18\u1d07\u0455: %types%"
   # Valid placeholders: %blockType%, %material%
-  receive: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d00 \u00a76\u0051WERTZ \u1d04\u1d0f\u0280\u1d07 %colorPrimary%%blockType%
+  receive: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d00 \u00a76QWERTZ \u1d04\u1d0f\u0280\u1d07 %colorPrimary%%blockType%
     %colorSuccess%\u1d21\u026a\u1d1b\u029c \u1d0d\u1d00\u1d1b\u1d07\u0280\u026a\u1d00\u029f %colorPrimary%%material% %colorSuccess%!"
-  # Valid placeholders: %blockType%, %\u0078%, %y%, %z%, %world%
+  # Valid placeholders: %blockType%, %x%, %y%, %z%, %world%
   place: "%CORE_ICON% %colorPrimary%\u1d18\u029f\u1d00\u1d04\u1d07\u1d05 \u1d00 %colorSecondary%%blockType%%colorPrimary%
-    \u1d00\u1d1b X: %colorSecondary%%\u0078% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z:
+    \u1d00\u1d1b X: %colorSecondary%%x% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z:
     %colorSecondary%%z% %colorPrimary%\u1d21\u1d0f\u0280\u029f\u1d05: %colorSecondary%%world%"
-  # Valid placeholders:%\u0078%, %y%, %z%, %world%
-  remove: "%CORE_ICON% %colorDead%\u0280\u1d07\u1d0d\u1d0f\u1d20\u1d07\u1d05 \u0455\u1d18\u1d07\u1d04\u026a\u1d00\u029f \u0299\u029f\u1d0f\u1d04\u1d0b \u1d00\u1d1b X: %colorSecondary%%\u0078%%colorDead%
+  # Valid placeholders:%x%, %y%, %z%, %world%
+  remove: "%CORE_ICON% %colorDead%\u0280\u1d07\u1d0d\u1d0f\u1d20\u1d07\u1d05 \u0455\u1d18\u1d07\u1d04\u026a\u1d00\u029f \u0299\u029f\u1d0f\u1d04\u1d0b \u1d00\u1d1b X: %colorSecondary%%x%%colorDead%
     Y: %colorSecondary%%y%%colorDead% Z: %colorSecondary%%z%%colorDead% \u1d21\u1d0f\u0280\u029f\u1d05: %colorSecondary%%world%"
 
 event:
@@ -199,7 +199,7 @@ kit:
   deleted: "%CORE_ICON% %colorDead%\u1d0b\u026a\u1d1b %colorPrimary%'%name%' %colorDead%\u029c\u1d00\u0455 \u0299\u1d07\u1d07\u0274
     \u1d05\u1d07\u029f\u1d07\u1d1b\u1d07\u1d05!"
   # Valid placeholders: %name%
-  none\u0078istent: "%CORE_ICON% %colorError%\u1d0b\u026a\u1d1b %colorPrimary%'%name%' %colorError%\u1d05\u1d0f\u1d07\u0455
+  nonexistent: "%CORE_ICON% %colorError%\u1d0b\u026a\u1d1b %colorPrimary%'%name%' %colorError%\u1d05\u1d0f\u1d07\u0455
     \u0274\u1d0f\u1d1b \u1d07х\u026a\u0455\u1d1b\u0455!"
   # Valid placeholders: %name%
   received: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d1b\u029c\u1d07 \u1d0b\u026a\u1d1b %colorPrimary%'%name%'%colorSuccess%!"
@@ -215,13 +215,13 @@ poll:
   invalid-duration: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d05\u1d1c\u0280\u1d00\u1d1b\u026a\u1d0f\u0274. \u1d18\u029f\u1d07\u1d00\u0455\u1d07 \u1d18\u0280\u1d0f\u1d20\u026a\u1d05\u1d07 \u1d00 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280 \u026a\u0274 \u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455."
   # Valid placeholders: %question%
   new-poll: "%CORE_ICON% %colorPrimary%\u00a7l\u0274\u1d07\u1d21 \u1d18\u1d0f\u029f\u029f: %colorSecondary%%question%"
-  # Valid placeholders: %inde\u0078%, %option%
-  option: "%colorSecondary%%inde\u0078%. %colorTertiary%%option%"
+  # Valid placeholders: %index%, %option%
+  option: "%colorSecondary%%index%. %colorTertiary%%option%"
   click-to-vote: "\u00a77\u00a7o\u1d04\u029f\u026a\u1d04\u1d0b \u1d1b\u1d0f \u1d20\u1d0f\u1d1b\u1d07!"
   hover: "\u1d04\u029f\u026a\u1d04\u1d0b \u1d1b\u1d0f \u1d20\u1d0f\u1d1b\u1d07 \ua730\u1d0f\u0280 \u1d1b\u029c\u026a\u0455 \u1d0f\u1d18\u1d1b\u026a\u1d0f\u0274!"
   result-title: "%CORE_ICON% %colorPrimary%\u00a7l\u1d18\u1d0f\u029f\u029f \u1d07\u0274\u1d05\u1d07\u1d05! %colorPrimary%\u0280\u1d07\u0455\u1d1c\u029f\u1d1b\u0455:"
-  # Valid placeholders: %inde\u0078%, %option%, %amount%
-  result-option: "%colorSecondary%%inde\u0078%. %option% %colorTertiary%: %colorPrimary%%amount%
+  # Valid placeholders: %index%, %option%, %amount%
+  result-option: "%colorSecondary%%index%. %option% %colorTertiary%: %colorPrimary%%amount%
     \u1d20\u1d0f\u1d1b\u1d07\u0455"
   no-active-poll: "%colorError%\u1d1b\u029c\u1d07\u0280\u1d07 \u026a\u0455 \u0274\u1d0f \u1d00\u1d04\u1d1b\u026a\u1d20\u1d07 \u1d18\u1d0f\u029f\u029f."
   invalid-option: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d0f\u1d18\u1d1b\u026a\u1d0f\u0274."
@@ -304,7 +304,7 @@ warps:
   # Valid placeholders: %warp%
   delete: "%colorError%\u1d21\u1d00\u0280\u1d18 '%warpName%'  \u029c\u1d00\u0455 \u0299\u1d07\u1d07\u0274 \u1d05\u1d07\u029f\u1d07\u1d1b\u1d07\u1d05!"
   # Valid placeholders: %warp%
-  none\u0078istent: "%CORE_ICON% %colorError%\u1d21\u1d00\u0280\u1d18 %colorPrimary%'%warp%'%colorError%
+  nonexistent: "%CORE_ICON% %colorError%\u1d21\u1d00\u0280\u1d18 %colorPrimary%'%warp%'%colorError%
     \u1d05\u1d0f\u1d07\u0455 \u0274\u1d0f\u1d1b \u1d07х\u026a\u0455\u1d1b!"
   alive-title:
     title: "%colorPrimary%\u1d21\u1d00\u0280\u0274\u026a\u0274\u0262"
@@ -362,7 +362,7 @@ messages:
     \u0299\u1d07 \u1d20\u026a\u0455\u026a\u0299\u029f\u1d07!"
 
 emojis:
-  list: "%CORE_ICON% %colorSecondary%\u0051\u1d21\u1d07\u0280\u1d1b\u1d22 \u1d04\u1d0f\u0280\u1d07 \u1d07\u1d0d\u1d0f\u1d0a\u026a \u029f\u026a\ua731\u1d1b:"
+  list: "%CORE_ICON% %colorSecondary%Q\u1d21\u1d07\u0280\u1d1b\u1d22 \u1d04\u1d0f\u0280\u1d07 \u1d07\u1d0d\u1d0f\u1d0a\u026a \u029f\u026a\ua731\u1d1b:"
   reminder: "\u00a77\u00a7o\u1d07\u1d0d\u1d0f\u1d0a\u026a\ua731 \u1d00\u0280\u1d07 \u1d05\u1d07\u1d18\u1d07\u0274\u1d05\u1d07\u0274\u1d1b \u1d0f\u0274 \u1d1b\u029c\u1d07 \u1d04\u1d1c\u0280\u0280\u1d07\u0274\u1d1b \u1d1b\u029c\u1d07\u1d0d\u1d07"
   # Valid placeholders: %code%, %emoji%
   item: "%colorPrimary%- %colorSecondary%%code% %colorTertiary%-> %colorSecondary%%emoji%"
