@@ -34,17 +34,9 @@ public class ConfigManager {
     private final File kitsFile; // New file for kits
     private final Gson gson;
     private Map<String, Object> config;
+    private Set<String> keep;
     private Map<String, Map<String, Object>> warps; // Separate map for warps
     private Map<String, List<Map<String, Object>>> kits; // Separate map for kits
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    public static final String DEFAULT_FONT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    @Deprecated(since = "2.0", forRemoval = true)
-    public static final String QWERTZ_FONT = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ";
-    @Deprecated(since = "2.0", forRemoval = true)
-    public static final String MODERN_FONT = "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘᴏʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘᴏʀsᴛᴜᴠᴡxʏᴢ";
-    @Deprecated(since = "2.0", forRemoval = true)
-    public static final String BLOCKY_FONT = "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉";
 
     public ConfigManager(QWERTZcore plugin) {
         this.plugin = plugin;
@@ -81,7 +73,6 @@ public class ConfigManager {
         if (config == null) {
             config = new HashMap<>();
         }
-
         // Ensure all required settings exist
         ensureConfigDefaults();
     }
@@ -110,112 +101,79 @@ public class ConfigManager {
 
 
     private void ensureConfigDefaults() {
+        Set<String> keysToRemove = new HashSet<>(config.keySet()); // Track keys to remove
+        keep = new HashSet<>();
+        addDefault("spawn", null);
+        addDefault("tpOnRevive", true);
+        addDefault("tpOnUnrevive", true);
+        addDefault("tpOnDeath", true);
+        addDefault("tpOnJoin", true);
+        addDefault("server", "My Server");
+        addDefault("event", "Event");
+        addDefault("sound", true);
+        addDefault("soundEffect", "BLOCK_NOTE_BLOCK_PLING");
+        addDefault("soundPitch", 1);
+        addDefault("soundVolume", 100);
+        addDefault("reviveTokensEnabled", true);
+        addDefault("discord", QWERTZcore.DISCORD_LINK);
+        addDefault("youtube", "https://youtube.com");
+        addDefault("store", "https://yourstore.com");
+        addDefault("tiktok", "https://tiktok.com");
+        addDefault("twitch", "https://twitch.tv");
+        addDefault("website", QWERTZcore.WEBSITE);
+        addDefault("other", "https://example.com");
+        addDefault("chat", true);
+        addDefault("doScoreboard", true);
+        addDefault("doTabList", true);
+        addDefault("doChat", true);
+        addDefault("checkForUpdates", true);
+        addDefault("specialBlockOutput", false);
+        addDefault("joinLeaveMsgsOnVanish", true);
+        addDefault("suppressVanilla", true);
+        addDefault("biggerMessages", true);
+        addDefault("chatTimer", true);
+        addDefault("reviveStaff", false);
+        addDefault("emojis", true);
 
-        if (!config.containsKey("spawn")) {
-            setDefaultSpawnLocation();
+        // Garbage collect: Remove keys that are in the file but not defined as defaults
+        System.out.print(keep);
+        keysToRemove.removeAll(keep); // Remove all defaults that were already in the map
+        for (String key : keysToRemove) {
+            config.remove(key); // Remove the key if it's not a default
+            plugin.getLogger().info("Removed deprecated config key: " + key);
         }
-        if (!config.containsKey("tpOnRevive")) {
-            config.put("tpOnRevive", true);
-        }
-        if (!config.containsKey("tpOnUnrevive")) {
-            config.put("tpOnUnrevive", true);
-        }
-        if (!config.containsKey("tpOnDeath")) {
-            config.put("tpOnDeath", true);
-        }
-        if (!config.containsKey("tpOnJoin")) {
-            config.put("tpOnJoin", true);
-        }
-        if (!config.containsKey("server")) {
-            config.put("server", "My Server");
-        }
-        if (!config.containsKey("event")) {
-            config.put("event", "Event");
-        }
-        if (!config.containsKey("scoreboardUpperCase")) {
-            config.put("scoreboardUpperCase", true);
-        }
-        if (!config.containsKey("font")) {
-            config.put("font", "modern");
-        }
-        if (!config.containsKey("sound")) {
-            config.put("sound", true);
-        }
-        if (!config.containsKey("soundEffect")) {
-            config.put("soundEffect", "BLOCK_NOTE_BLOCK_PLING");
-        }
-        if (!config.containsKey("soundPitch")) {
-            config.put("soundPitch", 1);
-        }
-        if (!config.containsKey("soundVolume")) {
-            config.put("soundVolume", 100);
-        }
-        if (!config.containsKey("reviveTokensEnabled")) {
-            config.put("reviveTokensEnabled", true);
-        }
-        if (!config.containsKey("discord")) {
-            config.put("discord", QWERTZcore.DISCORD_LINK);
-        }
-        if (!config.containsKey("youtube")) {
-            config.put("youtube", "https://youtube.com");
-        }
-        if (!config.containsKey("store")) {
-            config.put("store", "https://yourstore.com");
-        }
-        if (!config.containsKey("tiktok")) {
-            config.put("tiktok", "https://tiktok.com");
-        }
-        if (!config.containsKey("twitch")) {
-            config.put("twitch", "https://twitch.tv");
-        }
-        if (!config.containsKey("website")) {
-            config.put("website", QWERTZcore.WEBSITE);
-        }
-        if (!config.containsKey("other")) {
-            config.put("other", "https://example.com");
-        }
-        if (!config.containsKey("chat")) {
-            config.put("chat", true);
-        }
-        if (!config.containsKey("doScoreboard")) {
-            config.put("doScoreboard", true);
-        }
-        if (!config.containsKey("doTabList")) {
-            config.put("doTabList", true);
-        }
-        if (!config.containsKey("doChat")) {
-            config.put("doChat", true);
-        }
-        if (!config.containsKey("checkForUpdates")) {
-            config.put("checkForUpdates", true);
-        }
-        if (!config.containsKey("specialBlockOutput")) {
-            config.put("specialBlockOutput", false);
-        }
-        if (!config.containsKey("joinLeaveMsgsOnVanish")) {
-            config.put("joinLeaveMsgsOnVanish", true);
-        }
-        if (!config.containsKey("suppressVanilla")) {
-            config.put("suppressVanilla", true);
-        }
-        if (!config.containsKey("biggerMessages")) {
-            config.put("biggerMessages", true);
-        }
-        if (!config.containsKey("chatTimer")) {
-            config.put("chatTimer", true);
-        }
-        if (!config.containsKey("reviveStaff")) {
-            config.put("reviveStaff", false);
-        }
-        if (!config.containsKey("emojis")) {
-            config.put("emojis", true);
+
+        saveConfig();
+    }
+
+    private void addDefault(String key, Object defaultValue) {
+        keep.add(key);
+        if (!config.containsKey(key)) {
+            if (key.equals("spawn")) {
+                setDefaultSpawnLocation();
+            }
+            else {
+                config.put(key, defaultValue);
+            }
         }
     }
 
+    // Helper method to get the default world name from server.properties
+    private String getDefaultWorldName() {
+        File serverProperties = new File(plugin.getServer().getWorldContainer(), "server.properties");
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream(serverProperties)) {
+            props.load(fis);
+            return props.getProperty("level-name", "world"); // Default to "world" if not found
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not read server.properties: " + e.getMessage());
+            return "world"; // Default to "world" on error
+        }
+    }
 
     private void setDefaultSpawnLocation() {
         Map<String, Object> spawnMap = new HashMap<>();
-        spawnMap.put("world", "world");
+        spawnMap.put("world", getDefaultWorldName());
         spawnMap.put("x", 0.0);
         spawnMap.put("y", 64.0);
         spawnMap.put("z", 0.0);
@@ -274,32 +232,6 @@ public class ConfigManager {
 
     public Object get(String key) {
         return config.get(key);
-    }
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    public String getColor(String key) {
-        String unformatted = (String) config.get(key);
-        if (unformatted == null) {
-            unformatted = "§a";
-        }
-        unformatted = unformatted.replace("&", "§");
-        StringBuilder colorCodes = new StringBuilder();
-
-        for (int i = 0; i < unformatted.length(); i++) {
-            if (unformatted.charAt(i) == '§' && i + 1 < unformatted.length()) {
-                char colorChar = unformatted.charAt(i + 1);
-                if (isValidColorCode(colorChar)) {
-                    colorCodes.append('§').append(colorChar);
-                }
-                i++; // Skip the next character as it is part of the color code
-            }
-        }
-
-        return colorCodes.toString();
-    }
-
-    private boolean isValidColorCode(char c) {
-        return "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(c) > -1;
     }
 
     public void set(String key, Object value) {
@@ -489,9 +421,7 @@ public class ConfigManager {
     public boolean getTpOnJoin() {
         return (boolean) config.getOrDefault("tpOnJoin", true);
     }
-    public boolean getScoreboardUpperCase() {
-        return (boolean) config.getOrDefault("scoreboardUpperCase", true);
-    }
+
     public boolean getScoreBoard() {
         return (boolean) config.getOrDefault("doScoreboard", true);
     }
@@ -519,51 +449,6 @@ public class ConfigManager {
         return (boolean) config.getOrDefault("sound", true);
     }
 
-    @Deprecated(since = "2.0", forRemoval = true)
-    public String getFontString() {
-        String fontType = getFont();
-        switch (fontType.toLowerCase()) {
-            case "qwertz":
-                return QWERTZ_FONT;
-            case "modern":
-                return MODERN_FONT;
-            case "blocky":
-                return BLOCKY_FONT;
-            default:
-                return DEFAULT_FONT;
-        }
-    }
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    public String formatScoreboardText(String text) {
-        boolean upperCase = getScoreboardUpperCase();
-        String fontString = getFontString();
-
-        if (upperCase) {
-            text = text.toUpperCase();
-        }
-
-        if (fontString.equals(DEFAULT_FONT)) {
-            return text; // No conversion needed for default font
-        }
-
-        StringBuilder formattedText = new StringBuilder();
-        for (char c : text.toCharArray()) {
-            int index = DEFAULT_FONT.indexOf(c);
-            if (index != -1) {
-                if (fontString.equals(BLOCKY_FONT)) {
-                    // For blocky font and for Math, we need to handle surrogate pairs
-                    formattedText.append(fontString.substring(index * 2, (index * 2) + 2));
-                } else {
-                    formattedText.append(fontString.charAt(index));
-                }
-            } else {
-                formattedText.append(c);
-            }
-        }
-
-        return formattedText.toString();
-    }
 
     public boolean isReviveTokensEnabled() {
         return (boolean) config.getOrDefault("reviveTokensEnabled", true);

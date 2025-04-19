@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import app.qwertz.qwertzcore.gui.ConfigGUI;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,6 +35,16 @@ public class ConfigCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (args.length == 0) {
+            if (!(sender instanceof Player player)) {
+                plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+                return true;
+            }
+            new ConfigGUI(plugin, player, 0).open();
+            return true;
+        }
+
         if (args.length < 2) {
             plugin.getMessageManager().sendInvalidUsage((Player) sender, "/config <key> <value>");
             plugin.getSoundManager().playSoundToSender(sender);
@@ -53,7 +64,7 @@ public class ConfigCommand implements CommandExecutor {
 
         if (key.equals("spawn")) {
             if (!(sender instanceof Player)) {
-                plugin.getMessageManager().sendMessage((Player) sender, "general.only-player-execute");
+                plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
                 return true;
             }
             if (value.equalsIgnoreCase("currentpos")) {

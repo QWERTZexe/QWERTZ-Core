@@ -329,3 +329,11 @@ emojis:
     - "D:|\u00a7c\ud83d\ude26\u00a7r"
     - ":)|\u00a7e\ud83d\ude42\u00a7r"
     - "<3|\u00a7c\u2764\u00a7r"
+
+configgui:
+  # Valid placeholders: %key%
+  enter-new-value: "%colorPrimary%Enter new value for %colorTertiary%%key%%colorPrimary% in chat:"
+  unsupported-type: "%colorError%Unsupported config type!"
+  # Valid placeholders: %key%, %value%
+  set-key-to-value: "%colorSuccess%Updated %colorTertiary%%key%%colorSuccess% to %colorPrimary%%value%"
+  invalid-number-format: "%colorError%Invalid number format!"
