@@ -81,15 +81,19 @@ public class GamemodeCommand implements CommandExecutor {
 
     private GameMode parseGameMode(String mode) {
         switch (mode.toLowerCase()) {
+            case "1":
             case "c":
             case "creative":
                 return GameMode.CREATIVE;
+            case "0":
             case "s":
             case "survival":
                 return GameMode.SURVIVAL;
+            case "2":
             case "a":
             case "adventure":
                 return GameMode.ADVENTURE;
+            case "3":
             case "sp":
             case "spectator":
                 return GameMode.SPECTATOR;

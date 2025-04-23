@@ -209,6 +209,7 @@ public class ConfigGUI implements Listener {
         };
 
         ItemStack item = switch (key.toLowerCase()) {
+            case "server", "event" -> createSkull("http://textures.minecraft.net/texture/622872342d2cf20754b9e1bae9c0902912dcae12e63b520b6fe8bd911b91018b", "");
             case "youtube" -> createSkull("http://textures.minecraft.net/texture/103b1bb8452626fa9ed6b8b756561df7ad5e98eea1fa4386b48f196469e9e2", "");
             case "tiktok" -> createSkull("http://textures.minecraft.net/texture/bcf2105bb737638833033dd8244071e75870e2e11c2617e542e8924fb2b90180", "");
             case "other" -> createSkull("http://textures.minecraft.net/texture/46ba63344f49dd1c4f5488e926bf3d9e2b29916a6c50d610bb40a5273dc8c82", "");
@@ -273,7 +274,7 @@ public class ConfigGUI implements Listener {
     }
 
     private void handleEnderPearlAnimation(Inventory inv) {
-        ItemStack eye = new ItemStack(Material.ENDER_EYE);
+        ItemStack eye = createItem(Material.ENDER_EYE, "§bConfig Menu");
         for (int i = 0; i < 9; i++) {
             inv.setItem(i, eye);
             inv.setItem(i + 45, eye);
