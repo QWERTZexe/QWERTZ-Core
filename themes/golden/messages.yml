@@ -83,7 +83,7 @@ event:
   # Valid placeholders: %player%
   revivedall: "%CORE_ICON% %colorSuccess%All players have been revived by %colorSuccess%%player%!"
   # Valid placeholders: %player%
-  unrevivedall: "%CORE_ICON% %colorDead%All players have been unrevived by %colorDead%%player%!!"
+  unrevivedall: "%CORE_ICON% %colorDead%All players have been unrevived by %colorDead%%player%!"
   # Valid placeholders: %player% (Executor), %name% (Target)
   revive: "%CORE_ICON% %colorAlive%%name% has been revived by %colorAlive%%player%!"
   # Valid placeholders: %player% (Executor), %name% (Target)

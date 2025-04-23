@@ -61,14 +61,14 @@ public class AdvertisementCommand implements CommandExecutor {
 
     private boolean handleAdCommand(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/ad <platform>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/ad <platform>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         String platform = args[0].toLowerCase();
         if (!platformColors.containsKey(platform)) {
-            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-platform");
+            plugin.getMessageManager().sendMessage(sender, "advertisement.invalid-platform");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -76,7 +76,7 @@ public class AdvertisementCommand implements CommandExecutor {
         // Get the advertisement message
         String adMessage = (String) plugin.getConfigManager().get(platform);
         if (adMessage == null || adMessage.isEmpty()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.no-ad-set");
+            plugin.getMessageManager().sendMessage(sender, "advertisement.no-ad-set");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -90,7 +90,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-url");
+            plugin.getMessageManager().sendMessage(sender, "advertisement.invalid-url");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -131,7 +131,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
     private boolean handleSetAdCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender,  "/setad <platform> <message>");
+            plugin.getMessageManager().sendInvalidUsage(sender,  "/setad <platform> <message>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -140,7 +140,7 @@ public class AdvertisementCommand implements CommandExecutor {
 
         // Validate platform
         if (!platformColors.containsKey(platform)) {
-            plugin.getMessageManager().sendMessage((Player) sender, "advertisement.invalid-platform");
+            plugin.getMessageManager().sendMessage(sender, "advertisement.invalid-platform");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -150,7 +150,7 @@ public class AdvertisementCommand implements CommandExecutor {
         plugin.getConfigManager().set(platform, message);
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%platform%", platform);
-        plugin.getMessageManager().sendMessage((Player) sender, "advertisement.setad-success", localMap);
+        plugin.getMessageManager().sendMessage(sender, "advertisement.setad-success", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }

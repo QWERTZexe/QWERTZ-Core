@@ -38,7 +38,7 @@ public class ConfigCommand implements CommandExecutor {
 
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
-                plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+                plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
                 return true;
             }
             new ConfigGUI(plugin, player, 0).open();
@@ -46,7 +46,7 @@ public class ConfigCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/config <key> <value>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/config <key> <value>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -57,14 +57,14 @@ public class ConfigCommand implements CommandExecutor {
         if (!plugin.getConfigManager().hasKey(key) && !key.equals("spawn")) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%key%", key);
-            plugin.getMessageManager().sendMessage((Player) sender, "config.key-not-found", localMap);
+            plugin.getMessageManager().sendMessage(sender, "config.key-not-found", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (key.equals("spawn")) {
             if (!(sender instanceof Player)) {
-                plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+                plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
                 return true;
             }
             if (value.equalsIgnoreCase("currentpos")) {
@@ -78,10 +78,10 @@ public class ConfigCommand implements CommandExecutor {
                 spawnMap.put("yaw", (double) loc.getYaw());
                 spawnMap.put("pitch", (double) loc.getPitch());
                 plugin.getConfigManager().set("spawn", spawnMap);
-                plugin.getMessageManager().sendMessage((Player) sender, "config.set-spawn");
+                plugin.getMessageManager().sendMessage(sender, "config.set-spawn");
                 plugin.getSoundManager().playSoundToSender(sender);
             } else {
-                plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-spawn");
+                plugin.getMessageManager().sendMessage(sender, "config.invalid-spawn");
             }
         } else {
             Object currentValue = plugin.getConfigManager().get(key);
@@ -93,12 +93,12 @@ public class ConfigCommand implements CommandExecutor {
                 boolean boolValue = Boolean.parseBoolean(value);
                 plugin.getConfigManager().set(key, boolValue);
                 localMap.put("%value%", String.valueOf(boolValue));
-                plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+                plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof String) {
                 plugin.getConfigManager().set(key, value);
                 localMap.put("%value%", value);
-                plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+                plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
             } else if (currentValue instanceof Number) {
                 try {
@@ -106,26 +106,26 @@ public class ConfigCommand implements CommandExecutor {
                         double doubleValue = Double.parseDouble(value);
                         plugin.getConfigManager().set(key, doubleValue);
                         localMap.put("%value%", String.valueOf(doubleValue));
-                        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+                        plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     } else {
                         int intValue = Integer.parseInt(value);
                         plugin.getConfigManager().set(key, intValue);
                         localMap.put("%value%", String.valueOf(intValue));
-                        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+                        plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
                         plugin.getSoundManager().playSoundToSender(sender);
                     }
                 } catch (NumberFormatException e) {
                     HashMap<String, String> localMap2 = new HashMap<>();
                     localMap2.put("%value%", value);
-                    plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-number-format", localMap2);
+                    plugin.getMessageManager().sendMessage(sender, "config.invalid-number-format", localMap2);
                     plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } else {
                 HashMap<String, String> localMap3 = new HashMap<>();
                 localMap3.put("%key%", key);
-                plugin.getMessageManager().sendMessage((Player) sender, "config.invalid-type", localMap3);
+                plugin.getMessageManager().sendMessage(sender, "config.invalid-type", localMap3);
                 plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }

@@ -78,14 +78,14 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleRevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/revive <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/revive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -93,7 +93,7 @@ public class EventCommands implements CommandExecutor {
         if  (!plugin.getEventManager().revivePlayer(target, (Player) sender)) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%player%", target.getName());
-            plugin.getMessageManager().sendMessage((Player) sender, "event.alreadyalive", localMap);
+            plugin.getMessageManager().sendMessage(sender, "event.alreadyalive", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -101,14 +101,14 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleUnrevive(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/unrevive <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/unrevive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -116,7 +116,7 @@ public class EventCommands implements CommandExecutor {
         if (!plugin.getEventManager().unrevivePlayer(target, (Player) sender)) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%player%", target.getName());
-            plugin.getMessageManager().sendMessage((Player) sender, "event.alreadydead", localMap);
+            plugin.getMessageManager().sendMessage(sender, "event.alreadydead", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -127,6 +127,7 @@ public class EventCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%player%", sender.getName());
         plugin.getMessageManager().broadcastMessage("event.revivedall", localMap);
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -135,6 +136,7 @@ public class EventCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%player%", sender.getName());
         plugin.getMessageManager().broadcastMessage("event.unrevivedall", localMap);
+        plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
 
@@ -146,12 +148,12 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (aliveList.isEmpty()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "event.noalive");
+            plugin.getMessageManager().sendMessage(sender, "event.noalive");
             plugin.getSoundManager().playSoundToSender(sender);
         } else {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%list%", aliveList);
-            plugin.getMessageManager().sendMessage((Player) sender, "event.listalive", localMap);
+            plugin.getMessageManager().sendMessage(sender, "event.listalive", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -165,12 +167,12 @@ public class EventCommands implements CommandExecutor {
                 .collect(Collectors.joining(", "));
 
         if (deadList.isEmpty()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "event.nodead");
+            plugin.getMessageManager().sendMessage(sender, "event.nodead");
             plugin.getSoundManager().playSoundToSender(sender);
         } else {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%list%", deadList);
-            plugin.getMessageManager().sendMessage((Player) sender, "event.listdead", localMap);
+            plugin.getMessageManager().sendMessage(sender, "event.listdead", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
         }
         return true;
@@ -178,7 +180,7 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleGive(CommandSender sender, String[] args, boolean isDead) {
         if (args.length < 1 || args.length > 3) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/" + (isDead ? "givedead" : "givealive") + " <item> [amount] [data]");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -187,7 +189,7 @@ public class EventCommands implements CommandExecutor {
         if (material == null) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%item%", args[0]);
-            plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-item", localMap);
+            plugin.getMessageManager().sendMessage(sender, "event.invalid-item", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -199,7 +201,7 @@ public class EventCommands implements CommandExecutor {
             } catch (NumberFormatException e) {
                 HashMap<String, String> localMap = new HashMap<>();
                 localMap.put("%amount%", args[1]);
-                plugin.getMessageManager().sendMessage((Player) sender, "event.invalid-amount", localMap);
+                plugin.getMessageManager().sendMessage(sender, "event.invalid-amount", localMap);
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
@@ -247,7 +249,7 @@ public class EventCommands implements CommandExecutor {
 
     private boolean handleTeleport(CommandSender sender, boolean isDead, boolean filter) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
 
@@ -285,12 +287,12 @@ public class EventCommands implements CommandExecutor {
     }
     private boolean handleTpHere(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/tphere <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/tphere <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -299,13 +301,13 @@ public class EventCommands implements CommandExecutor {
         Player targetPlayer = Bukkit.getPlayer(args[0]);
 
         if (targetPlayer == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (targetPlayer == commandSender) {
-            plugin.getMessageManager().sendMessage((Player) sender, "event.canttptoyourself");
+            plugin.getMessageManager().sendMessage(sender, "event.canttptoyourself");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -329,12 +331,12 @@ public class EventCommands implements CommandExecutor {
             try {
                 seconds = Integer.parseInt(args[0]);
                 if (seconds <= 0 || seconds > 60) {
-                    plugin.getMessageManager().sendMessage((Player) sender, "event.revivelast.no-number");
+                    plugin.getMessageManager().sendMessage(sender, "event.revivelast.no-number");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return true;
                 }
             } catch (NumberFormatException e) {
-                plugin.getMessageManager().sendMessage((Player) sender, "event.revivelast.invalid-number");
+                plugin.getMessageManager().sendMessage(sender, "event.revivelast.invalid-number");
                 plugin.getSoundManager().playSoundToSender(sender);
                 seconds = 30;
             }

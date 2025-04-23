@@ -48,14 +48,14 @@ public class WinCommands implements CommandExecutor {
 
     private boolean handleAddWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /addwin <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, " /addwin <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -76,14 +76,14 @@ public class WinCommands implements CommandExecutor {
 
     private boolean handleRemoveWin(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /removewin <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, " /removewin <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -92,7 +92,7 @@ public class WinCommands implements CommandExecutor {
         if (currentWins <= 0) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", target.getName());
-            plugin.getMessageManager().sendMessage((Player) sender, "wins.no-wins", localMap);
+            plugin.getMessageManager().sendMessage(sender, "wins.no-wins", localMap);
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -119,12 +119,12 @@ public class WinCommands implements CommandExecutor {
         } else if (args.length == 1) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+                plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /wins [player]");
+            plugin.getMessageManager().sendInvalidUsage(sender, " /wins [player]");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -133,7 +133,7 @@ public class WinCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%wins%", String.valueOf(wins));
         localMap.put("%name%", target.getName());
-        plugin.getMessageManager().sendMessage((Player) sender, "wins.show-wins", localMap);
+        plugin.getMessageManager().sendMessage(sender, "wins.show-wins", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }

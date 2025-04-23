@@ -46,7 +46,7 @@ public class ChatReviveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/chatrevive <math|typer|guess|cancel> [max]");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/chatrevive <math|typer|guess|cancel> [max]");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
@@ -57,7 +57,7 @@ public class ChatReviveCommand implements CommandExecutor {
         }
 
         if (activeGame != null && !activeGame.isGameOver()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.already-going");
+            plugin.getMessageManager().sendMessage(sender, "chatrevive.already-going");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -75,14 +75,14 @@ public class ChatReviveCommand implements CommandExecutor {
                     try {
                         max = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
-                        plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.invalid-number");
+                        plugin.getMessageManager().sendMessage(sender, "chatrevive.invalid-number");
                         plugin.getSoundManager().playSoundToSender(sender);
                     }
                 }
                 startGuessGame(max);
                 break;
             default:
-                plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.invalid-game");
+                plugin.getMessageManager().sendMessage(sender, "chatrevive.invalid-game");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
         }
@@ -168,7 +168,7 @@ public class ChatReviveCommand implements CommandExecutor {
             plugin.getMessageManager().broadcastMessage("chatrevive.cancelled");
             plugin.getSoundManager().broadcastConfigSound();
         } else {
-            plugin.getMessageManager().sendMessage((Player) sender, "chatrevive.no-active-game");
+            plugin.getMessageManager().sendMessage(sender, "chatrevive.no-active-game");
             plugin.getSoundManager().playSoundToSender(sender);
         }
     }

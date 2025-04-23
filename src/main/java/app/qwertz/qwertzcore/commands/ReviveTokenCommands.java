@@ -60,13 +60,13 @@ public class ReviveTokenCommands implements CommandExecutor {
         } else if (args.length == 1) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+                plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
 
                 plugin.getSoundManager().playSoundToSender(sender);
                 return true;
             }
         } else {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/revives [player]");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/revives [player]");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -75,14 +75,14 @@ public class ReviveTokenCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%name%", target.getName());
         localMap.put("%tokens%", String.valueOf(reviveTokens));
-        plugin.getMessageManager().sendMessage((Player) sender, "revivaltokens.showrevives", localMap);
+        plugin.getMessageManager().sendMessage(sender, "revivaltokens.showrevives", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
         return true;
     }
 
     private boolean handleUseRevive(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
 
@@ -130,14 +130,14 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleReviveAccept(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/reviveaccept <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/reviveaccept <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
 
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
@@ -145,7 +145,7 @@ public class ReviveTokenCommands implements CommandExecutor {
 
         if (!pendingReviveRequests.containsKey(target.getUniqueId()) ||
                 pendingReviveRequests.get(target.getUniqueId()) < System.currentTimeMillis()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "revivaltokens.no-pending-request");
+            plugin.getMessageManager().sendMessage(sender, "revivaltokens.no-pending-request");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -165,14 +165,14 @@ public class ReviveTokenCommands implements CommandExecutor {
 
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/revivedeny <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/revivedeny <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
 
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
@@ -191,14 +191,14 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleAddRevive(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/addrevive <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/addrevive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
 
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
@@ -218,14 +218,14 @@ public class ReviveTokenCommands implements CommandExecutor {
     private boolean handleRemoveRevive(CommandSender sender, String[] args) {
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/removerevive <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/removerevive <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            plugin.getMessageManager().sendMessage((Player) sender, "general.player-not-found");
+            plugin.getMessageManager().sendMessage(sender, "general.player-not-found");
 
             plugin.getSoundManager().playSoundToSender(sender);
             return true;

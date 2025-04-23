@@ -265,9 +265,21 @@ public class MessageManager {
         }
     }
 
+    public void sendMessage(CommandSender recipent, String message, HashMap<String, String> localPlaceholders) {
+        message = getMessage(message);
+        message = prepareMessage(message, localPlaceholders);
+        recipent.sendMessage(message);
+    }
+
     public void sendMessage(Player recipent, String message, HashMap<String, String> localPlaceholders) {
         message = getMessage(message);
         message = prepareMessage(message, localPlaceholders);
+        recipent.sendMessage(message);
+    }
+
+    public void sendMessage(CommandSender recipent, String message) {
+        message = getMessage(message);
+        message = prepareMessage(message, new HashMap<>());
         recipent.sendMessage(message);
     }
 
@@ -276,7 +288,6 @@ public class MessageManager {
         message = prepareMessage(message, new HashMap<>());
         recipent.sendMessage(message);
     }
-
     // HELPERS FOR COMMON STUFF
 
     public void sendInvalidUsage(Player recipent, String usage) {
@@ -288,10 +299,13 @@ public class MessageManager {
         recipent.sendMessage(message);
     }
 
-    public void sendConsole(CommandSender sender, String message) {
+    public void sendInvalidUsage(CommandSender recipent, String usage) {
+        String message = "general.invalid-usage";
         message = getMessage(message);
-        message = prepareMessage(message, new HashMap<>());
-        sender.sendMessage(message);
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%usage%", usage);
+        message = prepareMessage(message, localMap);
+        recipent.sendMessage(message);
     }
 
     public List<String> getStringList(String path) {

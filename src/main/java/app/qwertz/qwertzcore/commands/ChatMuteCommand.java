@@ -47,7 +47,7 @@ public class ChatMuteCommand implements CommandExecutor {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%state%", isMuting ? "muted" : "unmuted");
 
-            plugin.getMessageManager().sendMessage((Player) sender, "chatmute.is-already", localMap);
+            plugin.getMessageManager().sendMessage(sender, "chatmute.is-already", localMap);
         }
         return true;
     }

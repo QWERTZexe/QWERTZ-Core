@@ -16,7 +16,7 @@ public class ThemeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/theme <theme>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/theme <theme>");
             return true;
         }
 
@@ -24,9 +24,9 @@ public class ThemeCommand implements CommandExecutor {
         plugin.getMessageManager().setTheme(theme);
 
         if (plugin.getMessageManager().getThemes().contains(theme)) {
-            plugin.getMessageManager().sendMessage((Player) sender, "messages.successful");
+            plugin.getMessageManager().sendMessage(sender, "messages.successful");
         } else {
-            plugin.getMessageManager().sendMessage((Player) sender, "messages.invalid-theme");
+            plugin.getMessageManager().sendMessage(sender, "messages.invalid-theme");
         }
         return true;
     }

@@ -37,7 +37,7 @@ public class HideCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

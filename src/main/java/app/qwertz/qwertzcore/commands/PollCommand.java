@@ -44,18 +44,18 @@ public class PollCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
 
         if (args.length < 2 || args.length == 3) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, " /poll <duration> <question> [<answer1> <answer2>] [answer3] ...");
+            plugin.getMessageManager().sendInvalidUsage(sender, " /poll <duration> <question> [<answer1> <answer2>] [answer3] ...");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (pollActive) {
-            plugin.getMessageManager().sendMessage((Player) sender, "poll.already-active");
+            plugin.getMessageManager().sendMessage(sender, "poll.already-active");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -64,7 +64,7 @@ public class PollCommand implements CommandExecutor {
         try {
             duration = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            plugin.getMessageManager().sendMessage((Player) sender, "poll.invalid-duration");
+            plugin.getMessageManager().sendMessage(sender, "poll.invalid-duration");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

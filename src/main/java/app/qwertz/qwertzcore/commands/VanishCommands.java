@@ -44,7 +44,7 @@ public class VanishCommands implements CommandExecutor {
 
     public boolean vanish(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
         if (!plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
@@ -59,13 +59,13 @@ public class VanishCommands implements CommandExecutor {
                 plugin.getMessageManager().broadcastMessage("vanish.leave-msg", localMap);
                 plugin.getSoundManager().broadcastConfigSound();
             }
-            plugin.getMessageManager().sendMessage((Player) sender, "vanish.you-got-vanished");
+            plugin.getMessageManager().sendMessage(sender, "vanish.you-got-vanished");
             plugin.getVanishManager().addVanishedPlayer((Player) sender);
             for (Player loop : Bukkit.getOnlinePlayers()) {
                 loop.hidePlayer((Player) sender);
             }
         } else {
-            plugin.getMessageManager().sendMessage((Player) sender, "vanish.already-vanished");
+            plugin.getMessageManager().sendMessage(sender, "vanish.already-vanished");
             plugin.getSoundManager().playSoundToSender(sender);
         }
 
@@ -74,7 +74,7 @@ public class VanishCommands implements CommandExecutor {
 
     public boolean unVanish(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
         if (plugin.getVanishManager().getVanishedPlayers().contains(((Player) sender).getUniqueId())) {
@@ -88,14 +88,14 @@ public class VanishCommands implements CommandExecutor {
                 plugin.getMessageManager().broadcastMessage("vanish.join-msg", localMap);
                 plugin.getSoundManager().broadcastConfigSound();
             }
-            plugin.getMessageManager().sendMessage((Player) sender, "vanish.you-got-unvanished");
+            plugin.getMessageManager().sendMessage(sender, "vanish.you-got-unvanished");
             plugin.getSoundManager().playSoundToSender(sender);
             plugin.getVanishManager().removeVanishedPlayer((Player) sender);
             for (Player loop : Bukkit.getOnlinePlayers()) {
                 loop.showPlayer((Player) sender);
             }
         } else {
-            plugin.getMessageManager().sendMessage((Player) sender, "vanish.not-vanished");
+            plugin.getMessageManager().sendMessage(sender, "vanish.not-vanished");
             plugin.getSoundManager().playSoundToSender(sender);
         }
 

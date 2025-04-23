@@ -47,7 +47,7 @@ public class SetterCommands implements CommandExecutor {
 
     public void setSpawn(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
         }
         Player player = (Player) sender;
         Location loc = player.getLocation();
@@ -59,17 +59,17 @@ public class SetterCommands implements CommandExecutor {
         spawnMap.put("yaw", (double) loc.getYaw());
         spawnMap.put("pitch", (double) loc.getPitch());
         plugin.getConfigManager().set("spawn", spawnMap);
-        plugin.getMessageManager().sendMessage((Player) sender, "config.set-spawn");
+        plugin.getMessageManager().sendMessage(sender, "config.set-spawn");
         plugin.getSoundManager().playSoundToSender(sender);
     }
 
     public void setServer(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
         }
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/setserver <server>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/setserver <server>");
             plugin.getSoundManager().playSoundToSender(sender);
             return;
         }
@@ -78,16 +78,16 @@ public class SetterCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%value%", server);
         localMap.put("%key%", "server");
-        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+        plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
     }
     public void setEvent(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
         }
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/setevent <event>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/setevent <event>");
             plugin.getSoundManager().playSoundToSender(sender);
             return;
         }
@@ -96,7 +96,7 @@ public class SetterCommands implements CommandExecutor {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%value%", event);
         localMap.put("%key%", "event");
-        plugin.getMessageManager().sendMessage((Player) sender, "config.set-key", localMap);
+        plugin.getMessageManager().sendMessage(sender, "config.set-key", localMap);
         plugin.getSoundManager().playSoundToSender(sender);
     }
 }

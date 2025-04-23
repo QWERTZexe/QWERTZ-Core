@@ -38,7 +38,7 @@ public class EventCountdownCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/eventcountdown <time|cancel>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/eventcountdown <time|cancel>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -63,7 +63,7 @@ public class EventCountdownCommand implements CommandExecutor {
         } else if (timeArg.matches("\\d+")) {
             minutes = Integer.parseInt(timeArg);
         } else {
-            plugin.getMessageManager().sendMessage((Player) sender, "eventcountdown.invalid-time");
+            plugin.getMessageManager().sendMessage(sender, "eventcountdown.invalid-time");
             return true;
         }
 
@@ -76,7 +76,7 @@ public class EventCountdownCommand implements CommandExecutor {
             }
             cancelCountdown();
             plugin.getScoreboardManager().updateCountdown("...");
-            plugin.getMessageManager().sendMessage((Player) sender, "eventcountdown.out-of-range");
+            plugin.getMessageManager().sendMessage(sender, "eventcountdown.out-of-range");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

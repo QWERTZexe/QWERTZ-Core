@@ -34,7 +34,7 @@ public class GamemodeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             return true;
         }
 
@@ -56,13 +56,13 @@ public class GamemodeCommand implements CommandExecutor {
                 break;
             case "gm":
                 if (args.length == 0) {
-                    plugin.getMessageManager().sendInvalidUsage((Player) sender, "/gm <creative|survival|adventure|spectator>");
+                    plugin.getMessageManager().sendInvalidUsage(sender, "/gm <creative|survival|adventure|spectator>");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }
                 targetGameMode = parseGameMode(args[0]);
                 if (targetGameMode == null) {
-                    plugin.getMessageManager().sendMessage((Player) sender, "gamemode.invalid");
+                    plugin.getMessageManager().sendMessage(sender, "gamemode.invalid");
                     plugin.getSoundManager().playSoundToSender(sender);
                     return false;
                 }

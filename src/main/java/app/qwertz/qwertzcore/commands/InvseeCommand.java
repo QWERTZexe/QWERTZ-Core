@@ -33,13 +33,13 @@ public class InvseeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendConsole(sender, "general.only-player-execute");
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
 
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/invsee <player>");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/invsee <player>");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

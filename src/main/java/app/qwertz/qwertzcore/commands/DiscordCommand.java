@@ -40,7 +40,7 @@ public class DiscordCommand implements CommandExecutor {
         String discordLink = plugin.getConfigManager().getDiscordLink();
 
         if (discordLink == null || discordLink.isEmpty()) {
-            plugin.getMessageManager().sendMessage((Player) sender, "discord.no-discord");
+            plugin.getMessageManager().sendMessage(sender, "discord.no-discord");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -58,7 +58,7 @@ public class DiscordCommand implements CommandExecutor {
 
         // Check if the last part is a valid URL
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
-            plugin.getMessageManager().sendMessage((Player) sender, "discord.invalid-url");
+            plugin.getMessageManager().sendMessage(sender, "discord.invalid-url");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }

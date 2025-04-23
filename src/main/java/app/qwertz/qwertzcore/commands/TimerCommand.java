@@ -39,14 +39,14 @@ public class TimerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage((Player) sender, "/timer <seconds> or /timer cancel");
+            plugin.getMessageManager().sendInvalidUsage(sender, "/timer <seconds> or /timer cancel");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
             cancelTimer();
-            plugin.getMessageManager().sendMessage((Player) sender, "timer.cancelled");
+            plugin.getMessageManager().sendMessage(sender, "timer.cancelled");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -54,14 +54,14 @@ public class TimerCommand implements CommandExecutor {
         try {
             int seconds = Integer.parseInt(args[0]);
             if (seconds <= 0) {
-                plugin.getMessageManager().sendMessage((Player) sender, "timer.no-number");
+                plugin.getMessageManager().sendMessage(sender, "timer.no-number");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
             }
             startTimer(seconds);
             return true;
         } catch (NumberFormatException e) {
-            plugin.getMessageManager().sendMessage((Player) sender, "timer.invalid-number");
+            plugin.getMessageManager().sendMessage(sender, "timer.invalid-number");
             plugin.getSoundManager().playSoundToSender(sender);
             return false;
         }
