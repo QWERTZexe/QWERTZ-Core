@@ -8,8 +8,8 @@ placeholders:
   colorSuccess: "\u00a7a" # green (yay, success uwu)
   colorAlive: "\u00a7a" # green (uwu we're alive!)
   colorDead: "\u00a7c" # red (oh no, dead uwu)
-  CORE_ICON_RAW: "\u00a7e\u2764" # star icon (a bit sparkly uwu)
-  CORE_ICON: "\u00a7e\u2764\u00a7r" # star icon with special UwU formatting
+  CORE_ICON_RAW: "\u2764" # heart icon (a bit sparkly uwu)
+  CORE_ICON: "\u00a7c\u2764\u00a7r" # heart icon with special UwU formatting
 
 # Active theme set to "file" for custom config
 active-theme: "internal"
