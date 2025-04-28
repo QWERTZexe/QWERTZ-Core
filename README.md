@@ -4,7 +4,7 @@
 
 QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It provides a comprehensive set of tools for hosts and administrators to manage events, player statuses, and game mechanics.
 
-**Newest version:** 2.4
+**Newest version:** 2.5
 **Author:** QWERTZ_EXE
 **Website:** https://qwertz.app
 
@@ -58,6 +58,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
 - `/eventblock <block> [material]` - Get a QWERTZ Core event block
 - `/kits` Lists all kits
+- `/speed <speed>` Sets your speed
 
 ### Event Management
 
@@ -176,6 +177,10 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.setserver` - Set the server
 - `qwertzcore.host.reloadcore` - Reload the core
 - `qwertzcore.host.settheme` - Set the theme
+
+#### Staff Permissions
+
+- `qwertzcore.staff.speed` - Set your speed
 
 #### Player Permissions
 

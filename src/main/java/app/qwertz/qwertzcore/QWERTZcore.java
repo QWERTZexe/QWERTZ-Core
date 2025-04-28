@@ -36,7 +36,7 @@ public final class QWERTZcore extends JavaPlugin {
 
     public static final String CORE_ICON = ChatColor.YELLOW + "❇" + ChatColor.RESET;
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "2.4";
+    public static final String VERSION = "2.5";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -309,6 +309,9 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("theme").setExecutor(new ThemeCommand(this));
         getCommand("theme").setTabCompleter(new ThemeTabCompleter(this));
         getCommand("emojis").setExecutor(new EmojiCommand(this));
+        getCommand("speed").setExecutor(new SpeedCommand(this));
+        getCommand("speed").setTabCompleter(new SpeedTabCompleter());
+
 
 
 

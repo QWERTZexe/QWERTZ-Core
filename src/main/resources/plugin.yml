@@ -310,6 +310,10 @@ commands:
     usage: /<command>
     permission: qwertzcore.player.emojis
     aliases: [emotes]
+  speed:
+    description: Set your speed
+    usage: /<command> <speed>
+    permission: qwertzcore.staff.speed
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -527,3 +531,6 @@ permissions:
   qwertzcore.player.emojis:
     description: Allows the player to use emojis
     default: true
+  qwertzcore.staff.speed:
+    description: Allows the player to set their speed
+    default: op

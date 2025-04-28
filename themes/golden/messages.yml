@@ -387,3 +387,8 @@ configgui:
   # Valid placeholders: %key%, %value%
   set-key-to-value: "%colorSuccess%Updated %colorTertiary%%key%%colorSuccess% to %colorPrimary%%value%"
   invalid-number-format: "%colorError%Invalid number format!"
+
+speed:
+  # Valid placeholders: %speed%
+  changed: "%CORE_ICON% %colorSuccess%Your speed has been set to %speed%"
+  out-of-range: "%colorError%Speed out of range! (1 to 10)"
