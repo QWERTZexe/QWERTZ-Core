@@ -1,0 +1,271 @@
+## QWERTZ Core Messages Configuration for UwU Theme
+
+placeholders:
+  colorPrimary: "\u00a7f" # soft white (cute style)
+  colorSecondary: "\u00a7d" # pink (for extra uwu-ness)
+  colorTertiary: "\u00a7b" # light blue (for softer, happy vibes)
+  colorError: "\u00a7c" # red (so dramatic uwu)
+  colorSuccess: "\u00a7a" # green (yay, success uwu)
+  colorAlive: "\u00a7a" # green (uwu we're alive!)
+  colorDead: "\u00a7c" # red (oh no, dead uwu)
+  CORE_ICON_RAW: "\u00a7e\u2747" # star icon (a bit sparkly uwu)
+  CORE_ICON: "\u00a7e\u2747\u00a7r" # star icon with special UwU formatting
+
+# Active theme set to "file" for custom config
+active-theme: "internal"
+
+general:
+  only-player-execute: "%colorError%Oop-chi! This command can only be used by pwayers, not mobs! ^w^"
+  invalid-usage: "%colorError%Uhh~ usage: %usage% oopsie!"
+  player-not-found: "%colorError%Pwayer nya~ not found! :("
+  no-permission: "%colorError%You don’t have the pwermission to use dis command, nya! >.<"
+  disabled-command: "%colorError%This command is disabwed, sowwy! *nyaaa*"
+
+chatting:
+  disabled: "%colorError%Chat is disabwed, don't speak up~ ;w;"
+  chat: "%prefix%%name%%suffix%:\u00a7r %message% *purrs*"
+  death: "%colorDead%%name% \u00a74DIED! *nooo~* >///<"
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just weft us! \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77] *crying*"
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! *yayyyy* \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
+
+config:
+  key-not-found: "%colorError%Confwig key not found: %key% oopsie~"
+  set-spawn: "%colorSuccess%Spawn has been set to youw current wocation! OwO"
+  invalid-spawn: "%colorError%Invalid spawn! Use 'currentpos' pwease~"
+  set-key: "%colorSuccess%Set %key% to %value% nya!"
+  invalid-number-format: "%colorError%Invalid number format: %value% >.<"
+  invalid-type: "%colorError%Unsupported config type for: %key% *oopsie*"
+
+discord:
+  no-discord: "%colorError%No Discord link set! Please set it owo"
+  clickhere: "CLICK HERE TO JOIN OUR DISCORD! *paws*"
+  hover: "Cwick to join our Discord, pleawwse!"
+  invalid-url: "%colorError%The wast part of youw ad must be a vawid URL. *whimpers*"
+
+specialblocks:
+  info: "%colorPrimary%Avaiwabwe bwock types: %types% uwu"
+  invalid-material: "%colorError%Inva-wid material! ;o;"
+  invalid-type: "%colorError%Inva-wid bwock type! %colorPrimary%Available types: %types%"
+  receive: "%CORE_ICON% %colorSuccess%You got a QWERTZ Core %colorPrimary%%blockType% block! UwU"
+  place: "%CORE_ICON% %colorPrimary%Placed %colorSecondary%%blockType% block! *sparkle* owo"
+  remove: "%CORE_ICON% %colorDead%Removed a speciaw bwock! T^T"
+event:
+  alreadyalive: "%colorPrimary%%player% is awweady awive! T_T"
+  alreadydead: "%colorPrimary%%player% is awweady dead! >_<"
+  revivedall: "%CORE_ICON% %colorSuccess%Aww pwayers have been wevived! *yay*"
+  unrevivedall: "%CORE_ICON% %colorDead%Aww pwayers have been unwevived! *nooo*"
+  revive: "%CORE_ICON% %colorAlive%%name% has been wevived! *happy*"
+  unrevive: "%CORE_ICON% %colorDead%%name% has been unwevived! *crying*"
+  noalive: "%colorPrimary%There awe no awive pwayers! *so sad*"
+  nodead: "%colorPrimary%There awe no dead pwayers! *yay*"
+  listalive: "%colorAlive%Awive pwayers: %list% *smile*"
+  listdead: "%colorDead%Dead pwayers: %list% *sniff*"
+  invalid-item: "%colorError%Inva-wid item: %item% T_T"
+  invalid-amount: "%colorError%Inva-wid amount: %amount% >_<"
+  give-broadcast: "%CORE_ICON% %colorSuccess%%affected% %typeColor%%type% %colorSuccess%pwayers have weceived %colorPrimary%%amount% %colorPrimary%%item% *happy dance*"
+  tpall: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%teweported awl pwayers to theiw wocation! *yay*"
+  tp-group: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%teweported awl %typeColor%%type% %colorSuccess%pwayers to theiw wocation! *yay*"
+  canttptoyourself: "%colorError%You can't teweport youwsewf to youwsewf! ~~noooo~~"
+  tphere-sender-msg: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%has been teweported to you! *yay*"
+  tphere-target-msg: "%CORE_ICON% %colorSuccess%You have been teweported to %colorPrimary%%name%%colorSuccess%! *excited*"
+  revivelast:
+    no-number: "%colorError%Pwease specify a numbew of seconds between 1 and 60. T_T"
+    invalid-number: "%colorError%Inva-wid numbew of seconds. Using defauwt of 30 seconds. *sad*"
+    broadcast: "%CORE_ICON% %colorSuccess%%amount% %colorPrimary%pwayers who died in the wast %colorSuccess%%seconds% %colorPrimary%seconds have been wevived! *yayyy*"
+  heal-broadcast: "%CORE_ICON% %colorSuccess%%amount% %typeColor%%type% %colorSuccess%have been heawed! *yay*"
+
+eventcountdown:
+  invalid-time: "%colorError%Inva-wid time fowmat. Use: <numbew>[s|sec|m|min] ow just <numbew> fow minutes. *confused*"
+  out-of-range: "%colorError%Inva-wid time. Pwease specify a time between 1 second and 60 minutes. T_T"
+  started-countdown: "%colorSuccess%Event countdown stawted fow %time%! *excited*"
+  starting-now: "%CORE_ICON% %colorSuccess%Event %event% is stawting now! *yeyyy*"
+  broadcast: "%CORE_ICON% %colorPrimary%Event %event% stawts in \u00a7c%time%%colorPrimary%! *hype*"
+
+advertisement:
+  invalid-platform: "%colorError%Inva-wid pwatform. Avaiwabwe pwatforms: twitch, tiktok, youtube, discord, stowe, website, othew. *uh-oh*"
+  setad-success: "%colorSuccess%Advewtisement fow %platform% has been set. *yay*"
+  no-ad-set: "%colorError%No advewtisement set fow dis pwatform. *sad face*"
+  invalid-url: "%colorError%The wast pawt of youw ad must be a vawid URL. *crying*"
+
+chatmute:
+  broadcast: "%CORE_ICON% %colorPrimary%Chat has been %stateColor%%state%%colorPrimary%! *shush*"
+  is-already: "%colorError%Chat is awweady %state%! *noooo*"
+
+chatrevive:
+  already-going: "%colorError%A game is awweady in pwogwess. Use /chatrevive cancew to end it. *uh-oh*"
+  invalid-number: "%colorError%Inva-wid numbew fow max vawue. Using defauwt of 40. >_<"
+  invalid-game: "%colorError%Inva-wid game type. Use math, typew, ow guess. T_T"
+  math-question: "%CORE_ICON% %colorPrimary%Math Question: %colorSuccess%%question% *brainy*"
+  math-howto: "%colorPrimary%Type the cowwect answer in chat! *smile*"
+  typer-question: "%CORE_ICON% %colorPrimary%Type dis sentence: %colorSuccess%%sentence% *fingers crossed*"
+  guess-question: "%CORE_ICON% %colorPrimary%Guess a numbew between %colorSuccess%1 %colorPrimary%and %colorSuccess%%number% *hype*"
+  cancelled: "%colorPrimary%The chat wevivaw game has been cancewwed. *sad*"
+  no-active-game: "%colorError%Thewe is no active chat wevivaw game to cancew. *crying*"
+  correct-answer: "%CORE_ICON% %colorPrimary%The cowwect answer was: %colorAlive%%answer% *yayyy*"
+  correct-sentence: "%CORE_ICON% %colorPrimary%The cowwect sentence was: %colorAlive%%sentence% *relieved*"
+  winner: "%CORE_ICON% %colorAlive%%player% %colorPrimary%has won the chat wevivaw game! *yayyyyy*"
+
+clearinv:
+  got-cleared: "%colorError%Youw inventowy has been cweawed by an admin. *shock*"
+  broadcast: "%CORE_ICON% %colorSuccess%%amount% %groupColor%%group% %colorSuccess%pwayers have had theiw inventowies cweawed. *oopsie*"
+
+gamemode:
+  invalid: "%colorError%Inva-wid gamemode. Use cweative, suwvivaw, adventuwe, ow spectatow. *oopsie*"
+  success: "%CORE_ICON% %colorPrimary%Youw gamemode has been set to %colorSuccess%%gamemode%%colorPrimary%! *yay*"
+
+hide:
+  invalid: "%colorError%Inva-wid mode. Use host, staff, aww, ow off. *confused*"
+  mode-off: "%CORE_ICON% %colorPrimary%Aww %colorSuccess%pwayers awe now visibwe to you. *happy*"
+  mode-on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%. *secretive*"
+
+kit:
+  created: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has been cweated! *yay*"
+  deleted: "%CORE_ICON% %colorDead%Kit %colorPrimary%'%name%' %colorDead%has been deweted! *crying*"
+  nonexistent: "%CORE_ICON% %colorError%Kit %colorPrimary%'%name%' %colorError%does not exist! *sad*"
+  received: "%CORE_ICON% %colorSuccess%You have weceived the kit %colorPrimary%'%name%'%colorSuccess%! *yay*"
+  broadcast: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has been given to %colorPrimary%%amount% %colorSuccess%pwayers! *smile*"
+  no-kits: "%CORE_ICON% %colorPrimary%Thewe awe no kits avaiwabwe. *sad face*"
+  list: "%CORE_ICON% %colorSuccess%Avaiwabwe kits: %colorPrimary%%list%. *excited*"
+
+poll:
+  already-active: "%colorError%A poww is awweady active. *uh-oh*"
+  invalid-duration: "%colorError%Inva-wid duwation. Pwease pwovide a numbew in seconds. *confused*"
+  new-poll: "%CORE_ICON% %colorPrimary%\u00a7lNew poww: %colorSecondary%%question% *hype*"
+  option: "%colorSecondary%%index%. %colorTertiary%%option% *excited*"
+  click-to-vote: "\u00a77\u00a7oClick to vote! *yayyy*"
+  hover: "Cwick to vote fow dis option! *excited*"
+  result-title: "%CORE_ICON% %colorPrimary%\u00a7lPoww ended! %colorPrimary%Wesuwts:"
+  result-option: "%colorSecondary%%index%. %option% %colorTertiary%: %colorPrimary%%amount% votes *smile*"
+  no-active-poll: "%colorError%Thewe is no active poww. *sad*"
+  invalid-option: "%colorError%Inva-wid option. *crying*"
+  vote-success: "%colorSuccess%You voted fow %option% *yayyy*"
+
+messaging:
+  cannot-message: "%colorError%%name% has disabwed pwivate messages. >.<"
+  cannot-reply: "%colorError%You have no one to wepwy to. T_T"
+  togglemsg: "%CORE_ICON% %stateColor%Pwivate messages have been %state%! *yay*"
+  direct-message: "\u00a77[%colorPrimary%%sender%\u00a77 -> %colorPrimary%%recipient%\u00a77] \u00a7f%message% ^_^"
+
+revivaltokens:
+  showrevives: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has %tokens% wevive tokens. *yay*"
+  tokens-disabled: "%colorError%Wevive tokens awe cuwwentwy disabwed! T_T"
+  cooldown: "%colorError%You must wait %time% seconds again befowe wequesting a wevive! >.<"
+  no-tokens: "%colorError%You don't have any wevive tokens! *so sad*"
+  already-alive: "%colorError%You awe awweady awive! >.<"
+  request-revive: "%CORE_ICON% %colorPrimary%%name%%colorAlive% is wequesting to use a wevive token! (%colorAlive%/reviveaccept %colorPrimary%%name%%colorAlive% ow %colorDead%/revivedeny %colorPrimary%%name%%colorAlive%) *hopeful*"
+  no-pending-request: "%colorError%Thewe is no pending wevive wequest fow this pwayer! >.<"
+  revive-accepted: "%CORE_ICON% %colorPrimary%%name%'s %colorAlive%wevive wequest has been accepted! ^_^"
+  revive-denied: "%CORE_ICON% %colorPrimary%%name%'s %colorDead%wevive wequest has been denied! T_T"
+  token-given: "%CORE_ICON% %colorPrimary%%name% %colorAlive%has been given a wevive token! They now have %colorPrimary%%tokens% %colorAlive%tokens. ^_^"
+  token-removed: "%CORE_ICON% %colorDead%A wevive token has been wemoved fwom %colorPrimary%%name%%colorDead%! They now have %colorPrimary%%tokens% %colorDead%tokens. >_<"
+
+spawn:
+  alive-title:
+    title: "%colorError%WARNING"
+    subtitle: "%colorPrimary%You awe stiww awive!"
+  alive-message: "%colorError%WARNING: %colorPrimary%You awe stiww awive! Type /spawn again within 10 seconds to confiwm teweportation. >.<"
+  spawn-while-alive: "%colorDead%You have been unwevived as you chose to teweport to spawn whiwe awive."
+  success: "%CORE_ICON% %colorSuccess%Tewepowted to spawn! ^_^"
+  no-spawn: "%colorError%Spawn wocation is not set! >_<"
+
+timer:
+  cancelled: "%colorPrimary%Timah cancewwed. >.<"
+  no-number: "%colorError%Pwease pwovide a positive numbew of seconds. >_<"
+  invalid-number: "%colorError%Inva-wid numbew fow timer. Pwease pwovide a vawid numbew of seconds. T_T"
+  started: "%CORE_ICON% %colorPrimary%A timah just got stawted! ^_^"
+  time-up: "%colorSecondary%Time's up! T_T"
+  countdown: "%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds. *wooo*"
+  broadcast-cancel: "%colorPrimary%Timah has been cancewwed. >.<"
+
+vanish:
+  leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just weft us! \u00a77[%colorTertiary%%fakeCount%\u00a77 -> %colorTertiary%%newCount%\u00a77] T_T"
+  join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%fakeCount%\u00a77 -> %colorTertiary%%newCount%\u00a77] ^_^"
+  you-got-vanished: "%CORE_ICON% %colorPrimary%You have been vanished! >_<"
+  you-got-unvanished: "%CORE_ICON% %colorPrimary%You have been unvanished! *yay*"
+  already-vanished: "%colorError%You awe awweady vanished! T_T"
+  not-vanished: "%colorError%You awe not vanished! >_<"
+
+warps:
+  cannot-set: "%colorError%You don't have pewmission to set warps! >.<"
+  set: "%CORE_ICON% %colorSuccess%Wawp %colorPrimary%'%warp%'%colorSuccess% has been set at your cuwwent wocation! ^_^"
+  delete: "%CORE_ICON% %colorError%Wawp %colorPrimary%'%warpName%'%colorError% has been deweted! T_T"
+  nonexistent: "%CORE_ICON% %colorError%Wawp %colorPrimary%'%warp%'%colorError% does not exist! >.<"
+  alive-title:
+    title: "%colorError%WARNING"
+    subtitle: "%colorPrimary%You awe stiww awive!"
+  alive-message: "%colorError%WARNING: %colorPrimary%You awe stiww awive! Type /spawn again within 10 seconds to confiwm teweportation. >_<"
+  cannot-delete: "%colorError%You don't have pewmission to dewete warps! T_T"
+  no-warps: "%CORE_ICON% %colorPrimary%Thewe awe no warps set! >.<"
+  list: "%CORE_ICON% %colorPrimary%Avaiwabwe warps: %list%. ^_^"
+  warp-while-alive: "%colorDead%You have been unwevived as you chose to teweport to a wawk whiwe awive. >_<"
+  success: "%CORE_ICON% %colorSuccess%Tewepowted to wawk! ^_^"
+
+wins:
+  show-wins: "%CORE_ICON% %colorPrimary%%name%%colorAlive% has %wins% wins. *wow*"
+  remove: "%colorDead%A win has been wemoved fwom youw wecowd. You now have %colorPrimary%%wins%%colorDead% wins. >_<"
+  give: "%colorAlive%You have been awawded a win! You now have %colorPrimary%%wins%%colorAlive% wins. ^_^"
+  no-wins: "%colorError%%name% has no wins to wemove. T_T"
+  win-broadcast: "%CORE_ICON% %colorAlive%Added a win fow %colorPrimary%%name%%colorAlive%. They now have %colorPrimary%%wins%%colorAlive% wins! *yayyy*"
+  win-removed-broadcast: "%CORE_ICON% %colorDead%Wemoved a win fwom %colorPrimary%%name%%colorDead%. They now have %colorPrimary%%wins%%colorDead% wins. >_<"
+
+worldguard:
+  no-regions: "%colorError%WowwdGuawd wegions awe not avaiwabwe in dis wowwd. >_<"
+  not-found: "%colorError%Wegion '%name%' not found. T_T"
+  invalid-region: "%colorError%You need to be in a ow specify a wegion! >_<"
+  globally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state% %colorPrimary%%flag% %colorSecondary%GLOBALLY%colorSuccess%! ^_^"
+  regionally: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%just %stateColor%%state% %colorPrimary%%flag% %colorSuccess%in wegion %colorSecondary%'%region%'%colorSuccess%! ^_^"
+  flags:
+    flow: "FWOWING"
+    pvp: "PVP"
+    break: "BWOCK BWREAKING"
+    place: "BWOCK PWACING"
+    falldamage: "FAWW DAMAGE"
+    hunger: "HUNGEW"
+
+messages:
+  invalid-theme: "%colorError%Inva-wid theme! >_<"
+  successful: "%colorSuccess%Set the new theme! Wewoad the cowe fow the changes to be visibwe! ^_^"
+
+emojis:
+  list: "%CORE_ICON% %colorSecondary%QWERTZ Core emoji list: "
+  reminder: "\u00a77\u00a7oEmojis awe dependent on the cuwwent theme"
+  # Valid placeholders: %code%, %emoji%
+  item: "%colorPrimary%- %colorSecondary%%code% %colorTertiary%-> %colorSecondary%%emoji%"
+  # Format: ":laugh:|:D"
+  emojis:
+    - ":core:|\u00a7e\u2747\u00a7r"
+    - ":fire:|\u00a76\ud83d\udd25\u00a7r"
+    - ":skull:|\u00a77\ud83d\udc80\u00a7r"
+    - ":cry:|\u00a7c\ud83d\ude22\u00a7r"
+    - ":D|\u00a7e\ud83d\ude04\u00a7r"
+    - "D:|\u00a7c\ud83d\ude26\u00a7r"
+    - ":)|\u00a7e\ud83d\ude42\u00a7r"
+    - "<3|\u00a7c\u2764\u00a7r"
+    - ":wink:|\u00a7e\ud83d\udc7c\u00a7r"
+    - ":smile:|\u00a7e\ud83d\ude42\u00a7r"
+    - ":laugh:|\u00a7e\ud83d\ude02\u00a7r"
+    - ":sad:|\u00a7c\ud83d\ude14\u00a7r"
+    - ":angry:|\u00a7c\ud83d\udca2\u00a7r"
+    - ":love:|\u00a7d\ud83d\udc95\u00a7r"
+    - ":blush:|\u00a7e\ud83d\ude0a\u00a7r"
+    - ":shock:|\u00a7e\ud83d\ude31\u00a7r"
+    - ":confused:|\u00a7e\ud83d\ude15\u00a7r"
+    - ":sleepy:|\u00a7e\ud83d\ude34\u00a7r"
+    - ":wink2:|\u00a7e\ud83d\ude09\u00a7r"
+    - ":heart-eyes:|\u00a7e\ud83d\ude0d\u00a7r"
+    - ":tongue:|\u00a7e\ud83d\ude1b\u00a7r"
+    - ":star:|\u00a7e\ud83d\ude0e\u00a7r"
+    - ":kiss:|\u00a7e\ud83d\udc8b\u00a7r"
+
+configgui:
+  # Valid placeholders: %key%
+  enter-new-value: "%colorPrimary%Enter new vawue fow %colorTertiary%%key%%colorPrimary% in chat:"
+  unsupported-type: "%colorError%Unsupported config type! >_<"
+  # Valid placeholders: %key%, %value%
+  set-key-to-value: "%colorSuccess%Updated %colorTertiary%%key%%colorSuccess% to %colorPrimary%%value%. ^_^"
+  invalid-number-format: "%colorError%Invawid numbew fowmat! T_T"
+
+speed:
+  # Valid placeholders: %speed%
+  changed: "%CORE_ICON% %colorSuccess%Youw speed has been set to %speed%! ^_^"
+  out-of-range: "%colorError%Speed out of wange! (1 to 10) >_<"
