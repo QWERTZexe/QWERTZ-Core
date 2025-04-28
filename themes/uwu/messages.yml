@@ -8,8 +8,8 @@ placeholders:
   colorSuccess: "\u00a7a" # green (yay, success uwu)
   colorAlive: "\u00a7a" # green (uwu we're alive!)
   colorDead: "\u00a7c" # red (oh no, dead uwu)
-  CORE_ICON_RAW: "\u00a7e\u2747" # star icon (a bit sparkly uwu)
-  CORE_ICON: "\u00a7e\u2747\u00a7r" # star icon with special UwU formatting
+  CORE_ICON_RAW: "\u00a7e\u2764" # star icon (a bit sparkly uwu)
+  CORE_ICON: "\u00a7e\u2764\u00a7r" # star icon with special UwU formatting
 
 # Active theme set to "file" for custom config
 active-theme: "internal"
@@ -23,7 +23,7 @@ general:
 
 chatting:
   disabled: "%colorError%Chat is disabwed, don't speak up~ ;w;"
-  chat: "%prefix%%name%%suffix%:\u00a7r %message% *purrs*"
+  chat: "%prefix%%name%%suffix%:\u00a7r %message%"
   death: "%colorDead%%name% \u00a74DIED! *nooo~* >///<"
   leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just weft us! \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77] *crying*"
   join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! *yayyyy* \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
