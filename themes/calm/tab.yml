@@ -1,0 +1,28 @@
+## QWERTZ Core Tablist Configuration
+## https://modrinth.com/plugin/qwertz-core
+
+# Valid placeholders: %event%, %player%, %server%, %discord%
+# Also all placeholders in "messages.yml"
+
+# TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
+
+header:
+  - " "
+  - "%colorSecondary%Welcome to %colorPrimary%\u00A7l%server%%colorSecondary%"
+  - " "
+
+footer:
+  - " "
+  - "%colorSecondary%There are %colorPrimary%%player% %colorSecondary%players online!"
+  - " "
+  - "%colorSecondary%%discord%"
+
+# Valid placeholders: %prefix%, %player%, %suffix%, %ping_color%, %ping%
+player-list-name: "%prefix%%player%%suffix%"
+
+ping-colors:
+  40: "&2"    # Dark Green
+  100: "&a"   # Green
+  160: "&e"   # Yellow
+  250: "&c"   # Red
+  default: "&4" # Dark Red
