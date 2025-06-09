@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
         this.chatReviveCommand = chatReviveCommand;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 
         if (gameOver) return;
