@@ -29,13 +29,16 @@ import java.util.List;
 
 public class ChatManager implements Listener {
     private final QWERTZcore plugin;
-
+        
     public ChatManager(QWERTZcore plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+
+        if (event.isCancelled()) return;
+            
         if (!plugin.getConfigManager().getChat() && !event.getPlayer().hasPermission("qwertzcore.chat.bypass")) {
             event.setCancelled(true);
             plugin.getMessageManager().sendMessage(event.getPlayer(), "chatting.disabled");
