@@ -124,7 +124,7 @@ eventcountdown:
   # Valid placeholders: %time%
   started-countdown: "%colorSuccess%Event countdown started for %time%"
   # Valid placeholders: %event%
-  starting-now: "%colorPrimary%%{event}% %colorSecondary%is starting %colorPrimary%VERY SOON!"
+  starting-now: "%colorPrimary%%event% %colorSecondary%is starting %colorPrimary%VERY SOON!"
   # Valid placeholders: %event%, %time%
   broadcast: "%colorPrimary%%event% %colorSecondary%is starting in about %colorPrimary%%time%"
 
