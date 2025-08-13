@@ -52,12 +52,18 @@ public class ChatManager implements Listener {
             String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getPrefix(player));
             String suffix = ChatColor.translateAlternateColorCodes('&', plugin.getRankManager().getSuffix(player));
             String message = event.getMessage();
+            
+            // Apply color codes if colored chat is enabled and player has permission
+            if (plugin.getConfigManager().getColoredChat() && player.hasPermission("qwertzcore.chat.color")) {
+                message = plugin.translateHexColorCodes(ChatColor.translateAlternateColorCodes('&', message));
+            }
+            
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", player.getName());
             localMap.put("%prefix%", prefix);
             localMap.put("%suffix%", suffix);
-            localMap.put("%message%", message);
-            Bukkit.broadcastMessage(translateEmojis(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)), player));
+            String withoutMsg = translateEmojis(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)), player);
+            Bukkit.broadcastMessage(withoutMsg.replace("%message%", message));
         }
     }
 

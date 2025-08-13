@@ -45,7 +45,15 @@ public class DiscordCommand implements CommandExecutor {
             return true;
         }
 
-        TextComponent message = new TextComponent(QWERTZcore.CORE_ICON + " ");
+        TextComponent message = new TextComponent();
+        
+        // Add the CORE_ICON with proper color formatting
+        TextComponent iconComponent = new TextComponent(QWERTZcore.CORE_ICON_RAW);
+        iconComponent.setColor(net.md_5.bungee.api.ChatColor.of(QWERTZcore.CORE_ICON_COLOR));
+        message.addExtra(iconComponent);
+        
+        // Add a space after the icon
+        message.addExtra(new TextComponent(" "));
 
         TextComponent clickHere = new TextComponent(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("discord.clickhere"), new HashMap<>()));
 

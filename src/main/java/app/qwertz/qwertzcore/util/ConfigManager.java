@@ -19,9 +19,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.*;
+
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
+import org.bukkit.DyeColor;
+import org.bukkit.potion.PotionType;
+import org.bukkit.potion.PotionData;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +46,6 @@ public class ConfigManager {
     private Set<String> keep;
     private Map<String, Map<String, Object>> warps; // Separate map for warps
     private Map<String, List<Map<String, Object>>> kits; // Separate map for kits
-
     public ConfigManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), "config.json");
@@ -134,6 +142,7 @@ public class ConfigManager {
         addDefault("chatTimer", true);
         addDefault("reviveStaff", false);
         addDefault("emojis", true);
+        addDefault("coloredChat", true);
 
         // Garbage collect: Remove keys that are in the file but not defined as defaults
         System.out.print(keep);
@@ -268,7 +277,7 @@ public class ConfigManager {
         for (ItemStack item : items) {
             try {
                 if (item != null) {
-                    Map<String, Object> serializedItem = encodeStrings(item.serialize());
+                    Map<String, Object> serializedItem = serializeItemStack(item);
                     serializedItems.add(serializedItem);
                 } else {
                     serializedItems.add(null);
@@ -293,7 +302,12 @@ public class ConfigManager {
         List<ItemStack> items = new ArrayList<>();
         for (Map<String, Object> serializedItem : serializedItems) {
             if (serializedItem != null) {
-                items.add(ItemStack.deserialize(decodeStrings(serializedItem)));
+                try {
+                    items.add(deserializeItemStack(serializedItem));
+                } catch (Exception e) {
+                    plugin.getLogger().warning("Error deserializing item in kit " + kitName + ": " + e.getMessage());
+                    items.add(null);
+                }
             } else {
                 items.add(null);
             }
@@ -327,35 +341,441 @@ public class ConfigManager {
         return new String(Base64.getDecoder().decode(input), StandardCharsets.UTF_16);
     }
 
-    // Helper method to encode all string values in a map
-    private Map<String, Object> encodeStrings(Map<String, Object> map) {
-        Map<String, Object> encodedMap = new HashMap<>();
+    // Enhanced item serialization that preserves all item data
+    private Map<String, Object> serializeItemStack(ItemStack item) {
+        Map<String, Object> serialized = new HashMap<>();
 
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                encodedMap.put(entry.getKey(), encodeString((String) entry.getValue()));
-            } else {
-                encodedMap.put(entry.getKey(), entry.getValue());
+        // Basic item data
+        serialized.put("type", item.getType().name());
+        serialized.put("amount", item.getAmount());
+        serialized.put("durability", item.getDurability());
+
+        // ItemMeta data
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            Map<String, Object> metaData = new HashMap<>();
+
+            // Display name
+            if (meta.hasDisplayName()) {
+                metaData.put("displayName", meta.getDisplayName());
             }
+
+            // Lore
+            if (meta.hasLore()) {
+                metaData.put("lore", meta.getLore());
+            }
+
+                         // Enchantments
+             if (meta.hasEnchants()) {
+                 Map<String, Object> enchants = new HashMap<>();
+                 for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                     enchants.put(entry.getKey().getName(), entry.getValue());
+                 }
+                 metaData.put("enchants", enchants);
+             }
+
+            // Leather armor color
+            if (meta instanceof LeatherArmorMeta) {
+                LeatherArmorMeta leatherMeta = (LeatherArmorMeta) meta;
+                if (leatherMeta.getColor() != null) {
+                    Map<String, Integer> color = new HashMap<>();
+                    color.put("red", leatherMeta.getColor().getRed());
+                    color.put("green", leatherMeta.getColor().getGreen());
+                    color.put("blue", leatherMeta.getColor().getBlue());
+                    metaData.put("leatherColor", color);
+                }
+            }
+                         // Potion data
+             if (meta instanceof PotionMeta) {
+                 PotionMeta potionMeta = (PotionMeta) meta;
+                 // Save base potion data using deprecated API (suppressed)
+                 @SuppressWarnings("all")
+                 PotionData basePotionData = potionMeta.getBasePotionData();
+                 if (basePotionData != null) {
+                     Map<String, Object> potionInfo = new HashMap<>();
+                     potionInfo.put("type", basePotionData.getType().name());
+                     potionInfo.put("extended", basePotionData.isExtended());
+                     potionInfo.put("upgraded", basePotionData.isUpgraded());
+                     metaData.put("potionData", potionInfo);
+                 }
+                 // Save custom effects as PotionEffect objects
+                 if (potionMeta.hasCustomEffects()) {
+                     List<org.bukkit.potion.PotionEffect> customEffects = new ArrayList<>();
+                     for (org.bukkit.potion.PotionEffect effect : potionMeta.getCustomEffects()) {
+                         customEffects.add(effect);
+                     }
+                     metaData.put("customEffects", customEffects);
+                 }
+                 // Save color if present
+                 if (potionMeta.hasColor()) {
+                     Color color = potionMeta.getColor();
+                     Map<String, Integer> colorData = new HashMap<>();
+                     colorData.put("red", color.getRed());
+                     colorData.put("green", color.getGreen());
+                     colorData.put("blue", color.getBlue());
+                     metaData.put("potionColor", colorData);
+                 }
+             }
+
+            // Book data
+            if (meta instanceof BookMeta) {
+                BookMeta bookMeta = (BookMeta) meta;
+                if (bookMeta.hasTitle()) {
+                    metaData.put("bookTitle", bookMeta.getTitle());
+                }
+                if (bookMeta.hasAuthor()) {
+                    metaData.put("bookAuthor", bookMeta.getAuthor());
+                }
+                if (bookMeta.hasPages()) {
+                    metaData.put("bookPages", bookMeta.getPages());
+                }
+                metaData.put("bookGeneration", bookMeta.getGeneration() != null ? bookMeta.getGeneration().name() : null);
+            }
+
+            // Skull data
+            if (meta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta) meta;
+                if (skullMeta.hasOwner()) {
+                    metaData.put("skullOwner", skullMeta.getOwner());
+                }
+            }
+
+            // Banner data
+            if (meta instanceof BannerMeta) {
+                BannerMeta bannerMeta = (BannerMeta) meta;
+                if (bannerMeta.getPatterns() != null && !bannerMeta.getPatterns().isEmpty()) {
+                    List<Map<String, String>> patterns = new ArrayList<>();
+                    for (Pattern pattern : bannerMeta.getPatterns()) {
+                        Map<String, String> patternData = new HashMap<>();
+                        patternData.put("type", pattern.getPattern().name());
+                        patternData.put("color", pattern.getColor().name());
+                        patterns.add(patternData);
+                    }
+                    metaData.put("bannerPatterns", patterns);
+                }
+            }
+
+            // Firework data
+            if (meta instanceof FireworkMeta) {
+                FireworkMeta fireworkMeta = (FireworkMeta) meta;
+                if (fireworkMeta.hasEffects()) {
+                    List<Map<String, Object>> effects = new ArrayList<>();
+                    for (org.bukkit.FireworkEffect effect : fireworkMeta.getEffects()) {
+                        Map<String, Object> effectData = new HashMap<>();
+                        effectData.put("type", effect.getType().name());
+                        effectData.put("flicker", effect.hasFlicker());
+                        effectData.put("trail", effect.hasTrail());
+
+                        List<String> colors = new ArrayList<>();
+                        for (Color color : effect.getColors()) {
+                            colors.add(color.asRGB() + "");
+                        }
+                        effectData.put("colors", colors);
+
+                        List<String> fadeColors = new ArrayList<>();
+                        for (Color color : effect.getFadeColors()) {
+                            fadeColors.add(color.asRGB() + "");
+                        }
+                        effectData.put("fadeColors", fadeColors);
+
+                        effects.add(effectData);
+                    }
+                    metaData.put("fireworkEffects", effects);
+                }
+                metaData.put("fireworkPower", fireworkMeta.getPower());
+            }
+
+            // Compass data
+            if (meta instanceof CompassMeta) {
+                CompassMeta compassMeta = (CompassMeta) meta;
+                if (compassMeta.hasLodestone()) {
+                    Map<String, Object> lodestoneData = new HashMap<>();
+                    lodestoneData.put("world", compassMeta.getLodestone().getWorld().getName());
+                    lodestoneData.put("x", compassMeta.getLodestone().getX());
+                    lodestoneData.put("y", compassMeta.getLodestone().getY());
+                    lodestoneData.put("z", compassMeta.getLodestone().getZ());
+                    metaData.put("lodestone", lodestoneData);
+                }
+                metaData.put("tracking", compassMeta.isLodestoneTracked());
+            }
+
+            // Map data
+            if (meta instanceof MapMeta) {
+                MapMeta mapMeta = (MapMeta) meta;
+                if (mapMeta.hasMapId()) {
+                    metaData.put("mapId", mapMeta.getMapId());
+                }
+                if (mapMeta.hasLocationName()) {
+                    metaData.put("locationName", mapMeta.getLocationName());
+                }
+                metaData.put("scaling", mapMeta.isScaling());
+            }
+
+            // Custom model data
+            if (meta.hasCustomModelData()) {
+                metaData.put("customModelData", meta.getCustomModelData());
+            }
+
+            // Unbreakable
+            if (meta.isUnbreakable()) {
+                metaData.put("unbreakable", true);
+            }
+
+            // Hide flags
+            if (meta.getItemFlags() != null && !meta.getItemFlags().isEmpty()) {
+                List<String> hideFlags = new ArrayList<>();
+                for (org.bukkit.inventory.ItemFlag flag : meta.getItemFlags()) {
+                    hideFlags.add(flag.name());
+                }
+                metaData.put("hideFlags", hideFlags);
+            }
+
+            // Note: Localized name methods are deprecated and removed
+
+            serialized.put("meta", metaData);
         }
 
-        return encodedMap;
+        return serialized;
     }
 
-    // Helper method to decode all string values in a map
-    private Map<String, Object> decodeStrings(Map<String, Object> map) {
-        Map<String, Object> decodedMap = new HashMap<>();
+    // Enhanced item deserialization that restores all item data
+    private ItemStack deserializeItemStack(Map<String, Object> serialized) {
+        String typeName = (String) serialized.get("type");
+        int amount = ((Number) serialized.get("amount")).intValue();
+        short durability = ((Number) serialized.get("durability")).shortValue();
 
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                decodedMap.put(entry.getKey(), decodeString((String) entry.getValue()));
-            } else {
-                decodedMap.put(entry.getKey(), entry.getValue());
+        ItemStack item = new ItemStack(org.bukkit.Material.valueOf(typeName), amount);
+        item.setDurability(durability);
+
+        // Restore ItemMeta data
+        if (serialized.containsKey("meta")) {
+            Map<String, Object> metaData = (Map<String, Object>) serialized.get("meta");
+            ItemMeta meta = item.getItemMeta();
+
+            // Display name
+            if (metaData.containsKey("displayName")) {
+                meta.setDisplayName((String) metaData.get("displayName"));
             }
+
+            // Lore
+            if (metaData.containsKey("lore")) {
+                @SuppressWarnings("unchecked")
+                List<String> lore = (List<String>) metaData.get("lore");
+                meta.setLore(lore);
+            }
+
+                         // Enchantments
+             if (metaData.containsKey("enchants")) {
+                 @SuppressWarnings("unchecked")
+                 Map<String, Object> enchants = (Map<String, Object>) metaData.get("enchants");
+                 for (Map.Entry<String, Object> entry : enchants.entrySet()) {
+                     Enchantment enchant = Enchantment.getByName(entry.getKey());
+                     if (enchant != null) {
+                         // Handle both Integer and Double values
+                         int level;
+                         if (entry.getValue() instanceof Integer) {
+                             level = (Integer) entry.getValue();
+                         } else if (entry.getValue() instanceof Double) {
+                             level = ((Double) entry.getValue()).intValue();
+                         } else {
+                             level = ((Number) entry.getValue()).intValue();
+                         }
+                         meta.addEnchant(enchant, level, true);
+                     }
+                 }
+             }
+
+            // Leather armor color
+            if (metaData.containsKey("leatherColor") && meta instanceof LeatherArmorMeta) {
+                @SuppressWarnings("unchecked")
+                Map<String, Integer> colorData = (Map<String, Integer>) metaData.get("leatherColor");
+                LeatherArmorMeta leatherMeta = (LeatherArmorMeta) meta;
+                Color color = Color.fromRGB(colorData.get("red"), colorData.get("green"), colorData.get("blue"));
+                leatherMeta.setColor(color);
+                meta = leatherMeta;
+            }
+
+                                                 // Potion data
+             if (metaData.containsKey("customEffects") && meta instanceof PotionMeta) {
+                 PotionMeta potionMeta = (PotionMeta) meta;
+                 
+                 // Restore base potion data using deprecated API (suppressed)
+                 if (metaData.containsKey("potionData")) {
+                     @SuppressWarnings("unchecked")
+                     Map<String, Object> potionData = (Map<String, Object>) metaData.get("potionData");
+                     try {
+                         String potionTypeName = (String) potionData.get("type");
+                         boolean extended = (Boolean) potionData.get("extended");
+                         boolean upgraded = (Boolean) potionData.get("upgraded");
+                         
+                         PotionType potionType = PotionType.valueOf(potionTypeName);
+                         @SuppressWarnings("deprecation")
+                         PotionData basePotionData = new PotionData(potionType, extended, upgraded);
+                         potionMeta.setBasePotionData(basePotionData);
+                     } catch (Exception e) {
+                         plugin.getLogger().warning("Could not restore potion base data: " + e.getMessage());
+                     }
+                 }
+                 
+                 // Restore custom effects as PotionEffect objects
+                 @SuppressWarnings("unchecked")
+                 List<org.bukkit.potion.PotionEffect> customEffects = (List<org.bukkit.potion.PotionEffect>) metaData.get("customEffects");
+                 for (org.bukkit.potion.PotionEffect effect : customEffects) {
+                     potionMeta.addCustomEffect(effect, true);
+                 }
+                 
+                 // Restore potion color
+                 if (metaData.containsKey("potionColor")) {
+                     @SuppressWarnings("unchecked")
+                     Map<String, Integer> colorData = (Map<String, Integer>) metaData.get("potionColor");
+                     Color color = Color.fromRGB(colorData.get("red"), colorData.get("green"), colorData.get("blue"));
+                     potionMeta.setColor(color);
+                 }
+                 
+                 meta = potionMeta;
+             }
+
+            // Custom model data
+            if (metaData.containsKey("customModelData")) {
+                meta.setCustomModelData(((Number) metaData.get("customModelData")).intValue());
+            }
+
+            // Unbreakable
+            if (metaData.containsKey("unbreakable") && (Boolean) metaData.get("unbreakable")) {
+                meta.setUnbreakable(true);
+            }
+
+            // Hide flags
+            if (metaData.containsKey("hideFlags")) {
+                @SuppressWarnings("unchecked")
+                List<String> hideFlags = (List<String>) metaData.get("hideFlags");
+                for (String flagName : hideFlags) {
+                    try {
+                        org.bukkit.inventory.ItemFlag flag = org.bukkit.inventory.ItemFlag.valueOf(flagName);
+                        meta.addItemFlags(flag);
+                    } catch (IllegalArgumentException e) {
+                        // Skip invalid flags
+                    }
+                }
+            }
+
+            // Book data
+            if (metaData.containsKey("bookTitle") && meta instanceof BookMeta) {
+                BookMeta bookMeta = (BookMeta) meta;
+                bookMeta.setTitle((String) metaData.get("bookTitle"));
+                if (metaData.containsKey("bookAuthor")) {
+                    bookMeta.setAuthor((String) metaData.get("bookAuthor"));
+                }
+                if (metaData.containsKey("bookPages")) {
+                    @SuppressWarnings("unchecked")
+                    List<String> pages = (List<String>) metaData.get("bookPages");
+                    bookMeta.setPages(pages);
+                }
+                if (metaData.containsKey("bookGeneration") && metaData.get("bookGeneration") != null) {
+                    bookMeta.setGeneration(org.bukkit.inventory.meta.BookMeta.Generation.valueOf((String) metaData.get("bookGeneration")));
+                }
+                meta = bookMeta;
+            }
+
+            // Skull data
+            if (metaData.containsKey("skullOwner") && meta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta) meta;
+                skullMeta.setOwner((String) metaData.get("skullOwner"));
+                meta = skullMeta;
+            }
+
+            // Banner data
+            if (metaData.containsKey("bannerPatterns") && meta instanceof BannerMeta) {
+                BannerMeta bannerMeta = (BannerMeta) meta;
+                @SuppressWarnings("unchecked")
+                List<Map<String, String>> patterns = (List<Map<String, String>>) metaData.get("bannerPatterns");
+                for (Map<String, String> patternData : patterns) {
+                    PatternType type = PatternType.valueOf(patternData.get("type"));
+                    DyeColor color = DyeColor.valueOf(patternData.get("color"));
+                    bannerMeta.addPattern(new Pattern(color, type));
+                }
+                meta = bannerMeta;
+            }
+
+            // Firework data
+            if (metaData.containsKey("fireworkEffects") && meta instanceof FireworkMeta) {
+                FireworkMeta fireworkMeta = (FireworkMeta) meta;
+                @SuppressWarnings("unchecked")
+                List<Map<String, Object>> effects = (List<Map<String, Object>>) metaData.get("fireworkEffects");
+                for (Map<String, Object> effectData : effects) {
+                    org.bukkit.FireworkEffect.Type type = org.bukkit.FireworkEffect.Type.valueOf((String) effectData.get("type"));
+                    boolean flicker = (Boolean) effectData.get("flicker");
+                    boolean trail = (Boolean) effectData.get("trail");
+
+                    @SuppressWarnings("unchecked")
+                    List<String> colorStrings = (List<String>) effectData.get("colors");
+                    List<Color> colors = new ArrayList<>();
+                    for (String colorStr : colorStrings) {
+                        colors.add(Color.fromRGB(Integer.parseInt(colorStr)));
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    List<String> fadeColorStrings = (List<String>) effectData.get("fadeColors");
+                    List<Color> fadeColors = new ArrayList<>();
+                    for (String colorStr : fadeColorStrings) {
+                        fadeColors.add(Color.fromRGB(Integer.parseInt(colorStr)));
+                    }
+
+                    fireworkMeta.addEffect(org.bukkit.FireworkEffect.builder()
+                            .with(type)
+                            .flicker(flicker)
+                            .trail(trail)
+                            .withColor(colors)
+                            .withFade(fadeColors)
+                            .build());
+                }
+                if (metaData.containsKey("fireworkPower")) {
+                    fireworkMeta.setPower(((Number) metaData.get("fireworkPower")).intValue());
+                }
+                meta = fireworkMeta;
+            }
+
+            // Compass data
+            if (metaData.containsKey("lodestone") && meta instanceof CompassMeta) {
+                CompassMeta compassMeta = (CompassMeta) meta;
+                @SuppressWarnings("unchecked")
+                Map<String, Object> lodestoneData = (Map<String, Object>) metaData.get("lodestone");
+                String worldName = (String) lodestoneData.get("world");
+                double x = ((Number) lodestoneData.get("x")).doubleValue();
+                double y = ((Number) lodestoneData.get("y")).doubleValue();
+                double z = ((Number) lodestoneData.get("z")).doubleValue();
+                World world = Bukkit.getWorld(worldName);
+                if (world != null) {
+                    compassMeta.setLodestone(new Location(world, x, y, z));
+                }
+                if (metaData.containsKey("tracking")) {
+                    compassMeta.setLodestoneTracked((Boolean) metaData.get("tracking"));
+                }
+                meta = compassMeta;
+            }
+
+            // Map data
+            if (metaData.containsKey("mapId") && meta instanceof MapMeta) {
+                MapMeta mapMeta = (MapMeta) meta;
+                int mapId = ((Number) metaData.get("mapId")).intValue();
+                mapMeta.setMapId(mapId);
+                if (metaData.containsKey("locationName")) {
+                    mapMeta.setLocationName((String) metaData.get("locationName"));
+                }
+                if (metaData.containsKey("scaling")) {
+                    mapMeta.setScaling((Boolean) metaData.get("scaling"));
+                }
+                meta = mapMeta;
+            }
+
+            // Note: Localized name methods are deprecated and removed
+
+            item.setItemMeta(meta);
         }
 
-        return decodedMap;
+        return item;
     }
+
     public void saveWarps() {
         try (Writer writer = new FileWriter(warpsFile)) {
             gson.toJson(warps, writer);
@@ -458,5 +878,9 @@ public class ConfigManager {
     }
     public boolean getChat() {
         return (boolean) config.getOrDefault("chat", true);
+    }
+
+    public boolean getColoredChat() {
+        return (boolean) config.getOrDefault("coloredChat", true);
     }
 }

@@ -21,6 +21,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.io.InputStream;
@@ -93,7 +94,8 @@ public class ScoreboardManager {
                     .replace("%rank%", plugin.getRankManager().getRank(player))
                     .replace("%wins%", String.valueOf(plugin.getDatabaseManager().getWins(player.getUniqueId())))
                     .replace("%tokens%", String.valueOf(plugin.getDatabaseManager().getReviveTokens(player.getUniqueId())));
-            Objective obj = board.registerNewObjective("qwertzcore", "dummy", ChatColor.translateAlternateColorCodes('&', title));
+            title = plugin.getMessageManager().prepareMessage(title, new HashMap<>());
+            Objective obj = board.registerNewObjective("qwertzcore", "dummy", QWERTZcore.translateHexColorCodes(ChatColor.translateAlternateColorCodes('&', title)));
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
             updateScoreboard(player, board, obj);
             player.setScoreboard(board);
@@ -112,7 +114,6 @@ public class ScoreboardManager {
                 String lineValue = (String) entry.getValue();
                 if (lineValue != null && !lineValue.isEmpty()) {
                     // Replace placeholders
-
                     String formattedLine = lineValue.replace("%event%", plugin.getConfigManager().getEventName())
                             .replace("%alive%", String.valueOf(plugin.getEventManager().getAlivePlayerCountWithoutVanish()))
                             .replace("%dead%", String.valueOf(plugin.getEventManager().getDeadPlayerCountWithoutVanish()))
@@ -123,7 +124,10 @@ public class ScoreboardManager {
                             .replace("%wins%", String.valueOf(plugin.getDatabaseManager().getWins(player.getUniqueId())))
                             .replace("%tokens%", String.valueOf(plugin.getDatabaseManager().getReviveTokens(player.getUniqueId())));
                     formattedLine = plugin.getMessageManager().prepareMessage(formattedLine, new HashMap<>());
-                    obj.getScore(ChatColor.translateAlternateColorCodes('&', formattedLine)).setScore(lineNumber);
+                    
+                    // Process hex colors for scoreboard lines using teams
+                    String processedLine = processHexColorsForScoreboard(board, formattedLine, lineNumber);
+                    obj.getScore(processedLine).setScore(lineNumber);
                 }
             } catch (NumberFormatException e) {
                 plugin.getLogger().warning("Invalid line number in scoreboard.yml: " + entry.getKey());
@@ -192,6 +196,40 @@ public class ScoreboardManager {
     private void initialScoreboards() {
         for (Player player: Bukkit.getOnlinePlayers()) {
             setScoreboard(player);
+        }
+    }
+
+    /**
+     * Process hex colors for scoreboard lines using teams
+     * This method creates a team with a prefix/suffix containing hex colors
+     * and returns a transparent entry name that will display with the colored prefix/suffix
+     */
+    private String processHexColorsForScoreboard(Scoreboard board, String line, int lineNumber) {
+        // First, translate regular color codes
+        String processedLine = ChatColor.translateAlternateColorCodes('&', line);
+        
+        // Check if the line contains hex colors
+        if (processedLine.contains("§x")) {
+            // Extract hex colors and create a team
+            String teamName = "line_" + lineNumber;
+            Team team = board.getTeam(teamName);
+            if (team == null) {
+                team = board.registerNewTeam(teamName);
+            }
+            
+            // Create a transparent entry name (using a color code that makes it invisible)
+            String entryName = ChatColor.values()[lineNumber % ChatColor.values().length] + "" + ChatColor.RESET;
+            
+            // Set the prefix to the entire colored line
+            team.setPrefix(processedLine);
+            
+            // Add the entry to the team
+            team.addEntry(entryName);
+            
+            return entryName;
+        } else {
+            // No hex colors, return the line as-is
+            return processedLine;
         }
     }
 }

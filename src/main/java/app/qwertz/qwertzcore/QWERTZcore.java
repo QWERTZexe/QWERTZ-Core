@@ -18,6 +18,8 @@ import app.qwertz.qwertzcore.bstats.Metrics;
 import app.qwertz.qwertzcore.commands.*;
 import app.qwertz.qwertzcore.commands.tab.*;
 import app.qwertz.qwertzcore.gui.ConfigGUI;
+import app.qwertz.qwertzcore.listeners.PollChatListener;
+import app.qwertz.qwertzcore.listeners.ChatRevivalChatListener;
 import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
 import org.bukkit.Bukkit;
@@ -34,13 +36,14 @@ import java.util.regex.Pattern;
 
 public final class QWERTZcore extends JavaPlugin {
 
-    public static final String CORE_ICON = ChatColor.YELLOW + "❇" + ChatColor.RESET;
+    private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
     public static final String CORE_ICON_RAW = "❇";
-    public static final String VERSION = "2.5";
+    public static final String CORE_ICON_COLOR = "#FF6700";
+    public static final String CORE_ICON = translateHexColorCodes("&" + CORE_ICON_COLOR + CORE_ICON_RAW) + ChatColor.RESET;
+    public static final String VERSION = "3.0";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
-    private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     private Metrics metrics;
     public Boolean isUsingWorldGuard = false;
@@ -59,6 +62,8 @@ public final class QWERTZcore extends JavaPlugin {
     private UpdateChecker updateChecker;
     private BlockManager blockManager;
     private ReloadCoreCommand reloadCoreCommand;
+    private PollCommand pollCommand;
+    private ChatReviveCommand chatReviveCommand;
 
 
     @Override
@@ -200,8 +205,9 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("gma").setExecutor(new GamemodeCommand(this));
         getCommand("gm").setExecutor(new GamemodeCommand(this));
         getCommand("gm").setTabCompleter(new GameModeTabCompleter());
-        getCommand("chatrevive").setExecutor(new ChatReviveCommand(this));
-        getCommand("chatrevive").setTabCompleter(new ChatReviveTabCompleter());
+        this.chatReviveCommand = new ChatReviveCommand(this);
+        getCommand("chatrevival").setExecutor(chatReviveCommand);
+        getCommand("chatrevival").setTabCompleter(new ChatReviveTabCompleter());
         EventCommands eventCommands = new EventCommands(this);
         getCommand("revive").setExecutor(eventCommands);
         getCommand("unrevive").setExecutor(eventCommands);
@@ -297,7 +303,7 @@ public final class QWERTZcore extends JavaPlugin {
             getCommand("hunger").setTabCompleter(worldGuardTabCompleter);
             getCommand("falldamage").setTabCompleter(worldGuardTabCompleter);
         }
-        PollCommand pollCommand = new PollCommand(this);
+        this.pollCommand = new PollCommand(this);
         getCommand("poll").setExecutor(pollCommand);
         getCommand("pollvote").setExecutor(new PollVoteCommand(this, pollCommand));
         getCommand("setspawn").setExecutor(new SetterCommands(this));
@@ -311,10 +317,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("emojis").setExecutor(new EmojiCommand(this));
         getCommand("speed").setExecutor(new SpeedCommand(this));
         getCommand("speed").setTabCompleter(new SpeedTabCompleter());
-
-
-
-
+        getCommand("broadcast").setExecutor(new BroadcastCommand(this));
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(this, hideCommand, updateChecker), this);
@@ -322,6 +325,8 @@ public final class QWERTZcore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RestrictedCommandsListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockEventListener(this), this);
         getServer().getPluginManager().registerEvents(new ConfigGUI.ChatInputListener(this), this);
+        getServer().getPluginManager().registerEvents(new PollChatListener(this, pollCommand), this);
+        getServer().getPluginManager().registerEvents(new ChatRevivalChatListener(this, chatReviveCommand), this);
     }
     public EventManager getEventManager() {
         return eventManager;
@@ -363,11 +368,19 @@ public final class QWERTZcore extends JavaPlugin {
         return vanishManager;
     }
 
+    public PollCommand getPollCommand() {
+        return pollCommand;
+    }
+
+    public ChatReviveCommand getChatReviveCommand() {
+        return chatReviveCommand;
+    }
+
     public void reloadCore(CommandSender sender) {
         reloadCoreCommand.reload(sender);
     }
 
-    public String translateHexColorCodes(final String message) {
+    public static String translateHexColorCodes(final String message) {
         final char colorChar = ChatColor.COLOR_CHAR;
 
         final Matcher matcher = HEX_PATTERN.matcher(message);

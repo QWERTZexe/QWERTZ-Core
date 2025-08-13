@@ -112,14 +112,14 @@ event:
   # Valid placeholders: %name%
   tphere-target-msg: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0299\u1d07\u1d07\u0274 \u1d1b\u1d07\u029f\u1d07\u1d18\u1d0f\u0280\u1d1b\u1d07\u1d05 \u1d1b\u1d0f %colorPrimary%%name%%colorSuccess%!"
   revivelast:
-    no-number: "%colorError%\u1d18\u029f\u1d07\u1d00\u0455\u1d07 \u0455\u1d18\u1d07\u1d04\u026a\ua730\u028f \u1d00 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280 \u1d0f\ua730 \u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455 \u0299\u1d07\u1d1b\u1d21\u1d07\u1d07\u0274 1 \u1d00\u0274\u1d05 60."
+    no-number: "%colorError%\u1d18\u029f\u1d07\u1d00\u0455\u1d07 \u0455\u1d18\u1d07\u1d04\u026a\ua730\u028f \u1d00 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280 \u1d0f\ua730 \u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455 \u0299\u1d07\u1d1b\u1d21\u1d07\u1d07\u0274 1 \u1d00\u0274\u1d05 300."
     invalid-number: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280. \u1d1c\u0455\u026a\u0274\u0262 \u1d05\u1d07\ua730\u1d00\u1d1c\u029f\u1d1b \u1d0f\ua730 30 \u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455."
+    invalid-format: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d1b\u026a\u1d0d\u1d07 \ua730\u1d0f\u0280\u1d0d\u1d00\u1d1b. \u1d1c\u0455\u1d07: <\u0274\u1d1c\u1d0d\u0299\u1d07\u0280>[\u0455|\u0455\u1d07\u1d04|\u1d0d|\u1d0d\u026a\u0274] \u1d0f\u0280 \u1d0a\u1d1c\u0455\u1d1b <\u0274\u1d1c\u1d0d\u0299\u1d07\u0280> \ua730\u1d0f\u0280 \u1d0d\u026a\u0274\u1d1c\u1d1b\u1d07\u0455 (1-5)."
     # Valid placeholders: %amount%, %seconds%
     broadcast: "%CORE_ICON% %colorSuccess%%amount% %colorPrimary%\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455 \u1d21\u029c\u1d0f \u1d05\u026a\u1d07\u1d05
       \u026a\u0274 \u1d1b\u029c\u1d07 \u029f\u1d00\u0455\u1d1b %colorSuccess%%seconds% %colorPrimary%\u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455 \u029c\u1d00\u1d20\u1d07 \u0299\u1d07\u1d07\u0274 \u0280\u1d07\u1d20\u026a\u1d20\u1d07\u1d05"
-  # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%
-  heal-broadcast: "%CORE_ICON% %colorSuccess%%amount% %typeColor%%type% %colorSuccess%\u029c\u1d00\u1d20\u1d07
-    \u0299\u1d07\u1d07\u0274 \u029c\u1d07\u1d00\u029f\u1d07\u1d05"
+  # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%, %name%
+  heal-broadcast: "%CORE_ICON% %colorSuccess%%name% %colorSuccess%\u029c\u1d07\u1d00\u029f\u1d07\u1d05 %colorPrimary%%amount% %typeColor%%type% %colorSuccess%\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455"
 
 eventcountdown:
   invalid-time: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d1b\u026a\u1d0d\u1d07 \ua730\u1d0f\u0280\u1d0d\u1d00\u1d1b. \u1d1c\u0455\u1d07: <\u0274\u1d1c\u1d0d\u0299\u1d07\u0280>[\u0455|\u0455\u1d07\u1d04|\u1d0d|\u1d0d\u026a\u0274] \u1d0f\u0280 \u1d0a\u1d1c\u0455\u1d1b
@@ -149,8 +149,8 @@ chatmute:
   # Valid placeholders: %state%
   is-already: "%colorError%\u1d04\u029c\u1d00\u1d1b \u026a\u0455 \u1d00\u029f\u0280\u1d07\u1d00\u1d05\u028f %state%!"
 
-chatrevive:
-  already-going: "%colorError%\u1d00 \u0262\u1d00\u1d0d\u1d07 \u026a\u0455 \u1d00\u029f\u0280\u1d07\u1d00\u1d05\u028f \u026a\u0274 \u1d18\u0280\u1d0f\u0262\u0280\u1d07\u0455\u0455. \u1d1c\u0455\u1d07 /chatrevive cancel
+chatrevival:
+  already-going: "%colorError%\u1d00 \u0262\u1d00\u1d0d\u1d07 \u026a\u0455 \u1d00\u029f\u0280\u1d07\u1d00\u1d05\u028f \u026a\u0274 \u1d18\u0280\u1d0f\u0262\u0280\u1d07\u0455\u0455. \u1d1c\u0455\u1d07 /chatrevival cancel
     \u1d1b\u1d0f \u1d07\u0274\u1d05 \u026a\u1d1b."
   invalid-number: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280 \ua730\u1d0f\u0280\u1d0d\u1d00\u1d1b \ua730\u1d0f\u0280 \u1d0d\u1d00х \u1d20\u1d00\u029f\u1d1c\u1d07. \u1d1c\u0455\u026a\u0274\u0262 \u1d05\u1d07\ua730\u1d00\u1d1c\u029f\u1d1b
     \u1d0f\ua730 40."
@@ -173,6 +173,19 @@ chatrevive:
   winner: "%CORE_ICON% %colorPrimary%%player% %colorSecondary%\u029c\u1d00\u0455 \u1d21\u1d0f\u0274 \u1d1b\u029c\u1d07 \u0280\u1d07\u1d20\u026a\u1d20\u1d00\u029f
     \u0262\u1d00\u1d0d\u1d07!"
 
+chatrevivalgui:
+  enter-question: "%colorPrimary%Enter the custom question:"
+  enter-answer: "%colorPrimary%Enter the expected answer:"
+  enter-guess-max: "%colorPrimary%Enter the maximum number for the guess game:"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question%"
+  # Valid placeholders: %answer%
+  answer-set: "%colorSuccess%Answer set to: %colorPrimary%%answer%"
+  # Valid placeholders: %max%
+  guess-max-set: "%colorSuccess%Maximum number set to: %colorPrimary%%max%"
+  incomplete: "%colorError%You must set both a question and answer before starting the custom game!"
+  invalid-number: "%colorError%Invalid number! Please enter a positive number."
+
 clearinv:
   got-cleared: "%colorError%\u028f\u1d0f\u1d1c\u0280 \u026a\u0274\u1d20\u1d07\u0274\u1d1b\u1d0f\u0280\u028f \u029c\u1d00\u0455 \u0299\u1d07\u1d07\u0274 \u1d04\u029f\u1d07\u1d00\u0280\u1d07\u1d05 \u0299\u028f \u1d00\u0274 \u1d00\u1d05\u1d0d\u026a\u0274."
   # Valid placeholders: %amount%, %group% (alive, dead), %groupColor%
@@ -186,10 +199,13 @@ gamemode:
 
 hide:
   invalid: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d0d\u1d0f\u1d05\u1d07. \u1d1c\u0455\u1d07 \u029c\u1d0f\u0455\u1d1b, \u0455\u1d1b\u1d00\ua730\ua730, \u1d00\u029f\u029f, \u1d0f\u0280 \u1d0f\ua730\ua730."
+  invalid-number: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280. \u1d18\u029f\u1d07\u1d00\u0455\u1d07 \u1d18\u0280\u1d0f\u1d20\u026a\u1d05\u1d07 \u1d00 \u1d18\u1d0f\u0455\u026a\u1d1b\u026a\u1d20\u1d07 \u0274\u1d1c\u1d0d\u0299\u1d07\u0280."
   mode-off: "%CORE_ICON% %colorPrimary%\u1d00\u029f\u029f %colorSecondary%\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455 \u1d00\u0280\u1d07 \u0274\u1d0f\u1d21 \u1d20\u026a\u0455\u026a\u0299\u029f\u1d07
     \u1d1b\u1d0f \u028f\u1d0f\u1d1c."
   # Valid placeholders: %mode%
   mode-on: "%CORE_ICON% %colorSecondary%\u029c\u026a\u1d05\u1d07 \u1d0d\u1d0f\u1d05\u1d07 \u0455\u1d07\u1d1b \u1d1b\u1d0f: %colorPrimary%%mode%"
+  # Valid placeholders: %number%
+  number-set: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u1d04\u1d00\u0274 \u0274\u1d0f\u1d21 \u0455\u1d07\u1d07 \u1d0f\u0274\u029f\u028f %colorPrimary%%number% %colorSuccess%\u1d18\u029f\u1d00\u028f\u1d07\u0280\u0455."
 
 kit:
   # Valid placeholders: %name%
@@ -227,6 +243,22 @@ poll:
   invalid-option: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u1d0f\u1d18\u1d1b\u026a\u1d0f\u0274."
   # Valid placeholders: %option%
   vote-success: "%colorSuccess%\u028f\u1d0f\u1d1c \u1d20\u1d0f\u1d1b\u1d07\u1d05 \ua730\u1d0f\u0280 %option%"
+
+pollgui:
+  # Valid placeholders: %message%
+  enter-value: "%colorPrimary%%message%"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question%"
+  # Valid placeholders: %duration%
+  duration-set: "%colorSuccess%Duration set to: %colorPrimary%%duration% seconds"
+  # Valid placeholders: %option%
+  option-added: "%colorSuccess%Option added: %colorPrimary%%option%"
+  # Valid placeholders: %option%
+  option-removed: "%colorSuccess%Option removed: %colorPrimary%%option%"
+  no-question: "%colorError%You must set a question before creating a poll!"
+  not-enough-options: "%colorError%You must add at least 2 options before creating a poll!"
+  too-many-options: "%colorError%You can only have up to 9 options!"
+  invalid-duration: "%colorError%Invalid duration! Please enter a positive number."
 
 messaging:
   # Valid placeholders: %name%
@@ -285,6 +317,10 @@ timer:
   # Valid placeholders: %timeLeft%
   countdown: "%colorPrimary%%timeLeft% %colorSecondary%\u0455\u1d07\u1d04\u1d0f\u0274\u1d05\u0455!"
   broadcast-cancel: "%colorSecondary%\u1d1b\u026a\u1d0d\u1d07\u0280 \u029c\u1d00\u0455 \u0299\u1d07\u1d07\u0274 %colorPrimary%\u1d04\u1d00\u0274\u1d04\u1d07\u029f\u029f\u1d07\u1d05%colorSecondary%."
+
+broadcast:
+  # Valid placeholders: %broadcast%
+  message: "%CORE_ICON% %colorPrimary%%broadcast%"
 
 vanish:
   # Valid placeholders: %name%, %fakeCount%, %newCount%

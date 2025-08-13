@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import app.qwertz.qwertzcore.gui.ChatRevivalGUI;
 import app.qwertz.qwertzcore.util.ChatListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ChatReviveCommand implements CommandExecutor {
 
@@ -33,11 +36,22 @@ public class ChatReviveCommand implements CommandExecutor {
     private final Random random = new Random();
     private ChatListener activeGame;
 
+    // State management for GUI
+    private Map<UUID, ChatRevivalState> playerStates = new HashMap<>();
+    private Map<UUID, String> playerQuestions = new HashMap<>();
+    private Map<UUID, String> playerAnswers = new HashMap<>();
+    private Map<UUID, Integer> playerGuessMax = new HashMap<>();
+    private Map<UUID, String> playerSelectedGame = new HashMap<>();
+
     private static final List<String> WORDS = Arrays.asList(
             "apple", "banana", "cat", "dog", "elephant", "frog", "giraffe", "house", "ice", "jump",
             "kite", "lemon", "monkey", "nest", "orange", "penguin", "queen", "rabbit", "sun", "tree",
             "umbrella", "violin", "water", "xylophone", "yellow", "zebra", "book", "car", "door", "egg", "qwertz"
     );
+
+    public enum ChatRevivalState {
+        QUESTION, ANSWER, GUESS_MAX
+    }
 
     public ChatReviveCommand(QWERTZcore plugin) {
         this.plugin = plugin;
@@ -45,10 +59,17 @@ public class ChatReviveCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1) {
-            plugin.getMessageManager().sendInvalidUsage(sender, "/chatrevive <math|typer|guess|cancel> [max]");
-            plugin.getSoundManager().playSoundToSender(sender);
+        if (!(sender instanceof Player)) {
+            plugin.getMessageManager().sendMessage(sender, "player-only");
             return false;
+        }
+
+        Player player = (Player) sender;
+
+        if (args.length < 1) {
+            // Open GUI
+            createChatRevivalGUI(player).open();
+            return true;
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
@@ -57,7 +78,7 @@ public class ChatReviveCommand implements CommandExecutor {
         }
 
         if (activeGame != null && !activeGame.isGameOver()) {
-            plugin.getMessageManager().sendMessage(sender, "chatrevive.already-going");
+            plugin.getMessageManager().sendMessage(sender, "chatrevival.already-going");
             plugin.getSoundManager().playSoundToSender(sender);
             return true;
         }
@@ -75,14 +96,24 @@ public class ChatReviveCommand implements CommandExecutor {
                     try {
                         max = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
-                        plugin.getMessageManager().sendMessage(sender, "chatrevive.invalid-number");
+                        plugin.getMessageManager().sendMessage(sender, "chatrevival.invalid-number");
                         plugin.getSoundManager().playSoundToSender(sender);
                     }
                 }
                 startGuessGame(max);
                 break;
+            case "custom":
+                if (args.length < 3) {
+                    plugin.getMessageManager().sendInvalidUsage(sender, "/chatrevival custom <question> <answer>");
+                    plugin.getSoundManager().playSoundToSender(sender);
+                    return false;
+                }
+                String question = args[1];
+                String answer = args[2];
+                startCustomGame(question, answer);
+                break;
             default:
-                plugin.getMessageManager().sendMessage(sender, "chatrevive.invalid-game");
+                plugin.getMessageManager().sendMessage(sender, "chatrevival.invalid-game");
                 plugin.getSoundManager().playSoundToSender(sender);
                 return false;
         }
@@ -102,8 +133,8 @@ public class ChatReviveCommand implements CommandExecutor {
         int answer = evaluateExpression(num1, num2, num3, op1, op2);
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%question%", question);
-        plugin.getMessageManager().broadcastMessage("chatrevive.math-question", localMap);
-        plugin.getMessageManager().broadcastMessage("chatrevive.math-howto");
+        plugin.getMessageManager().broadcastMessage("chatrevival.math-question", localMap);
+        plugin.getMessageManager().broadcastMessage("chatrevival.math-howto");
         plugin.getSoundManager().broadcastConfigSound();
 
         activeGame = new ChatListener(plugin, answer, "math", this);
@@ -119,7 +150,7 @@ public class ChatReviveCommand implements CommandExecutor {
         String finalSentence = sentence.toString().trim();
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%sentence%", finalSentence);
-        plugin.getMessageManager().broadcastMessage("chatrevive.typer-question", localMap);
+        plugin.getMessageManager().broadcastMessage("chatrevival.typer-question", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         activeGame = new ChatListener(plugin, finalSentence, "typer", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -130,7 +161,7 @@ public class ChatReviveCommand implements CommandExecutor {
 
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%number%", String.valueOf(max));
-        plugin.getMessageManager().broadcastMessage("chatrevive.guess-question", localMap);
+        plugin.getMessageManager().broadcastMessage("chatrevival.guess-question", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         activeGame = new ChatListener(plugin, target, "guess", this);
         plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
@@ -161,14 +192,95 @@ public class ChatReviveCommand implements CommandExecutor {
         }
     }
 
+    private void startCustomGame(String question, String answer) {
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%question%", question);
+        plugin.getMessageManager().broadcastMessage("chatrevival.custom-question", localMap);
+        plugin.getSoundManager().broadcastConfigSound();
+        activeGame = new ChatListener(plugin, answer, "custom", this);
+        plugin.getServer().getPluginManager().registerEvents(activeGame, plugin);
+    }
+
+    // State management methods
+    public void setPlayerState(UUID playerId, ChatRevivalState state) {
+        playerStates.put(playerId, state);
+    }
+
+    public ChatRevivalState getPlayerState(UUID playerId) {
+        return playerStates.get(playerId);
+    }
+
+    public void setPlayerQuestion(UUID playerId, String question) {
+        playerQuestions.put(playerId, question);
+    }
+
+    public String getPlayerQuestion(UUID playerId) {
+        return playerQuestions.getOrDefault(playerId, "");
+    }
+
+    public void setPlayerAnswer(UUID playerId, String answer) {
+        playerAnswers.put(playerId, answer);
+    }
+
+    public String getPlayerAnswer(UUID playerId) {
+        return playerAnswers.getOrDefault(playerId, "");
+    }
+
+    public void setPlayerGuessMax(UUID playerId, int max) {
+        playerGuessMax.put(playerId, max);
+    }
+
+    public int getPlayerGuessMax(UUID playerId) {
+        return playerGuessMax.getOrDefault(playerId, 40);
+    }
+
+    public void setPlayerSelectedGame(UUID playerId, String gameType) {
+        playerSelectedGame.put(playerId, gameType);
+    }
+
+    public String getPlayerSelectedGame(UUID playerId) {
+        return playerSelectedGame.getOrDefault(playerId, "");
+    }
+
+    public void clearPlayerState(UUID playerId) {
+        playerStates.remove(playerId);
+        playerQuestions.remove(playerId);
+        playerAnswers.remove(playerId);
+        playerGuessMax.remove(playerId);
+        playerSelectedGame.remove(playerId);
+    }
+
+    public ChatRevivalGUI createChatRevivalGUI(Player player) {
+        return new ChatRevivalGUI(plugin, player, this);
+    }
+
+    public void startCustomGameFromGUI(Player player) {
+        String question = getPlayerQuestion(player.getUniqueId());
+        String answer = getPlayerAnswer(player.getUniqueId());
+        
+        if (question.isEmpty() || answer.isEmpty()) {
+            plugin.getMessageManager().sendMessage(player, "chatrevivalgui.incomplete");
+            return;
+        }
+
+        startCustomGame(question, answer);
+        clearPlayerState(player.getUniqueId());
+    }
+
+    public void startGuessGameFromGUI(Player player) {
+        int max = getPlayerGuessMax(player.getUniqueId());
+        startGuessGame(max);
+        clearPlayerState(player.getUniqueId());
+    }
+
     private void cancelGame(CommandSender sender) {
         if (activeGame != null) {
             activeGame.cancelGame();
             activeGame = null;
-            plugin.getMessageManager().broadcastMessage("chatrevive.cancelled");
+            plugin.getMessageManager().broadcastMessage("chatrevival.cancelled");
             plugin.getSoundManager().broadcastConfigSound();
         } else {
-            plugin.getMessageManager().sendMessage(sender, "chatrevive.no-active-game");
+            plugin.getMessageManager().sendMessage(sender, "chatrevival.no-active-game");
             plugin.getSoundManager().playSoundToSender(sender);
         }
     }

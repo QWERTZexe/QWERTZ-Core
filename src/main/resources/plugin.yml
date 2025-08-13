@@ -36,9 +36,10 @@ commands:
     description: Set gamemode
     usage: /<command> <creative|survival|adventure|spectator>
     permission: qwertzcore.gamemode
-  chatrevive:
+  chatrevival:
     description: Start a chat revival game
-    usage: /<command> <math|typer|guess> [max]
+    usage: /<command> <math|typer|guess|custom> [max]
+    aliases: [revival, chatrevive]
     permission: qwertzcore.host.revival
   revive:
     description: Revive a player
@@ -113,12 +114,13 @@ commands:
     usage: /cleardead
     permission: qwertzcore.host.cleardead
   revivelast:
-    description: Revives all players who died in the last specified number of seconds
-    usage: /revivelast [seconds]
+    description: Revives all players who died in the last specified time
+    usage: /revivelast [time]
     permission: qwertzcore.host.revivelast
   hide:
-    description: Hide other players based on their status
-    usage: /hide <host|staff|all|off>
+    description: Hide other players based on their status or show only a specific number of players
+    usage: /hide <number|host|staff|all|off>
+    aliases: [visibility]
     permission: qwertzcore.player.hide
   eventcountdown:
     description: Start a countdown for the event
@@ -277,7 +279,7 @@ commands:
     aliases: [togglehunger]
   poll:
     description: Create and manage polls
-    usage: /poll <duration> <question> <answer1> <answer2> [answer3] ...
+    usage: /poll [<duration> <question> <answer1> <answer2> [answer3] ...]
     permission: qwertzcore.host.poll
   pollvote:
     description: Vote in an active poll
@@ -314,6 +316,11 @@ commands:
     description: Set your speed
     usage: /<command> <speed>
     permission: qwertzcore.staff.speed
+  broadcast:
+    description: Broadcast a message to all players in bigger form and action bar
+    usage: /<command> <message>
+    permission: qwertzcore.host.broadcast
+
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -435,6 +442,9 @@ permissions:
   qwertzcore.chat.bypass:
     description: Allows the player to bypass a muted chat
     default: op
+  qwertzcore.chat.color:
+    description: Allows the player to use color codes in chat messages
+    default: op
   qwertzcore.host.ad:
     description: Allows the player broadcast an advertisement
     default: op
@@ -533,4 +543,7 @@ permissions:
     default: true
   qwertzcore.staff.speed:
     description: Allows the player to set their speed
+    default: op
+  qwertzcore.host.broadcast:
+    description: Allows the player to broadcast messages to all players
     default: op

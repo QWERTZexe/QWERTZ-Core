@@ -22,13 +22,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class HideCommand implements CommandExecutor {
 
     private final QWERTZcore plugin;
     private final Map<UUID, String> playerHideStatus = new HashMap<>();
+    private final Map<UUID, Integer> playerHideNumber = new HashMap<>();
 
     public HideCommand(QWERTZcore plugin) {
         this.plugin = plugin;
@@ -44,19 +47,34 @@ public class HideCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-
         if (args.length != 1) {
-            plugin.getMessageManager().sendInvalidUsage(player, "/hide <host|staff|all|off>");
+            plugin.getMessageManager().sendInvalidUsage(player, "/hide <number|host|staff|all|off>");
             plugin.getSoundManager().playSound(player);
             return true;
         }
 
-        String mode = args[0].toLowerCase();
-        switch (mode) {
+        String arg = args[0].toLowerCase();
+        
+        // Check if the argument is a number
+        try {
+            int number = Integer.parseInt(arg);
+            if (number < 0) {
+                plugin.getMessageManager().sendMessage(player, "hide.invalid-number");
+                plugin.getSoundManager().playSound(player);
+                return true;
+            }
+            setHideNumber(player, number);
+            return true;
+        } catch (NumberFormatException e) {
+            // Not a number, treat as mode
+        }
+
+        // Handle existing modes
+        switch (arg) {
             case "host":
             case "staff":
             case "all":
-                setHideMode(player, mode);
+                setHideMode(player, arg);
                 break;
             case "off":
                 setHideMode(player, null);
@@ -70,8 +88,20 @@ public class HideCommand implements CommandExecutor {
         return true;
     }
 
+    private void setHideNumber(Player player, int number) {
+        playerHideNumber.put(player.getUniqueId(), number);
+        playerHideStatus.remove(player.getUniqueId()); // Clear any existing mode
+        updatePlayerVisibility(player);
+
+        HashMap<String, String> localMap = new HashMap<>();
+        localMap.put("%number%", String.valueOf(number));
+        plugin.getMessageManager().sendMessage(player, "hide.number-set", localMap);
+        plugin.getSoundManager().playSound(player);
+    }
+
     private void setHideMode(Player player, String mode) {
         playerHideStatus.put(player.getUniqueId(), mode);
+        playerHideNumber.remove(player.getUniqueId()); // Clear any existing number
         updatePlayerVisibility(player);
 
         if (mode == null) {
@@ -87,13 +117,34 @@ public class HideCommand implements CommandExecutor {
 
     public void updatePlayerVisibility(Player player) {
         String mode = playerHideStatus.get(player.getUniqueId());
+        Integer number = playerHideNumber.get(player.getUniqueId());
 
-        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            if (player.equals(otherPlayer)) continue;
+        List<Player> otherPlayers = Bukkit.getOnlinePlayers().stream()
+                .filter(p -> !p.equals(player))
+                .collect(Collectors.toList());
 
-            if (mode == null) {
+        if (mode == null && number == null) {
+            // Show all players
+            for (Player otherPlayer : otherPlayers) {
                 player.showPlayer(plugin, otherPlayer);
-            } else {
+            }
+        } else if (number != null) {
+            // Hide all players first
+            for (Player otherPlayer : otherPlayers) {
+                player.hidePlayer(plugin, otherPlayer);
+            }
+            
+            // Show only the specified number of players
+            List<Player> playersToShow = otherPlayers.stream()
+                    .limit(number)
+                    .collect(Collectors.toList());
+            
+            for (Player otherPlayer : playersToShow) {
+                player.showPlayer(plugin, otherPlayer);
+            }
+        } else {
+            // Handle existing modes
+            for (Player otherPlayer : otherPlayers) {
                 switch (mode) {
                     case "host":
                         if (otherPlayer.hasPermission("qwertzcore.host")) {
@@ -123,7 +174,8 @@ public class HideCommand implements CommandExecutor {
 
         // Update the new player's view of others
         String mode = playerHideStatus.get(newPlayer.getUniqueId());
-        if (mode != null) {
+        Integer number = playerHideNumber.get(newPlayer.getUniqueId());
+        if (mode != null || number != null) {
             updatePlayerVisibility(newPlayer);
         }
     }
@@ -131,6 +183,8 @@ public class HideCommand implements CommandExecutor {
     public void updateVisibilityForNewPlayer(Player newPlayer) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String mode = playerHideStatus.get(player.getUniqueId());
+            Integer number = playerHideNumber.get(player.getUniqueId());
+            
             if (mode != null) {
                 switch (mode) {
                     case "host":
@@ -146,6 +200,17 @@ public class HideCommand implements CommandExecutor {
                     case "all":
                         player.hidePlayer(plugin, newPlayer);
                         break;
+                }
+            } else if (number != null) {
+                // For number-based hiding, we need to recalculate visibility
+                // This is a simplified approach - in practice, you might want to maintain a list of visible players
+                List<Player> visiblePlayers = Bukkit.getOnlinePlayers().stream()
+                        .filter(p -> !p.equals(player))
+                        .limit(number)
+                        .collect(Collectors.toList());
+                
+                if (!visiblePlayers.contains(newPlayer)) {
+                    player.hidePlayer(plugin, newPlayer);
                 }
             }
         }

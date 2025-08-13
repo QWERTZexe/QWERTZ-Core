@@ -328,17 +328,19 @@ public class EventCommands implements CommandExecutor {
         int seconds = 30; // Default to 30 seconds if no argument is provided
 
         if (args.length > 0) {
-            try {
-                seconds = Integer.parseInt(args[0]);
-                if (seconds <= 0 || seconds > 60) {
-                    plugin.getMessageManager().sendMessage(sender, "event.revivelast.no-number");
-                    plugin.getSoundManager().playSoundToSender(sender);
-                    return true;
-                }
-            } catch (NumberFormatException e) {
-                plugin.getMessageManager().sendMessage(sender, "event.revivelast.invalid-number");
+            String timeArg = args[0].toLowerCase();
+            seconds = parseTimeArgument(timeArg);
+            
+            if (seconds == -1) {
+                plugin.getMessageManager().sendMessage(sender, "event.revivelast.invalid-format");
                 plugin.getSoundManager().playSoundToSender(sender);
-                seconds = 30;
+                return true;
+            }
+            
+            if (seconds <= 0 || seconds > 300) {
+                plugin.getMessageManager().sendMessage(sender, "event.revivelast.no-number");
+                plugin.getSoundManager().playSoundToSender(sender);
+                return true;
             }
         }
 
@@ -358,6 +360,46 @@ public class EventCommands implements CommandExecutor {
         plugin.getSoundManager().broadcastConfigSound();
         return true;
     }
+
+    /**
+     * Parses time arguments like "1min", "1s", "2m", "30sec", etc.
+     * @param timeArg The time argument string
+     * @return The number of seconds, or -1 if invalid format
+     */
+    private int parseTimeArgument(String timeArg) {
+        // Remove any whitespace
+        timeArg = timeArg.trim();
+        
+        // Check if it's just a number (default to minutes)
+        if (timeArg.matches("^\\d+$")) {
+            int minutes = Integer.parseInt(timeArg);
+            if (minutes < 1 || minutes > 5) {
+                return -1; // Invalid range for minutes (1-5)
+            }
+            return minutes * 60; // Convert to seconds
+        }
+        
+        // Check for minutes format: "1min", "2m", etc.
+        if (timeArg.matches("^\\d+(min|m)$")) {
+            int minutes = Integer.parseInt(timeArg.replaceAll("(min|m)", ""));
+            if (minutes < 1 || minutes > 5) {
+                return -1; // Invalid range for minutes (1-5)
+            }
+            return minutes * 60; // Convert to seconds
+        }
+        
+        // Check for seconds format: "1s", "30sec", etc.
+        if (timeArg.matches("^\\d+(s|sec)$")) {
+            int secs = Integer.parseInt(timeArg.replaceAll("(s|sec)", ""));
+            if (secs < 1 || secs > 300) {
+                return -1; // Invalid range for seconds (1-300)
+            }
+            return secs;
+        }
+        
+        // If none of the patterns match, return -1 (invalid format)
+        return -1;
+    }
     public boolean handleHeal(CommandSender sender, Boolean alive, String[] args) {
         boolean healAlive = alive;
         int healedCount = 0;
@@ -376,6 +418,7 @@ public class EventCommands implements CommandExecutor {
         localMap.put("%amount%", String.valueOf(healedCount));
         localMap.put("%type%", playerType);
         localMap.put("%typeColor%", playerTypeColor);
+        localMap.put("%name%", sender.getName());
 
         plugin.getMessageManager().broadcastMessage("event.heal-broadcast", localMap);
         plugin.getSoundManager().broadcastConfigSound();

@@ -2,10 +2,11 @@
 ## https://modrinth.com/plugin/qwertz-core
 
 ## 0 is the bottom line, higher numbers are higher on the scoreboard.
-## Set a line to "" to effectively remove it.  Use color codes (&)
+## Set a line to "" to effectively remove it.  Use color codes (&) or hex colors (&#RRGGBB)
 
 # Valid placeholders: %server%, %event%, %alive%, %dead%, %countdown%, %player%, %rank%, %wins%, %tokens%
 # Also all placeholders in "messages.yml"
+# Hex colors are supported using &#RRGGBB format (e.g., &#FFD700 for gold)
 
 # TO MAKE USE OF THIS FILE YOU MUST SET active-theme: "file" IN messages.yml!
 

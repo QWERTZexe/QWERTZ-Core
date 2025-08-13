@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import app.qwertz.qwertzcore.gui.PollGUI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -36,6 +37,12 @@ public class PollCommand implements CommandExecutor {
     private List<String> options;
     private String question;
     private boolean pollActive = false;
+    
+    // Poll creation state management
+    private Map<UUID, PollCreationState> playerStates = new HashMap<>();
+    private Map<UUID, String> playerQuestions = new HashMap<>();
+    private Map<UUID, Integer> playerDurations = new HashMap<>();
+    private Map<UUID, List<String>> playerOptions = new HashMap<>();
 
     public PollCommand(QWERTZcore plugin) {
         this.plugin = plugin;
@@ -45,6 +52,14 @@ public class PollCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
+            return true;
+        }
+
+        Player player = (Player) sender;
+
+        // If no arguments provided, open the GUI
+        if (args.length == 0) {
+            createPollGUI(player).open();
             return true;
         }
 
@@ -75,14 +90,78 @@ public class PollCommand implements CommandExecutor {
             options.add(args[i].replace("-", " "));
         }
 
-        votes = new HashMap<>();
-        pollActive = true;
+        createPoll(player, duration, question, options);
+
+        return true;
+    }
+
+    public void createPollFromGUI(Player player, int duration, String question, List<String> options) {
+        if (pollActive) {
+            plugin.getMessageManager().sendMessage(player, "poll.already-active");
+            plugin.getSoundManager().playSoundToSender(player);
+            return;
+        }
+
+        createPoll(player, duration, question, options);
+    }
+    
+    // State management methods
+    public void setPlayerState(UUID playerId, PollCreationState state) {
+        playerStates.put(playerId, state);
+    }
+    
+    public PollCreationState getPlayerState(UUID playerId) {
+        return playerStates.getOrDefault(playerId, PollCreationState.QUESTION);
+    }
+    
+    public void setPlayerQuestion(UUID playerId, String question) {
+        playerQuestions.put(playerId, question);
+    }
+    
+    public String getPlayerQuestion(UUID playerId) {
+        return playerQuestions.getOrDefault(playerId, "");
+    }
+    
+    public void setPlayerDuration(UUID playerId, int duration) {
+        playerDurations.put(playerId, duration);
+    }
+    
+    public int getPlayerDuration(UUID playerId) {
+        return playerDurations.getOrDefault(playerId, 30);
+    }
+    
+    public void setPlayerOptions(UUID playerId, List<String> options) {
+        playerOptions.put(playerId, new ArrayList<>(options));
+    }
+    
+    public List<String> getPlayerOptions(UUID playerId) {
+        return playerOptions.getOrDefault(playerId, new ArrayList<>());
+    }
+    
+    public void clearPlayerState(UUID playerId) {
+        playerStates.remove(playerId);
+        playerQuestions.remove(playerId);
+        playerDurations.remove(playerId);
+        playerOptions.remove(playerId);
+    }
+    
+    public PollGUI createPollGUI(Player player) {
+        return new PollGUI(plugin, player, this);
+    }
+    
+    public enum PollCreationState {
+        QUESTION, DURATION, OPTIONS
+    }
+
+    private void createPoll(Player player, int duration, String question, List<String> options) {
+        this.question = question;
+        this.options = options;
+        this.votes = new HashMap<>();
+        this.pollActive = true;
 
         displayPoll();
 
         Bukkit.getScheduler().runTaskLater(plugin, this::endPoll, duration * 20L);
-
-        return true;
     }
 
     private void displayPoll() {

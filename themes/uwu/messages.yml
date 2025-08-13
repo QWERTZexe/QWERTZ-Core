@@ -69,10 +69,12 @@ event:
   tphere-sender-msg: "%CORE_ICON% %colorPrimary%%name% %colorSuccess%has been teweported to you! *yay*"
   tphere-target-msg: "%CORE_ICON% %colorSuccess%You have been teweported to %colorPrimary%%name%%colorSuccess%! *excited*"
   revivelast:
-    no-number: "%colorError%Pwease specify a numbew of seconds between 1 and 60. T_T"
+    no-number: "%colorError%Pwease specify a numbew of seconds between 1 and 300. T_T"
     invalid-number: "%colorError%Inva-wid numbew of seconds. Using defauwt of 30 seconds. *sad*"
+    invalid-format: "%colorError%Inva-wid time fowmat. Use: <numbew>[s|sec|m|min] ow just <numbew> fow minutes (1-5). *confused*"
     broadcast: "%CORE_ICON% %colorSuccess%%amount% %colorPrimary%pwayers who died in the wast %colorSuccess%%seconds% %colorPrimary%seconds have been wevived! *yayyy*"
-  heal-broadcast: "%CORE_ICON% %colorSuccess%%amount% %typeColor%%type% %colorSuccess%have been heawed! *yay*"
+  # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%, %name%
+  heal-broadcast: "%CORE_ICON% %colorSuccess%%name% %colorSuccess%heawed %colorPrimary%%amount% %typeColor%%type% %colorSuccess%pwayers! *yay*"
 
 eventcountdown:
   invalid-time: "%colorError%Inva-wid time fowmat. Use: <numbew>[s|sec|m|min] ow just <numbew> fow minutes. *confused*"
@@ -91,8 +93,8 @@ chatmute:
   broadcast: "%CORE_ICON% %colorPrimary%Chat has been %stateColor%%state%%colorPrimary%! *shush*"
   is-already: "%colorError%Chat is awweady %state%! *noooo*"
 
-chatrevive:
-  already-going: "%colorError%A game is awweady in pwogwess. Use /chatrevive cancew to end it. *uh-oh*"
+chatrevival:
+  already-going: "%colorError%A game is awweady in pwogwess. Use /chatrevival cancew to end it. *uh-oh*"
   invalid-number: "%colorError%Inva-wid numbew fow max vawue. Using defauwt of 40. >_<"
   invalid-game: "%colorError%Inva-wid game type. Use math, typew, ow guess. T_T"
   math-question: "%CORE_ICON% %colorPrimary%Math Question: %colorSuccess%%question% *brainy*"
@@ -104,6 +106,21 @@ chatrevive:
   correct-answer: "%CORE_ICON% %colorPrimary%The cowwect answer was: %colorAlive%%answer% *yayyy*"
   correct-sentence: "%CORE_ICON% %colorPrimary%The cowwect sentence was: %colorAlive%%sentence% *relieved*"
   winner: "%CORE_ICON% %colorAlive%%player% %colorPrimary%has won the chat wevivaw game! *yayyyyy*"
+  # Valid placeholders: %question%
+  custom-question: "%CORE_ICON% %colorPrimary%Custom Question: %colorSuccess%%question% *curious*"
+
+chatrevivalgui:
+  enter-question: "%colorPrimary%Entew the custom question: *thinking*"
+  enter-answer: "%colorPrimary%Entew the expected answew: *thinking*"
+  enter-guess-max: "%colorPrimary%Entew the maximum numbew fow the guess game: *thinking*"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question% *yay*"
+  # Valid placeholders: %answer%
+  answer-set: "%colorSuccess%Answew set to: %colorPrimary%%answer% *yay*"
+  # Valid placeholders: %max%
+  guess-max-set: "%colorSuccess%Maximum numbew set to: %colorPrimary%%max% *yay*"
+  incomplete: "%colorError%You must set both a question and answew befowe starting the custom game! *sad*"
+  invalid-number: "%colorError%Inva-wid numbew! Pwease entew a positive numbew. *confused*"
 
 clearinv:
   got-cleared: "%colorError%Youw inventowy has been cweawed by an admin. *shock*"
@@ -115,8 +132,10 @@ gamemode:
 
 hide:
   invalid: "%colorError%Inva-wid mode. Use host, staff, aww, ow off. *confused*"
+  invalid-number: "%colorError%Inva-wid numbew. Pwease pwovide a positive numbew. *confused*"
   mode-off: "%CORE_ICON% %colorPrimary%Aww %colorSuccess%pwayers awe now visibwe to you. *happy*"
   mode-on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%. *secretive*"
+  number-set: "%CORE_ICON% %colorSuccess%You can now see onwy %colorPrimary%%number% %colorSuccess%pwayers. *secretive*"
 
 kit:
   created: "%CORE_ICON% %colorSuccess%Kit %colorPrimary%'%name%' %colorSuccess%has been cweated! *yay*"
@@ -139,6 +158,22 @@ poll:
   no-active-poll: "%colorError%Thewe is no active poww. *sad*"
   invalid-option: "%colorError%Inva-wid option. *crying*"
   vote-success: "%colorSuccess%You voted fow %option% *yayyy*"
+
+pollgui:
+  # Valid placeholders: %message%
+  enter-value: "%colorPrimary%%message%"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question% *yay*"
+  # Valid placeholders: %duration%
+  duration-set: "%colorSuccess%Duration set to: %colorPrimary%%duration% seconds *happy*"
+  # Valid placeholders: %option%
+  option-added: "%colorSuccess%Option added: %colorPrimary%%option% *excited*"
+  # Valid placeholders: %option%
+  option-removed: "%colorSuccess%Option removed: %colorPrimary%%option% *sad*"
+  no-question: "%colorError%You must set a question before creating a poll! *sad*"
+  not-enough-options: "%colorError%You must add at least 2 options before creating a poll! *oopsie*"
+  too-many-options: "%colorError%You can only have up to 9 options! *confused*"
+  invalid-duration: "%colorError%Invalid duration! Please enter a positive number. *uh-oh*"
 
 messaging:
   cannot-message: "%colorError%%name% has disabwed pwivate messages. >.<"
@@ -176,6 +211,10 @@ timer:
   time-up: "%colorSecondary%Time's up! T_T"
   countdown: "%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds. *wooo*"
   broadcast-cancel: "%colorPrimary%Timah has been cancewwed. >.<"
+
+broadcast:
+  # Valid placeholders: %broadcast%
+  message: "%CORE_ICON% %colorPrimary%%broadcast%"
 
 vanish:
   leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just weft us! \u00a77[%colorTertiary%%fakeCount%\u00a77 -> %colorTertiary%%newCount%\u00a77] T_T"

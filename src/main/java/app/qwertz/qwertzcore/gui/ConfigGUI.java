@@ -224,6 +224,7 @@ public class ConfigGUI implements Listener {
             case "checkforupdates" -> createSkull("http://textures.minecraft.net/texture/9cdb8f43656c06c4e8683e2e6341b4479f157f48082fea4aff09b37ca3c6995b", "");
             case "emojis" -> createSkull("http://textures.minecraft.net/texture/de4e994eacf90b60ee87b10c50acb80dd1daf9ee6f2c63a79b01154b16dcf0cf", "");
             case "chattimer" -> createSkull("http://textures.minecraft.net/texture/dbcb230a410e93b7d4b5c289631d614b90453843d6ed03daf5e4015a2fe1f56b", "");
+            case "coloredchat" -> createSkull("http://textures.minecraft.net/texture/f4e94273c727b1f2c9376b5cae4ed9a48d5851bd2ab2fd83d5f81a6e6aff193d", "");
             default -> new ItemStack(mat);
         };
         ItemMeta meta = item.getItemMeta();

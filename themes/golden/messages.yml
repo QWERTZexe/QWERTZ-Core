@@ -114,14 +114,14 @@ event:
   # Valid placeholders: %name%
   tphere-target-msg: "%CORE_ICON% %colorSuccess%You have been teleported to %colorPrimary%%name%%colorSuccess%!"
   revivelast:
-    no-number: "%colorError%Please specify a number of seconds between 1 and 60."
+    no-number: "%colorError%Please specify a number of seconds between 1 and 300."
     invalid-number: "%colorError%Invalid number of seconds. Using default of 30 seconds."
+    invalid-format: "%colorError%Invalid time format. Use: <number>[s|sec|m|min] or just <number> for minutes (1-5)."
     # Valid placeholders: %amount%, %seconds%
     broadcast: "%CORE_ICON% %colorSuccess%%amount% %colorPrimary%players who died
       in the last %colorSuccess%%seconds% %colorPrimary%seconds have been revived"
-  # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%
-  heal-broadcast: "%CORE_ICON% %colorSuccess%All %typeColor%%type% %colorSuccess%players
-    have been healed!"
+  # Valid placeholders: %amount%, %type% (alive, dead), %typeColor%, %name%
+  heal-broadcast: "%CORE_ICON% %colorSuccess%%name% %colorSuccess%healed %colorPrimary%%amount% %typeColor%%type% %colorSuccess%players!"
 
 eventcountdown:
   invalid-time: "%colorError%Invalid time format. Use: <number>[s|sec|m|min] or just
@@ -149,8 +149,8 @@ chatmute:
   # Valid placeholders: %state%
   is-already: "%colorError%Chat is already %state%!"
 
-chatrevive:
-  already-going: "%colorError%A game is already in progress. Use /chatrevive cancel
+chatrevival:
+  already-going: "%colorError%A game is already in progress. Use /chatrevival cancel
     to end it."
   invalid-number: "%colorError%Invalid number format for max value. Using default
     of 40."
@@ -172,6 +172,21 @@ chatrevive:
   # Valid placeholders: %player%
   winner: "%CORE_ICON% %colorAlive%%player% %colorPrimary%has won the chat revival
     game!"
+  # Valid placeholders: %question%
+  custom-question: "%CORE_ICON% %colorPrimary%Custom Question: %colorSuccess%%question%"
+
+chatrevivalgui:
+  enter-question: "%colorPrimary%Enter the custom question:"
+  enter-answer: "%colorPrimary%Enter the expected answer:"
+  enter-guess-max: "%colorPrimary%Enter the maximum number for the guess game:"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question%"
+  # Valid placeholders: %answer%
+  answer-set: "%colorSuccess%Answer set to: %colorPrimary%%answer%"
+  # Valid placeholders: %max%
+  guess-max-set: "%colorSuccess%Maximum number set to: %colorPrimary%%max%"
+  incomplete: "%colorError%You must set both a question and answer before starting the custom game!"
+  invalid-number: "%colorError%Invalid number! Please enter a positive number."
 
 clearinv:
   got-cleared: "%colorError%Your inventory has been cleared by an admin."
@@ -186,10 +201,14 @@ gamemode:
 
 hide:
   invalid: "%colorError%Invalid mode. Use host, staff, all, or off."
+  invalid-number: "%colorError%Invalid number. Please provide a positive number."
   mode-off: "%CORE_ICON% %colorPrimary%All %colorSuccess%players are now visible to
     you."
   # Valid placeholders: %mode%
   mode-on: "%CORE_ICON% %colorSuccess%Hide mode set to: %colorPrimary%%mode%"
+  # Valid placeholders: %number%
+  number-set: "%CORE_ICON% %colorSuccess%You can now see only %colorPrimary%%number%
+    %colorSuccess%players."
 
 kit:
   # Valid placeholders: %name%
@@ -227,6 +246,22 @@ poll:
   invalid-option: "%colorError%Invalid option."
   # Valid placeholders: %option%
   vote-success: "%colorSuccess%You voted for %option%"
+
+pollgui:
+  # Valid placeholders: %message%
+  enter-value: "%colorPrimary%%message%"
+  # Valid placeholders: %question%
+  question-set: "%colorSuccess%Question set to: %colorPrimary%%question%"
+  # Valid placeholders: %duration%
+  duration-set: "%colorSuccess%Duration set to: %colorPrimary%%duration% seconds"
+  # Valid placeholders: %option%
+  option-added: "%colorSuccess%Option added: %colorPrimary%%option%"
+  # Valid placeholders: %option%
+  option-removed: "%colorSuccess%Option removed: %colorPrimary%%option%"
+  no-question: "%colorError%You must set a question before creating a poll!"
+  not-enough-options: "%colorError%You must add at least 2 options before creating a poll!"
+  too-many-options: "%colorError%You can only have up to 9 options!"
+  invalid-duration: "%colorError%Invalid duration! Please enter a positive number."
 
 messaging:
   # Valid placeholders: %name%
@@ -285,6 +320,10 @@ timer:
   # Valid placeholders: %timeLeft%
   countdown: "%CORE_ICON% %colorSuccess%%timeLeft% %colorPrimary%seconds"
   broadcast-cancel: "%colorPrimary%Timer has been cancelled."
+
+broadcast:
+  # Valid placeholders: %broadcast%
+  message: "%CORE_ICON% %colorPrimary%%broadcast%"
 
 vanish:
   # Valid placeholders: %name%, %fakeCount%, %newCount%

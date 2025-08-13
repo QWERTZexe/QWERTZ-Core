@@ -4,7 +4,7 @@
 
 QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It provides a comprehensive set of tools for hosts and administrators to manage events, player statuses, and game mechanics.
 
-**Newest version:** 2.5
+**Newest version:** 3.0
 **Author:** QWERTZ_EXE
 **Website:** https://qwertz.app
 
@@ -31,12 +31,12 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 
 - `/core` - Displays information about QWERTZ Core
 - `/reloadcore` - Reload QWERTZ Core
-- `/config <key> <value>` - Edit configuration values
+- `/config <key> <value>` - Edit configuration values. Running without arguments opens a GUI
 - `/setspawn` - Set spawn to your current position
 - `/setevent <event>` - Set the event to the specified event
 - `/setserver <server>` - Set the server to the specified server
 - `/settheme <theme>` - Set the theme to the specified theme
-- `/hide <host|staff|all|off>` - Hide other players based on their rank
+- `/hide <number|host|staff|all|off>` - Hide other players based on their rank or show only a specific number of players
 - `/spawn` - Teleport to spawn location
 - `/discord` - Displays the discord invite set in the config
 - `/message <player> <message>` - Private messages a player
@@ -59,6 +59,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/eventblock <block> [material]` - Get a QWERTZ Core event block
 - `/kits` Lists all kits
 - `/speed <speed>` Sets your speed
+- `/broadcast <message>` Broadcast a message to all players in bigger form and action bar
 
 ### Event Management
 
@@ -75,12 +76,12 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 
 ### Revival System
 
-- `/chatrevive <math|typer|guess> [max]` - Start a chat revival game
+- `/chatrevival <math|typer|guess|custom> [max]` - Start a chat revival game
 - `/revive <player>` - Revive a player
 - `/unrevive <player>` - Mark a player as dead
 - `/reviveall` - Revive all players
 - `/unreviveall` - Unrevive all players
-- `/revivelast [seconds]` - Revives all players who died in the last specified number of seconds
+- `/revivelast [time]` - Revives all players who died in the last specified time
 - `/userevive` - Request to use a revive token
 - `/reviveaccept <player>` - Accept a player's revive request
 - `/revivedeny <player>` - Deny a player's revive request
@@ -103,7 +104,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/healdead` - Heals all dead players
 - `/kit <kit> <player|alive|dead|all>` - Gives a kit to the selected group
 - `/invsee <player>` - View and modify another player's inventory
-- `/poll <duration> <question> <answer1> <answer2> [answer3] ...` - Create a poll, to use multiword parameters, use "-" instead of " "
+- `/poll <duration> <question> <answer1> <answer2> [answer3] ...` - Create a poll, to use multiword parameters, use "-" instead of " ". Running without arguments opens a GUI
 
 ### WorldGuard Management
 
@@ -177,6 +178,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.setserver` - Set the server
 - `qwertzcore.host.reloadcore` - Reload the core
 - `qwertzcore.host.settheme` - Set the theme
+- `qwertzcore.host.broadcast` - Broadcast messages to all players
 
 #### Staff Permissions
 
@@ -221,6 +223,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 #### Other Permissions
 
 - `qwertzcore.chat.bypass` - Bypass a muted chat
+- `qwertzcore.chat.color` - Use color codes in chat messages
 - `qwertzcore.chat.bypasstm` - Bypass the disabled vanilla commands /tm and /teammsg
 - `qwertzcore.chat.bypassme` - Bypass the disabled vanilla command /me
 

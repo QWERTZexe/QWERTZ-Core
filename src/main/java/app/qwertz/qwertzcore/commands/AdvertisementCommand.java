@@ -101,7 +101,15 @@ public class AdvertisementCommand implements CommandExecutor {
         }
 
         // Create the formatted advertisement message with clickable link
-        TextComponent advertisement = new TextComponent(QWERTZcore.CORE_ICON + " ");
+        TextComponent advertisement = new TextComponent();
+        
+        // Add the CORE_ICON with proper color formatting
+        TextComponent iconComponent = new TextComponent(QWERTZcore.CORE_ICON_RAW);
+        iconComponent.setColor(net.md_5.bungee.api.ChatColor.of(QWERTZcore.CORE_ICON_COLOR));
+        advertisement.addExtra(iconComponent);
+        
+        // Add a space after the icon
+        advertisement.addExtra(new TextComponent(" "));
 
         // Add the text part
         advertisement.addExtra(new TextComponent(messageBuilder.toString().trim() + " "));

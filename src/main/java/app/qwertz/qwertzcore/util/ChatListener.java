@@ -18,6 +18,7 @@ import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.ChatReviveCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -53,7 +54,7 @@ public class ChatListener implements Listener {
                     announceWinner(event.getPlayer().getName());
                 }
             } catch (NumberFormatException ignored) {}
-        } else if (gameType.equals("typer")) {
+        } else if (gameType.equals("typer") || gameType.equals("custom")) {
             if (message.equalsIgnoreCase((String) answer)) {
                 announceWinner(event.getPlayer().getName());
             }
@@ -63,12 +64,12 @@ public class ChatListener implements Listener {
     private void announceWinner(String playerName) {
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%player%", playerName);
-        plugin.getMessageManager().broadcastMessage("chatrevive.winner", localMap);
+        plugin.getMessageManager().broadcastMessage("chatrevival.winner", localMap);
         plugin.getSoundManager().broadcastConfigSound();
         if (gameType.equals("guess") || gameType.equals("math")) {
             HashMap<String, String> localMap2 = new HashMap<>();
             localMap2.put("%answer%", String.valueOf(answer));
-            plugin.getMessageManager().broadcastMessage("chatrevive.correct-answer", localMap2);
+            plugin.getMessageManager().broadcastMessage("chatrevival.correct-answer", localMap2);
             plugin.getSoundManager().broadcastConfigSound();
         }
 
@@ -79,12 +80,17 @@ public class ChatListener implements Listener {
         if (gameType.equals("guess") || gameType.equals("math")) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%answer%", String.valueOf(answer));
-            plugin.getMessageManager().broadcastMessage("chatrevive.correct-answer", localMap);
+            plugin.getMessageManager().broadcastMessage("chatrevival.correct-answer", localMap);
             plugin.getSoundManager().broadcastConfigSound();
         } else if (gameType.equals("typer")) {
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%sentence%", String.valueOf(answer));
-            plugin.getMessageManager().broadcastMessage("chatrevive.correct-sentence", localMap);
+            plugin.getMessageManager().broadcastMessage("chatrevival.correct-sentence", localMap);
+            plugin.getSoundManager().broadcastConfigSound();
+        } else if (gameType.equals("custom")) {
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%answer%", String.valueOf(answer));
+            plugin.getMessageManager().broadcastMessage("chatrevival.correct-answer", localMap);
             plugin.getSoundManager().broadcastConfigSound();
         }
         endGame();

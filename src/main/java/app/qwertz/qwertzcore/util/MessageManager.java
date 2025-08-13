@@ -183,6 +183,7 @@ public class MessageManager {
         message = message.replace("%CORE_ICON_RAW%", QWERTZcore.CORE_ICON_RAW);
         message = message.replace("%CORE_ICON%", QWERTZcore.CORE_ICON);
         message = ChatColor.translateAlternateColorCodes('&', message);
+        message = QWERTZcore.translateHexColorCodes(message);
         return message;
     }
     public FileConfiguration loadFromRepo(String themeName, String type) {

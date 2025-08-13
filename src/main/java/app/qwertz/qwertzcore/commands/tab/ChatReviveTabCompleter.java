@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 
 public class ChatReviveTabCompleter implements TabCompleter {
 
-    private final List<String> gameTypes = Arrays.asList("math", "typer", "guess");
+    private final List<String> gameTypes = Arrays.asList("math", "typer", "guess", "custom");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
 
-        if (command.getName().equalsIgnoreCase("chatrevive")) {
+        if (command.getName().equalsIgnoreCase("chatrevival")) {
             if (args.length == 1) {
                 String partialGameType = args[0].toLowerCase();
                 completions.addAll(gameTypes.stream()

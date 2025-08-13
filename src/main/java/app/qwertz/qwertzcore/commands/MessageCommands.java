@@ -130,9 +130,16 @@ public class MessageCommands implements CommandExecutor {
         localMap.put("%sender%", sender.getName());
         localMap.put("%recipient%", recipient.getName());
         message = plugin.getChatManager().translateEmojis(message, sender);
-        localMap.put("%message%", message);
-        plugin.getMessageManager().sendMessage(sender, "messaging.direct-message", localMap);
-        plugin.getMessageManager().sendMessage(recipient, "messaging.direct-message", localMap);
+
+        // Apply color codes if colored chat is enabled and player has permission
+        if (plugin.getConfigManager().getColoredChat() && sender.hasPermission("qwertzcore.chat.color")) {
+            message = plugin.translateHexColorCodes(ChatColor.translateAlternateColorCodes('&', message));
+        }
+
+        String message2 = plugin.getMessageManager().getMessage("messaging.direct-message");
+        message2 = plugin.getMessageManager().prepareMessage(message2, localMap).replace("%message%", message);
+        recipient.sendMessage(message2);
+        sender.sendMessage(message2);
         plugin.getSoundManager().playSound(sender);
         plugin.getSoundManager().playSound(recipient);
         plugin.getMessageManager().setReplyTarget(sender, recipient);
