@@ -154,6 +154,8 @@ chatrevival:
   correct-sentence: "%CORE_ICON% %colorSecondary%The correct sentence was: %colorPrimary%%sentence%"
   # Valid placeholders: %player%
   winner: "%CORE_ICON% %colorPrimary%%player% %colorSecondary%has won the chat revival game!"
+  # Valid placeholders: %question%
+  custom-question: "%CORE_ICON% %colorPrimary%Custom Question: %colorSuccess%%question%"
 
 chatrevivalgui:
   enter-question: "%colorPrimary%Enter the custom question:"
