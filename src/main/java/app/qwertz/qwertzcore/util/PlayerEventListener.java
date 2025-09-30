@@ -16,7 +16,6 @@ package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.HideCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
@@ -41,17 +40,29 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getVanishManager().hideVanishedPlayers(event.getPlayer());
+        
+        // Handle rejoin system first
+        if (plugin.getRejoinManager().isRejoining(player)) {
+            plugin.getRejoinManager().handlePlayerRejoin(player);
+            // Skip normal join processing for rejoining players
+            plugin.getVanishManager().hideVanishedPlayers(player);
+            plugin.getScoreboardManager().setScoreboard(player);
+            plugin.getTablistManager().updateTablist(player);
+            return;
+        }
+        
+        // Normal join processing for non-rejoining players
+        plugin.getVanishManager().hideVanishedPlayers(player);
         if ((Boolean) plugin.getConfigManager().get("checkForUpdates")) {
             updateChecker.notifyPlayer(player);
         }
-        hideCommand.handlePlayerJoin(event.getPlayer());
-        plugin.getEventManager().addNewPlayer(event.getPlayer());
+        hideCommand.handlePlayerJoin(player);
+        plugin.getEventManager().addNewPlayer(player);
         if (plugin.getConfigManager().getTpOnJoin()) {
-            event.getPlayer().teleport(plugin.getConfigManager().getSpawnLocation());
+            player.teleport(plugin.getConfigManager().getSpawnLocation());
         }
-        plugin.getScoreboardManager().setScoreboard(event.getPlayer());
-        plugin.getTablistManager().updateTablist(event.getPlayer());
+        plugin.getScoreboardManager().setScoreboard(player);
+        plugin.getTablistManager().updateTablist(player);
         if (plugin.getConfigManager().get("suppressVanilla").equals(true)) {
             int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount()-1;
             int newCount = fakeCount + 1;
@@ -66,15 +77,20 @@ public class PlayerEventListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        plugin.getEventManager().removePlayer(event.getPlayer());
-        plugin.getVanishManager().removeVanishedPlayer(event.getPlayer());
-        plugin.getScoreboardManager().removeScoreboard(event.getPlayer());
+        Player player = event.getPlayer();
+        
+        // Record player leave for rejoin system
+        plugin.getRejoinManager().recordPlayerLeave(player);
+        
+        plugin.getEventManager().removePlayer(player);
+        plugin.getVanishManager().removeVanishedPlayer(player);
+        plugin.getScoreboardManager().removeScoreboard(player);
 
         if (plugin.getConfigManager().get("suppressVanilla").equals(true)) {
             int fakeCount = plugin.getVanishManager().getNonVanishedPlayerCount();
             int newCount = fakeCount - 1;
             HashMap<String, String> localMap = new HashMap<>();
-            localMap.put("%name%", event.getPlayer().getName());
+            localMap.put("%name%", player.getName());
             localMap.put("%count%", String.valueOf(fakeCount));
             localMap.put("%newCount%", String.valueOf(newCount));
             plugin.getMessageManager().broadcastMessage("chatting.leave-msg", localMap);

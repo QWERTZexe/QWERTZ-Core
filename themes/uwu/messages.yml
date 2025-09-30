@@ -27,6 +27,7 @@ chatting:
   death: "%colorDead%%name% \u00a74DIED! *nooo~* >///<"
   leave-msg: "%CORE_ICON% %colorPrimary%%name%%colorDead% just weft us! \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77] *crying*"
   join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! *yayyyy* \u00a77[%colorTertiary%%count%\u00a77 -> %colorTertiary%%newCount%\u00a77]"
+  rejoin-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just wejoined! *welcome back* \u00a77[%colorTertiary%Wejoin\u00a77]"
 
 config:
   key-not-found: "%colorError%Confwig key not found: %key% oopsie~"
@@ -308,3 +309,14 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Youw speed has been set to %speed%! ^_^"
   out-of-range: "%colorError%Speed out of wange! (1 to 10) >_<"
+
+rejoin:
+  welcome-back: "%CORE_ICON% %colorSuccess%Wewcome back! You wejoined within the awwowed time window! ^_^"
+  enabled: "%CORE_ICON% %colorSuccess%Wejoin system has been enabwed! OwO"
+  disabled: "%CORE_ICON% %colorError%Wejoin system has been disabwed! >_<"
+  time-set: "%CORE_ICON% %colorSuccess%Wejoin time set to %time% seconds! UwU"
+  invalid-number: "%colorError%Invalid numbew fowmat! T_T"
+  status-title: "%colorPrimary%Wejoin System Status:"
+  status-enabled: "%colorSuccess%Awwow Wejoining: Enabwed"
+  status-disabled: "%colorError%Awwow Wejoining: Disabwed"
+  status-time: "%colorTertiary%Wejoin Time: %colorPrimary%%time% seconds"

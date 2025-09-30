@@ -140,9 +140,11 @@ public class ConfigManager {
         addDefault("suppressVanilla", true);
         addDefault("biggerMessages", true);
         addDefault("chatTimer", true);
-        addDefault("reviveStaff", false);
-        addDefault("emojis", true);
-        addDefault("coloredChat", true);
+         addDefault("reviveStaff", false);
+         addDefault("emojis", true);
+         addDefault("coloredChat", true);
+         addDefault("allowRejoining", true);
+         addDefault("rejoinTime", 30);
 
         // Garbage collect: Remove keys that are in the file but not defined as defaults
         System.out.print(keep);
@@ -880,7 +882,15 @@ public class ConfigManager {
         return (boolean) config.getOrDefault("chat", true);
     }
 
-    public boolean getColoredChat() {
-        return (boolean) config.getOrDefault("coloredChat", true);
-    }
+     public boolean getColoredChat() {
+         return (boolean) config.getOrDefault("coloredChat", true);
+     }
+
+     public boolean getAllowRejoining() {
+         return (boolean) config.getOrDefault("allowRejoining", true);
+     }
+
+     public int getRejoinTime() {
+         return ((Number) config.getOrDefault("rejoinTime", 30)).intValue();
+     }
 }

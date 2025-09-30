@@ -57,6 +57,19 @@ public class EventManager {
             broadcastMessage("event.revive", localMap);
             return true;
         }
+        if (!deadPlayers.contains(targetUUID) && !alivePlayers.contains(targetUUID)) {
+            alivePlayers.add(targetUUID);
+            if (plugin.getConfigManager().getTpOnRevive()) {
+                target.teleport(executor.getLocation());
+            }
+            deathTimes.remove(targetUUID);
+            HashMap<String, String> localMap = new HashMap<>();
+            localMap.put("%name%", target.getName());
+            localMap.put("%player%", executor.getName());
+
+            broadcastMessage("event.revive", localMap);
+            return true;
+        }
         else {
             return false;
         }

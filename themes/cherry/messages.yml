@@ -36,6 +36,7 @@ chatting:
   leave-msg: "%colorPrimary%%name%%colorSecondary% \u029c\u1d00\u0455 \u029f\u1d07\ua730\u1d1b."
   # Valid placeholders: %name%, %count%, %newCount%
   join-msg: "%colorPrimary%%name%%colorSecondary% \u029c\u1d00\u0455 \u1d0a\u1d0f\u026a\u0274\u1d07\u1d05."
+  rejoin-msg: "%colorPrimary%%name%%colorSecondary% \u029c\u1d00\u0455 \u029c\u1d07\u1d0a\u1d0f\u026a\u0274\u1d07\u1d05."
 
 config:
   # Valid placeholders: %key%
@@ -431,3 +432,14 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Your speed has been set to %speed%"
   out-of-range: "%colorError%Speed out of range! (1 to 10)"
+
+rejoin:
+  welcome-back: "%CORE_ICON% %colorSuccess%Welcome back! You rejoined within the allowed time window."
+  enabled: "%CORE_ICON% %colorSuccess%Rejoin system has been enabled!"
+  disabled: "%CORE_ICON% %colorError%Rejoin system has been disabled!"
+  time-set: "%CORE_ICON% %colorSuccess%Rejoin time set to %time% seconds!"
+  invalid-number: "%colorError%Invalid number format!"
+  status-title: "%colorPrimary%Rejoin System Status:"
+  status-enabled: "%colorSuccess%Allow Rejoining: Enabled"
+  status-disabled: "%colorError%Allow Rejoining: Disabled"
+  status-time: "%colorTertiary%Rejoin Time: %colorPrimary%%time% seconds"

@@ -38,6 +38,7 @@ chatting:
   # Valid placeholders: %name%, %count%, %newCount%
   join-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just joined! \u00a77[%colorTertiary%%count%\u00a77
     -> %colorTertiary%%newCount%\u00a77]"
+  rejoin-msg: "%CORE_ICON% %colorPrimary%%name%%colorAlive% just rejoined! \u00a77[%colorTertiary%Rejoin\u00a77]"
 
 config:
   # Valid placeholders: %key%
@@ -431,3 +432,14 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Your speed has been set to %speed%"
   out-of-range: "%colorError%Speed out of range! (1 to 10)"
+
+rejoin:
+  welcome-back: "%CORE_ICON% %colorSuccess%Welcome back! You rejoined within the allowed time window."
+  enabled: "%CORE_ICON% %colorSuccess%Rejoin system has been enabled!"
+  disabled: "%CORE_ICON% %colorError%Rejoin system has been disabled!"
+  time-set: "%CORE_ICON% %colorSuccess%Rejoin time set to %time% seconds!"
+  invalid-number: "%colorError%Invalid number format!"
+  status-title: "%colorPrimary%Rejoin System Status:"
+  status-enabled: "%colorSuccess%Allow Rejoining: Enabled"
+  status-disabled: "%colorError%Allow Rejoining: Disabled"
+  status-time: "%colorTertiary%Rejoin Time: %colorPrimary%%time% seconds"
