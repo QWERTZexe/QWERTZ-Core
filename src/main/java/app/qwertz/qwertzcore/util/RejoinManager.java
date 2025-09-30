@@ -42,14 +42,16 @@ public class RejoinManager {
      * Records when a player leaves the server
      */
     public void recordPlayerLeave(Player player) {
-        UUID playerId = player.getUniqueId();
-        long currentTime = System.currentTimeMillis();
-        
-        playerLeaveTimes.put(playerId, currentTime);
-        playerLeaveLocations.put(playerId, player.getLocation());
-        playerWasAlive.put(playerId, plugin.getEventManager().isPlayerAlive(player));
-        
-        plugin.getLogger().info("Recorded player leave: " + player.getName() + " at " + currentTime);
+        if (plugin.getEventManager().isPlayerAlive(player)) {
+            UUID playerId = player.getUniqueId();   
+            long currentTime = System.currentTimeMillis();
+            
+            playerLeaveTimes.put(playerId, currentTime);
+            playerLeaveLocations.put(playerId, player.getLocation());
+            playerWasAlive.put(playerId, plugin.getEventManager().isPlayerAlive(player));
+            
+            plugin.getLogger().info("Recorded player leave: " + player.getName() + " at " + currentTime);
+        }
     }
 
     /**

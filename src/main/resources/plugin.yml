@@ -551,6 +551,6 @@ permissions:
   qwertzcore.host.broadcast:
     description: Allows the player to broadcast messages to all players
     default: op
-  qwertzcore.admin.rejoin:
+  qwertzcore.host.rejoin:
     description: Allows the player to manage rejoin system settings
     default: op
