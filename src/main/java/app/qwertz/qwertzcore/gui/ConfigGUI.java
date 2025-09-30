@@ -205,6 +205,8 @@ public class ConfigGUI implements Listener {
             case "revivetokensenabled", "revivestaff" -> Material.HEART_OF_THE_SEA;
             case "joinleavemsgsonvanish" -> Material.SPECTRAL_ARROW;
             case "chat" -> Material.ENCHANTED_BOOK;
+            case "allowrejoining" -> Material.REPEATING_COMMAND_BLOCK;
+            case "rejointime" -> Material.CLOCK;
             default -> Material.PAPER;
         };
 
