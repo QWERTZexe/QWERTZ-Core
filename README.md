@@ -57,9 +57,10 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/delkit <kit>` - Delete a kit
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
 - `/eventblock <block> [material]` - Get a QWERTZ Core event block
-- `/kits` Lists all kits
-- `/speed <speed>` Sets your speed
-- `/broadcast <message>` Broadcast a message to all players in bigger form and action bar
+- `/kits` - Lists all kits
+- `/speed <speed>` - Sets your speed
+- `/broadcast <message>` - Broadcast a message to all players in bigger form and action bar
+- `/rejoin [enable|disable|time <seconds>]` - Manage the rejoining system
 
 ### Event Management
 
@@ -179,6 +180,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `qwertzcore.host.reloadcore` - Reload the core
 - `qwertzcore.host.settheme` - Set the theme
 - `qwertzcore.host.broadcast` - Broadcast messages to all players
+- `qwertzcore.host.rejoin` - Manage rejoining features
 
 #### Staff Permissions
 
