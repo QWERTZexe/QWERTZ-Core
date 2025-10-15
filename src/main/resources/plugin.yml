@@ -323,7 +323,7 @@ commands:
   rejoin:
     description: Manage the rejoin system settings
     usage: /rejoin [enable|disable|time <seconds>]
-    permission: qwertzcore.admin.rejoin
+    permission: qwertzcore.host.rejoin
 
 permissions:
   qwertzcore.host.timer:

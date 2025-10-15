@@ -62,8 +62,8 @@ public class ChatManager implements Listener {
             localMap.put("%name%", player.getName());
             localMap.put("%prefix%", prefix);
             localMap.put("%suffix%", suffix);
-            String withoutMsg = translateEmojis(plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap)), player);
-            Bukkit.broadcastMessage(withoutMsg.replace("%message%", message));
+            String withoutMsg = plugin.translateHexColorCodes(plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("chatting.chat"), localMap));
+            Bukkit.broadcastMessage(withoutMsg.replace("%message%", translateEmojis(message, player)));
         }
     }
 
