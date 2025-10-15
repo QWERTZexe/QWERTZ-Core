@@ -31,6 +31,7 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.DyeColor;
 import org.bukkit.potion.PotionType;
 import org.bukkit.potion.PotionData;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -40,17 +41,20 @@ public class ConfigManager {
     private final QWERTZcore plugin;
     private final File configFile;
     private final File warpsFile; // New file for warps
-    private final File kitsFile; // New file for kits
+    private final File kitsFile; // New file for kits (JSON - legacy)
+    private final File kitsYamlFile; // New file for kits (YAML - new format)
     private final Gson gson;
     private Map<String, Object> config;
     private Set<String> keep;
     private Map<String, Map<String, Object>> warps; // Separate map for warps
-    private Map<String, List<Map<String, Object>>> kits; // Separate map for kits
+    private Map<String, List<Map<String, Object>>> kits; // Separate map for kits (legacy JSON)
+    private YamlConfiguration kitsYaml; // YAML configuration for new kit format
     public ConfigManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), "config.json");
         this.warpsFile = new File(plugin.getDataFolder(), "warps.json"); // Initialize warps file
         this.kitsFile = new File(plugin.getDataFolder(), "kits.json");
+        this.kitsYamlFile = new File(plugin.getDataFolder(), "kits.yml");
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Optional.class, new OptionalTypeAdapter())
                 .enableComplexMapKeySerialization()
@@ -59,6 +63,7 @@ public class ConfigManager {
         this.config = new HashMap<>();
         this.warps = new HashMap<>();
         this.kits = new HashMap<>();
+        this.kitsYaml = new YamlConfiguration();
         ensurePluginFolder();
         loadConfig();
         loadWarps();
@@ -250,30 +255,82 @@ public class ConfigManager {
         saveConfig();
     }
     private void loadKits() {
-        if (!kitsFile.exists()) {
-            saveKits();
-            return;
+        // Load YAML kits first (new format)
+        if (kitsYamlFile.exists()) {
+            try {
+                kitsYaml = YamlConfiguration.loadConfiguration(kitsYamlFile);
+                plugin.getLogger().info("Loaded YAML kits from kits.yml");
+            } catch (Exception e) {
+                plugin.getLogger().warning("Could not load YAML kits file: " + e.getMessage());
+                kitsYaml = new YamlConfiguration();
+            }
+        } else {
+            kitsYaml = new YamlConfiguration();
         }
 
-        try (Reader reader = new FileReader(kitsFile)) {
-            kits =
-                    gson.fromJson(
-                            reader, new TypeToken<Map<String, List<Map<String, Object>>>>() {}.getType());
-        } catch (IOException e) {
-            plugin.getLogger().warning("Could not load kits file: " + e.getMessage());
+        // Load legacy JSON kits for backward compatibility
+        if (kitsFile.exists()) {
+            try (Reader reader = new FileReader(kitsFile)) {
+                kits = gson.fromJson(
+                        reader, new TypeToken<Map<String, List<Map<String, Object>>>>() {}.getType());
+                if (kits != null) {
+                    plugin.getLogger().info("Loaded legacy JSON kits from kits.json");
+                }
+            } catch (IOException e) {
+                plugin.getLogger().warning("Could not load legacy kits file: " + e.getMessage());
+                kits = new HashMap<>();
+            }
+        } else {
             kits = new HashMap<>();
         }
     }
 
+    private void saveKitsYaml() {
+        try {
+            kitsYaml.save(kitsYamlFile);
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not save YAML kits file: " + e.getMessage());
+        }
+    }
+
     private void saveKits() {
+        // Keep legacy method for backward compatibility, but it's no longer used for new kits
         try (Writer writer = new FileWriter(kitsFile)) {
             gson.toJson(kits, writer);
         } catch (IOException e) {
-            plugin.getLogger().warning("Could not save kits file: " + e.getMessage());
+            plugin.getLogger().warning("Could not save legacy kits file: " + e.getMessage());
         }
     }
 
     public void saveKit(String kitName, List<ItemStack> items) {
+        // Save using YAML format with Bukkit's built-in ItemStack serialization
+        try {
+            // Create a map to store the kit data
+            Map<String, Object> kitData = new HashMap<>();
+            
+            // Store items by slot
+            for (int i = 0; i < items.size(); i++) {
+                ItemStack item = items.get(i);
+                if (item != null) {
+                    // Use Bukkit's built-in serialization
+                    kitData.put("slot" + i, item.serialize());
+                }
+            }
+            
+            // Save to YAML
+            kitsYaml.set("kits." + kitName, kitData);
+            saveKitsYaml();
+            
+            plugin.getLogger().info("Saved kit '" + kitName + "' in YAML format");
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error saving kit " + kitName + " in YAML format: " + e.getMessage());
+            // Fallback to legacy JSON format
+            saveKitLegacy(kitName, items);
+        }
+    }
+
+    private void saveKitLegacy(String kitName, List<ItemStack> items) {
+        // Legacy JSON saving method for fallback
         List<Map<String, Object>> serializedItems = new ArrayList<>();
 
         for (ItemStack item : items) {
@@ -295,8 +352,43 @@ public class ConfigManager {
     }
 
     public List<ItemStack> getKit(String kitName) {
-        List<Map<String, Object>> serializedItems = kits.get(encodeString(kitName)); // Encode kit name for lookup
-
+        // First try to load from YAML format (new format)
+        if (kitsYaml.contains("kits." + kitName)) {
+            try {
+                Map<String, Object> kitData = kitsYaml.getConfigurationSection("kits." + kitName).getValues(false);
+                List<ItemStack> items = new ArrayList<>();
+                
+                // Create a list with 41 slots (36 main inventory + 4 armor + 1 offhand)
+                for (int i = 0; i < 41; i++) {
+                    items.add(null);
+                }
+                
+                // Load items from their slots
+                for (Map.Entry<String, Object> entry : kitData.entrySet()) {
+                    if (entry.getKey().startsWith("slot")) {
+                        try {
+                            String slotStr = entry.getKey().substring(4); // Remove "slot" prefix
+                            int slot = Integer.parseInt(slotStr);
+                            if (slot >= 0 && slot < 41) {
+                                @SuppressWarnings("unchecked")
+                                Map<String, Object> itemData = (Map<String, Object>) entry.getValue();
+                                ItemStack item = ItemStack.deserialize(itemData);
+                                items.set(slot, item);
+                            }
+                        } catch (Exception e) {
+                            plugin.getLogger().warning("Error deserializing item in slot " + entry.getKey() + " for kit " + kitName + ": " + e.getMessage());
+                        }
+                    }
+                }
+                
+                return items;
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error loading kit " + kitName + " from YAML: " + e.getMessage());
+            }
+        }
+        
+        // Fallback to legacy JSON format
+        List<Map<String, Object>> serializedItems = kits.get(encodeString(kitName));
         if (serializedItems == null) {
             return null;
         }
@@ -318,19 +410,40 @@ public class ConfigManager {
     }
 
     public void deleteKit(String kitName) {
+        // Try to delete from YAML first
+        if (kitsYaml.contains("kits." + kitName)) {
+            kitsYaml.set("kits." + kitName, null);
+            saveKitsYaml();
+            plugin.getLogger().info("Deleted kit '" + kitName + "' from YAML format");
+            return;
+        }
+        
+        // Fallback to legacy JSON deletion
         kits.remove(encodeString(kitName)); // Encode kit name for removal
         saveKits();
     }
 
     public Set<String> getKitNames() {
+        Set<String> kitNames = new HashSet<>();
+        
+        // Get kit names from YAML format
+        if (kitsYaml.contains("kits")) {
+            try {
+                for (String key : kitsYaml.getConfigurationSection("kits").getKeys(false)) {
+                    kitNames.add(key);
+                }
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error getting kit names from YAML: " + e.getMessage());
+            }
+        }
+        
+        // Get kit names from legacy JSON format
         Set<String> encodedNames = kits.keySet();
-        Set<String> decodedNames = new HashSet<>();
-
         for (String encodedName : encodedNames) {
-            decodedNames.add(decodeString(encodedName));
+            kitNames.add(decodeString(encodedName));
         }
 
-        return decodedNames;
+        return kitNames;
     }
 
     // Helper method to encode strings using Base64
