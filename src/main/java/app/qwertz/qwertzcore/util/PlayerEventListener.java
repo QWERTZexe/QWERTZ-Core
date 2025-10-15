@@ -58,6 +58,19 @@ public class PlayerEventListener implements Listener {
         }
         hideCommand.handlePlayerJoin(player);
         plugin.getEventManager().addNewPlayer(player);
+        
+        // Clear inventory on join if enabled and player doesn't have bypass permission
+        if (plugin.getConfigManager().getClearOnJoin() && !player.hasPermission("qwertzcore.staff.bypassclear")) {
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(new org.bukkit.inventory.ItemStack[4]);
+            player.getInventory().setItemInOffHand(null);
+            // Clear cursor slot and crafting grid
+            if (player.getOpenInventory() != null) {
+                player.getOpenInventory().setCursor(null);
+                player.getOpenInventory().getTopInventory().clear();
+            }
+        }
+        
         if (plugin.getConfigManager().getTpOnJoin()) {
             player.teleport(plugin.getConfigManager().getSpawnLocation());
         }

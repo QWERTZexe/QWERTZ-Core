@@ -150,6 +150,8 @@ public class ConfigManager {
          addDefault("coloredChat", true);
          addDefault("allowRejoining", true);
          addDefault("rejoinTime", 30);
+         addDefault("clearOnJoin", true);
+         addDefault("clearOnTp", true);
 
         // Garbage collect: Remove keys that are in the file but not defined as defaults
         System.out.print(keep);
@@ -1005,5 +1007,13 @@ public class ConfigManager {
 
      public int getRejoinTime() {
          return ((Number) config.getOrDefault("rejoinTime", 30)).intValue();
+     }
+
+     public boolean getClearOnJoin() {
+         return (boolean) config.getOrDefault("clearOnJoin", false);
+     }
+
+     public boolean getClearOnTp() {
+         return (boolean) config.getOrDefault("clearOnTp", false);
      }
 }

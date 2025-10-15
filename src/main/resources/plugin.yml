@@ -548,6 +548,9 @@ permissions:
   qwertzcore.staff.speed:
     description: Allows the player to set their speed
     default: op
+  qwertzcore.staff.bypassclear:
+    description: Allows the player to bypass inventory clearing on join and teleport
+    default: op
   qwertzcore.host.broadcast:
     description: Allows the player to broadcast messages to all players
     default: op

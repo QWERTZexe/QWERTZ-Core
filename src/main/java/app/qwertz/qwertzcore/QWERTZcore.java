@@ -40,7 +40,7 @@ public final class QWERTZcore extends JavaPlugin {
     public static final String CORE_ICON_RAW = "❇";
     public static final String CORE_ICON_COLOR = "#FF6700";
     public static final String CORE_ICON = translateHexColorCodes("&" + CORE_ICON_COLOR + CORE_ICON_RAW) + ChatColor.RESET;
-    public static final String VERSION = "3.1";
+    public static final String VERSION = "3.2";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";

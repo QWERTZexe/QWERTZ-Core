@@ -4,7 +4,7 @@
 
 QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It provides a comprehensive set of tools for hosts and administrators to manage events, player statuses, and game mechanics.
 
-**Newest version:** 3.1
+**Newest version:** 3.2
 **Author:** QWERTZ_EXE
 **Website:** https://qwertz.app
 
@@ -14,6 +14,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - Player revival system with tokens
 - Gamemode management
 - Inventory management for alive/dead players
+- Automatic inventory clearing on join and teleport
 - Player visibility controls
 - Set and let players use warps
 - Create and give out kits
@@ -185,6 +186,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 #### Staff Permissions
 
 - `qwertzcore.staff.speed` - Set your speed
+- `qwertzcore.staff.bypassclear` - Bypass inventory clearing on join and teleport
 
 #### Player Permissions
 

@@ -41,10 +41,13 @@ public class ClearInventoryCommand implements CommandExecutor {
         for (Player player : Bukkit.getOnlinePlayers()) {
             boolean isDead = plugin.getEventManager().isPlayerDead(player);
             if ((clearAlive && !isDead) || (!clearAlive && isDead)) {
+                if (player.hasPermission("qwertzcore.staff.bypassclear") && !clearAlive) {
+                } else {
                 clearPlayerInventory(player);
                 plugin.getMessageManager().sendMessage(player, "clearinv.got-cleared");
                 plugin.getSoundManager().playSound(player);
                 clearedCount++;
+                }
             }
         }
 

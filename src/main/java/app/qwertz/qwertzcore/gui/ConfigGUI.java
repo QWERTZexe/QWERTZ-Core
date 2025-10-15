@@ -207,6 +207,8 @@ public class ConfigGUI implements Listener {
             case "chat" -> Material.ENCHANTED_BOOK;
             case "allowrejoining" -> Material.REPEATING_COMMAND_BLOCK;
             case "rejointime" -> Material.CLOCK;
+            case "clearonjoin" -> Material.CHEST;
+            case "clearontp" -> Material.ENDER_CHEST;
             default -> Material.PAPER;
         };
 

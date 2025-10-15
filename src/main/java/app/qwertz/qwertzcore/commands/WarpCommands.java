@@ -183,6 +183,18 @@ public class WarpCommands implements CommandExecutor {
     }
 
     private void teleportToWarp(Player player, Location location, boolean wasAlive) {
+        // Clear inventory on teleport if enabled and player doesn't have bypass permission
+        if (plugin.getConfigManager().getClearOnTp() && !player.hasPermission("qwertzcore.staff.bypassclear")) {
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(new org.bukkit.inventory.ItemStack[4]);
+            player.getInventory().setItemInOffHand(null);
+            // Clear cursor slot and crafting grid
+            if (player.getOpenInventory() != null) {
+                player.getOpenInventory().setCursor(null);
+                player.getOpenInventory().getTopInventory().clear();
+            }
+        }
+        
         player.teleport(location);
         plugin.getMessageManager().sendMessage(player, "warps.success");
         plugin.getSoundManager().playSound(player);
