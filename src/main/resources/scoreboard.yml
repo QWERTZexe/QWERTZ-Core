@@ -12,6 +12,10 @@
 
 title: "&e%server%" # Scoreboard Title
 
+# The number color to use for the scoreboard numbers. To remove numbers set to "#"
+# Hex colors only! e.g. "#ff00ff"
+number-color: "#"
+
 lines:
   12: "&r&m----------------&r"  # Strikethrough line
   11: "&eEVENT"

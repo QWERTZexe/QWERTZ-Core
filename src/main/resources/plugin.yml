@@ -6,7 +6,7 @@ load: STARTUP
 authors: [ QWERTZ_EXE ]
 description: All in one event core!
 website: https://qwertz.app
-softdepend: [LuckPerms, PowerRanks, WorldGuard, PlaceholderAPI]
+softdepend: [LuckPerms, PowerRanks, WorldGuard, PlaceholderAPI, packetevents]
 commands:
   core:
     description: Displays information about QWERTZ Core

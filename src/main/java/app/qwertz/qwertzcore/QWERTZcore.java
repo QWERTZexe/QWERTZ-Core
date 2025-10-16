@@ -20,8 +20,10 @@ import app.qwertz.qwertzcore.commands.tab.*;
 import app.qwertz.qwertzcore.gui.ConfigGUI;
 import app.qwertz.qwertzcore.listeners.PollChatListener;
 import app.qwertz.qwertzcore.listeners.ChatRevivalChatListener;
+import app.qwertz.qwertzcore.packets.PacketManager;
 import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +42,7 @@ public final class QWERTZcore extends JavaPlugin {
     public static final String CORE_ICON_RAW = "❇";
     public static final String CORE_ICON_COLOR = "#FF6700";
     public static final String CORE_ICON = translateHexColorCodes("&" + CORE_ICON_COLOR + CORE_ICON_RAW) + ChatColor.RESET;
-    public static final String VERSION = "3.2";
+    public static final String VERSION = "3.3";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -65,7 +67,7 @@ public final class QWERTZcore extends JavaPlugin {
     private PollCommand pollCommand;
     private ChatReviveCommand chatReviveCommand;
     private RejoinManager rejoinManager;
-
+    private PacketManager packetManager = null;
 
     @Override
     public void onEnable() {
@@ -108,6 +110,9 @@ public final class QWERTZcore extends JavaPlugin {
         this.updateChecker = new UpdateChecker(this);
         this.blockManager = new BlockManager(this);
         this.rejoinManager = new RejoinManager(this);
+        if (this.packetManager == null) {
+            this.packetManager = new PacketManager(SpigotPacketEventsBuilder.build(this), this);
+        }
         registerCommands();
         registerListeners();
         PluginCommand configCommand = this.getCommand("config");
@@ -128,6 +133,12 @@ public final class QWERTZcore extends JavaPlugin {
         }
         printAsciiArt();
         getLogger().info("QWERTZ Core has been enabled!");
+        Bukkit.getScheduler().runTask(this, this::onDone);
+    }
+
+    public void onDone() {
+        getLogger().info("\u001B[33mServer started successfully with QWERTZ Core!");
+        packetManager.register();
     }
 
     private void printAsciiArt() {
@@ -176,7 +187,9 @@ public final class QWERTZcore extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling QWERTZ Core...");
-        metrics.shutdown();
+        if (metrics != null) {
+            metrics.shutdown();
+        }
         metrics = null;
         HandlerList.unregisterAll(this);
         configManager = null;
@@ -184,10 +197,14 @@ public final class QWERTZcore extends JavaPlugin {
         soundManager = null;
         eventManager = null;
         rankManager = null;
-        scoreboardManager.stopScoreboardUpdater();
-        scoreboardManager.removeScoreboardFromAllPlayers();
+        if (scoreboardManager != null) {
+            scoreboardManager.stopScoreboardUpdater();
+            scoreboardManager.removeScoreboardFromAllPlayers();
+        }
         scoreboardManager = null;
-        tablistManager.stopTabUpdater();
+        if (tablistManager != null) {
+            tablistManager.stopTabUpdater();
+        }
         tablistManager = null;
         chatManager = null;
         databaseManager = null;

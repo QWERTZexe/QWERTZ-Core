@@ -68,6 +68,9 @@ public class ScoreboardManager {
             }
         }
     }
+    public String getNumberColor() {
+        return scoreboardConfig.getString("number-color", "#FF5555");
+    }
     private void loadScoreboardConfig() {
         scoreboardFile = new File(plugin.getDataFolder(), "scoreboard.yml");
         if (!scoreboardFile.exists()) {
