@@ -49,6 +49,7 @@ public final class QWERTZcore extends JavaPlugin {
 
     private Metrics metrics;
     public Boolean isUsingWorldGuard = false;
+    public Boolean isUsingPacketEvents = false;
     private VanishManager vanishManager;
     private SoundManager soundManager;
     private EventManager eventManager;
@@ -100,6 +101,13 @@ public final class QWERTZcore extends JavaPlugin {
         } else {
             getLogger().warning("[EXTENSION] WorldGuard not found. No security commands will be provided.");
         }
+
+        if (Bukkit.getPluginManager().getPlugin("packetevents") != null) {
+            this.isUsingPacketEvents = true;
+            getLogger().info("[EXTENSION] packetevents found and added packet-based features successfully.");
+        } else {
+            getLogger().warning("[EXTENSION] packetevents not found. No packet-based features will be provided.");
+        }
         this.messageManager = new MessageManager(this);
         this.databaseManager = new DatabaseManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
@@ -110,7 +118,7 @@ public final class QWERTZcore extends JavaPlugin {
         this.updateChecker = new UpdateChecker(this);
         this.blockManager = new BlockManager(this);
         this.rejoinManager = new RejoinManager(this);
-        if (this.packetManager == null) {
+        if (this.packetManager == null && isUsingPacketEvents) {
             this.packetManager = new PacketManager(SpigotPacketEventsBuilder.build(this), this);
         }
         registerCommands();
@@ -138,7 +146,9 @@ public final class QWERTZcore extends JavaPlugin {
 
     public void onDone() {
         getLogger().info("\u001B[33mServer started successfully with QWERTZ Core!");
-        packetManager.register();
+        if (packetManager != null) {
+            packetManager.register();
+        }
     }
 
     private void printAsciiArt() {
