@@ -152,6 +152,7 @@ public class ConfigManager {
          addDefault("rejoinTime", 30);
          addDefault("clearOnJoin", true);
          addDefault("clearOnTp", true);
+         addDefault("pinging", true);
 
         // Garbage collect: Remove keys that are in the file but not defined as defaults
         System.out.print(keep);
@@ -1015,5 +1016,9 @@ public class ConfigManager {
 
      public boolean getClearOnTp() {
          return (boolean) config.getOrDefault("clearOnTp", false);
+     }
+
+     public boolean getPinging() {
+         return (boolean) config.getOrDefault("pinging", true);
      }
 }

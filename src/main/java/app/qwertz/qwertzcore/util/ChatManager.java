@@ -23,7 +23,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import javax.print.attribute.HashAttributeSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,6 +57,11 @@ public class ChatManager implements Listener {
                 message = plugin.translateHexColorCodes(ChatColor.translateAlternateColorCodes('&', message));
             }
             
+            // Apply pinging if enabled and player has permission
+            if (plugin.getConfigManager().getPinging() && player.hasPermission("qwertzcore.chat.ping")) {
+                message = applyPinging(message);
+            }
+            
             HashMap<String, String> localMap = new HashMap<>();
             localMap.put("%name%", player.getName());
             localMap.put("%prefix%", prefix);
@@ -73,6 +77,23 @@ public class ChatManager implements Listener {
             for (String emoji : emojis) {
                 String[] parts = emoji.split("\\|");  // Escape pipe character
                 message = message.replace(parts[0], parts.length > 1 ? parts[1] : parts[0]);
+            }
+        }
+        return message;
+    }
+
+    public String applyPinging(String message) {
+        // Get all online players
+        for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
+            String playerName = onlinePlayer.getName();
+            // Check if the message contains the player's name (case-insensitive)
+            if (message.toLowerCase().contains(playerName.toLowerCase())) {
+                // Replace the player name with the ping format
+                plugin.getSoundManager().playSound(onlinePlayer);
+                String pingFormat = plugin.getMessageManager().prepareMessage(plugin.getMessageManager().getMessage("general.ping-format"), new HashMap<>());
+                pingFormat = pingFormat.replace("%name%", playerName);
+                // Use case-insensitive replacement
+                message = message.replaceAll("(?i)" + java.util.regex.Pattern.quote(playerName), pingFormat);
             }
         }
         return message;

@@ -26,6 +26,8 @@ general:
   player-not-found: "%colorError%\u1d18\u029f\u1d00\u028f\u1d07\u0280 \u0274\u1d0f\u1d1b \ua730\u1d0f\u1d1c\u0274\u1d05!"
   no-permission: "%colorError%\u028f\u1d0f\u1d1c \u1d05\u1d0f\u0274\u1d1b \u029c\u1d00\u1d20\u1d07 \u1d18\u1d07\u0280\u1d0d\u026a\u0455\u0455\u026a\u1d0f\u0274 \u1d1b\u1d0f \u1d1c\u0455\u1d07 \u1d1b\u029c\u026a\u0455 \u1d04\u1d0f\u1d0d\u1d0d\u1d00\u0274\u1d05."
   disabled-command: "%colorError%\u1d1b\u029c\u026a\u0455 \u1d04\u1d0f\u1d0d\u1d0d\u1d00\u0274\u1d05 \u026a\u0455 \u1d05\u026a\u0455\u1d00\u0299\u029f\u1d07\u1d05!"
+  # Valid placeholders: %name%
+  ping-format: "%colorSecondary%@%name%\u00a7r"
 
 chatting:
   disabled: "%colorError%\u1d1b\u029c\u1d07 \u1d04\u029c\u1d00\u1d1b \u026a\u0455 \u1d04\u1d1c\u0280\u0280\u1d07\u0274\u1d1b\u029f\u028f \u1d0d\u1d1c\u1d1b\u1d07\u1d05."
@@ -439,7 +441,7 @@ rejoin:
   disabled: "%CORE_ICON% %colorError%Rejoin system has been disabled!"
   time-set: "%CORE_ICON% %colorSuccess%Rejoin time set to %time% seconds!"
   invalid-number: "%colorError%Invalid number format!"
-  status-title: "%colorPrimary%Rejoin System Status:"
+  status-title: "%CORE_ICON% %colorPrimary%Rejoin System Status:"
   status-enabled: "%colorSuccess%Allow Rejoining: Enabled"
   status-disabled: "%colorError%Allow Rejoining: Disabled"
   status-time: "%colorTertiary%Rejoin Time: %colorPrimary%%time% seconds"

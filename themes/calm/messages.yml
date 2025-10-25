@@ -26,6 +26,8 @@ general:
   player-not-found: "%colorError%Player not found!"
   no-permission: "%colorError%You don't have permission to use this command."
   disabled-command: "%colorError%This command is disabled!"
+  # Valid placeholders: %name%
+  ping-format: "%colorSecondary%@%name%\u00a7r"
 
 chatting:
   disabled: "%colorError%The chat is currently muted!"
@@ -435,7 +437,7 @@ rejoin:
   disabled: "%CORE_ICON% %colorError%Rejoin system has been disabled!"
   time-set: "%CORE_ICON% %colorSuccess%Rejoin time set to %time% seconds!"
   invalid-number: "%colorError%Invalid number format!"
-  status-title: "%colorPrimary%Rejoin System Status:"
+  status-title: "%CORE_ICON% %colorPrimary%Rejoin System Status:"
   status-enabled: "%colorSuccess%Allow Rejoining: Enabled"
   status-disabled: "%colorError%Allow Rejoining: Disabled"
   status-time: "%colorTertiary%Rejoin Time: %colorPrimary%%time% seconds"

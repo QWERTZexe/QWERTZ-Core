@@ -20,6 +20,8 @@ general:
   player-not-found: "%colorError%Pwayer nya~ not found! :("
   no-permission: "%colorError%You don’t have the pwermission to use dis command, nya! >.<"
   disabled-command: "%colorError%This command is disabwed, sowwy! *nyaaa*"
+  # Valid placeholders: %name%
+  ping-format: "%colorSecondary%@%name%\u00a7r"
 
 chatting:
   disabled: "%colorError%Chat is disabwed, don't speak up~ ;w;"
@@ -316,7 +318,7 @@ rejoin:
   disabled: "%CORE_ICON% %colorError%Wejoin system has been disabwed! >_<"
   time-set: "%CORE_ICON% %colorSuccess%Wejoin time set to %time% seconds! UwU"
   invalid-number: "%colorError%Invalid numbew fowmat! T_T"
-  status-title: "%colorPrimary%Wejoin System Status:"
+  status-title: "%CORE_ICON% %colorPrimary%Wejoin System Status:"
   status-enabled: "%colorSuccess%Awwow Wejoining: Enabwed"
   status-disabled: "%colorError%Awwow Wejoining: Disabwed"
   status-time: "%colorTertiary%Wejoin Time: %colorPrimary%%time% seconds"
