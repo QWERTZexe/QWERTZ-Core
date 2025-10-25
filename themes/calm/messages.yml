@@ -27,7 +27,7 @@ general:
   no-permission: "%colorError%You don't have permission to use this command."
   disabled-command: "%colorError%This command is disabled!"
   # Valid placeholders: %name%
-  ping-format: "%colorSecondary%@%name%\u00a7r"
+  ping-format: "%colorPrimary%@%name%\u00a7r"
 
 chatting:
   disabled: "%colorError%The chat is currently muted!"
