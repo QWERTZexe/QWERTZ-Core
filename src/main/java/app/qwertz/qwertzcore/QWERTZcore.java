@@ -42,7 +42,7 @@ public final class QWERTZcore extends JavaPlugin {
     public static final String CORE_ICON_RAW = "❇";
     public static final String CORE_ICON_COLOR = "#FF6700";
     public static final String CORE_ICON = translateHexColorCodes("&" + CORE_ICON_COLOR + CORE_ICON_RAW) + ChatColor.RESET;
-    public static final String VERSION = "3.3";
+    public static final String VERSION = "3.4";
     public static final String AUTHORS = "QWERTZ_EXE";
     public static final String DISCORD_LINK = "https://discord.gg/Vp6Q4FHCzf";
     public static final String WEBSITE = "https://qwertz.app";
@@ -241,6 +241,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("revive").setExecutor(eventCommands);
         getCommand("unrevive").setExecutor(eventCommands);
         getCommand("reviveall").setExecutor(eventCommands);
+        getCommand("reviverandom").setExecutor(eventCommands);
         getCommand("unreviveall").setExecutor(eventCommands);
         getCommand("listalive").setExecutor(eventCommands);
         getCommand("listdead").setExecutor(eventCommands);
@@ -346,6 +347,7 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("emojis").setExecutor(new EmojiCommand(this));
         getCommand("speed").setExecutor(new SpeedCommand(this));
         getCommand("speed").setTabCompleter(new SpeedTabCompleter());
+        getCommand("skull").setExecutor(new SkullCommand(this));
         getCommand("broadcast").setExecutor(new BroadcastCommand(this));
         getCommand("rejoin").setExecutor(new RejoinCommand(this));
         getCommand("rejoin").setTabCompleter(new RejoinTabCompleter());

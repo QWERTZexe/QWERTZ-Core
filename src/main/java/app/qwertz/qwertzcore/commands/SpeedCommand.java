@@ -60,7 +60,7 @@ public class SpeedCommand implements CommandExecutor {
         float speedValue = speed / 10.0f; // Converts 1-10 to 0.1-1.0
 
         player.setWalkSpeed(speedValue);
-        player.setFlySpeed(speedValue);
+        player.setFlySpeed(speedValue/2);
         HashMap<String, String> localMap = new HashMap<>();
         localMap.put("%speed%", String.valueOf(speed));
         plugin.getMessageManager().sendMessage(sender, "speed.changed", localMap);

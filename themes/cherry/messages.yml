@@ -89,6 +89,8 @@ event:
   # Valid placeholders: %player%, %name%
   revive: "%CORE_ICON% %colorPrimary%%player%%colorDead% \u029c\u1d00\u0455 \u0280\u1d07\u1d20\u026a\u1d20\u1d07\u1d05 %colorPrimary%%name%%colorDead%!"
   # Valid placeholders: %player%, %name%
+  reviverandom: "%CORE_ICON% %colorPrimary%%name%%colorDead% \u029c\u1d00\u0455 \u0280\u1d07\u1d20\u026a\u1d20\u1d07\u1d05 \u0280\u1d00\u0274\u1d0f\u029c\u029c\u1d22 by %colorPrimary%%player%%colorDead%!"
+  # Valid placeholders: %player%, %name%
   unrevive: "%CORE_ICON% %colorPrimary%%player%%colorDead% \u029c\u1d00\u0455 \u1d1c\u0274\u0280\u1d07\u1d20\u026a\u1d20\u1d07\u1d05 %colorPrimary%%name%%colorDead%!"
   noalive: "%colorDead%\u0274\u1d0f \u1d0f\u0274\u1d07 \u026a\u0455 \u1d00\u029f\u026a\u1d20\u1d07!"
   nodead: "%colorDead%\u0274\u1d0f \u1d0f\u0274\u1d07 \u026a\u0455 \u1d05\u1d07\u1d00\u1d05!"
@@ -434,6 +436,10 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Your speed has been set to %speed%"
   out-of-range: "%colorError%Speed out of range! (1 to 10)"
+
+skull:
+  # Valid placeholders: %name%
+  received: "%CORE_ICON% %colorPrimary%%name%%colorDead%'s %colorPrimary%head %colorDead%has been received!"
 
 rejoin:
   welcome-back: "%CORE_ICON% %colorSuccess%Welcome back! You rejoined within the allowed time window."

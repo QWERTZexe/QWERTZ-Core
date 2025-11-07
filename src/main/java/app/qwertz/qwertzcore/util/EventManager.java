@@ -42,6 +42,10 @@ public class EventManager {
     }
 
     public boolean revivePlayer(Player target, Player executor) {
+        return revivePlayer(target, executor, "event.revive");
+    }
+
+    public boolean revivePlayer(Player target, Player executor, String messageKey) {
         UUID targetUUID = target.getUniqueId();
 
         if (deadPlayers.remove(targetUUID)) {
@@ -54,7 +58,7 @@ public class EventManager {
             localMap.put("%name%", target.getName());
             localMap.put("%player%", executor.getName());
 
-            broadcastMessage("event.revive", localMap);
+            broadcastMessage(messageKey, localMap);
             return true;
         }
         if (!deadPlayers.contains(targetUUID) && !alivePlayers.contains(targetUUID)) {
@@ -67,7 +71,7 @@ public class EventManager {
             localMap.put("%name%", target.getName());
             localMap.put("%player%", executor.getName());
 
-            broadcastMessage("event.revive", localMap);
+            broadcastMessage(messageKey, localMap);
             return true;
         }
         else {

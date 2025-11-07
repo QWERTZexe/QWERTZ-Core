@@ -53,6 +53,10 @@ commands:
     description: Revive all players
     usage: /<command>
     permission: qwertzcore.host.reviveall
+  reviverandom:
+    description: Revive a random dead player
+    usage: /<command>
+    permission: qwertzcore.host.reviverandom
   unreviveall:
     description: Unrevive all players
     usage: /<command>
@@ -316,6 +320,11 @@ commands:
     description: Set your speed
     usage: /<command> <speed>
     permission: qwertzcore.staff.speed
+  skull:
+    description: Get a player's head
+    usage: /skull <player>
+    aliases: [head]
+    permission: qwertzcore.host.skull
   broadcast:
     description: Broadcast a message to all players in bigger form and action bar
     usage: /<command> <message>
@@ -349,6 +358,9 @@ permissions:
     default: op
   qwertzcore.host.revive:
     description: Allows the user to revive someone
+    default: op
+  qwertzcore.host.reviverandom:
+    description: Allows the user to revive a random player
     default: op
   qwertzcore.host.unrevive:
     description: Allows the user to unrevive someone
@@ -550,6 +562,9 @@ permissions:
     default: op
   qwertzcore.staff.bypassclear:
     description: Allows the player to bypass inventory clearing on join and teleport
+    default: op
+  qwertzcore.host.skull:
+    description: Allows the player to get player heads
     default: op
   qwertzcore.host.broadcast:
     description: Allows the player to broadcast messages to all players

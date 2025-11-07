@@ -257,78 +257,85 @@ public class ConfigManager {
         config.put(key, value);
         saveConfig();
     }
-    private void loadKits() {
-        // Load YAML kits first (new format)
-        if (kitsYamlFile.exists()) {
-            try {
-                kitsYaml = YamlConfiguration.loadConfiguration(kitsYamlFile);
-                plugin.getLogger().info("Loaded YAML kits from kits.yml");
-            } catch (Exception e) {
-                plugin.getLogger().warning("Could not load YAML kits file: " + e.getMessage());
-                kitsYaml = new YamlConfiguration();
-            }
-        } else {
-            kitsYaml = new YamlConfiguration();
+    public void saveKit(String kitName, List<ItemStack> items) {
+    try {
+        // Normalize kit size (ensure 41 slots)
+        while (items.size() < 41) {
+            items.add(null);
         }
 
-        // Load legacy JSON kits for backward compatibility
-        if (kitsFile.exists()) {
-            try (Reader reader = new FileReader(kitsFile)) {
-                kits = gson.fromJson(
-                        reader, new TypeToken<Map<String, List<Map<String, Object>>>>() {}.getType());
-                if (kits != null) {
-                    plugin.getLogger().info("Loaded legacy JSON kits from kits.json");
-                }
-            } catch (IOException e) {
-                plugin.getLogger().warning("Could not load legacy kits file: " + e.getMessage());
-                kits = new HashMap<>();
+        // Create a map to store the kit data
+        Map<String, Object> kitData = new HashMap<>();
+
+        // Store items by slot
+        for (int i = 0; i < items.size(); i++) {
+            ItemStack item = items.get(i);
+            if (item != null) {
+                kitData.put("slot" + i, item.serialize());
             }
-        } else {
-            kits = new HashMap<>();
         }
+
+        // Save to YAML
+        kitsYaml.set("kits." + kitName, kitData);
+        saveKitsYaml();
+
+        // 🔥 Reload YAML in memory so it's available instantly
+        kitsYaml = YamlConfiguration.loadConfiguration(kitsYamlFile);
+
+        plugin.getLogger().info("Saved kit '" + kitName + "' in YAML format");
+    } catch (Exception e) {
+        plugin.getLogger().warning("Error saving kit " + kitName + " in YAML format: " + e.getMessage());
+        saveKitLegacy(kitName, items);
     }
-
+}
     private void saveKitsYaml() {
         try {
             kitsYaml.save(kitsYamlFile);
         } catch (IOException e) {
-            plugin.getLogger().warning("Could not save YAML kits file: " + e.getMessage());
+            plugin.getLogger().warning("Could not save kits YAML file: " + e.getMessage());
         }
     }
 
+    /**
+     * Load legacy JSON kits file into memory. If file doesn't exist, create an empty one.
+     */
+    public void loadKits() {
+        // Ensure YAML kits are loaded first (new format)
+        try {
+            kitsYaml = YamlConfiguration.loadConfiguration(kitsYamlFile);
+        } catch (Exception e) {
+            plugin.getLogger().warning("Could not load kits.yml: " + e.getMessage());
+            kitsYaml = new YamlConfiguration();
+        }
+
+        // Legacy JSON kits handling (keep for backward compatibility)
+        if (!kitsFile.exists()) {
+            saveKits();
+        }
+
+        try (Reader reader = new FileReader(kitsFile)) {
+            Map<String, List<Map<String, Object>>> loaded = gson.fromJson(reader,
+                    new TypeToken<Map<String, List<Map<String, Object>>>>(){}.getType());
+            if (loaded != null) {
+                kits = loaded;
+            } else {
+                kits = new HashMap<>();
+            }
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not load kits file: " + e.getMessage());
+            kits = new HashMap<>();
+            saveKits();
+        }
+    }
+
+    /**
+     * Save the legacy JSON kits map to disk.
+     */
     private void saveKits() {
-        // Keep legacy method for backward compatibility, but it's no longer used for new kits
         try (Writer writer = new FileWriter(kitsFile)) {
             gson.toJson(kits, writer);
         } catch (IOException e) {
-            plugin.getLogger().warning("Could not save legacy kits file: " + e.getMessage());
-        }
-    }
-
-    public void saveKit(String kitName, List<ItemStack> items) {
-        // Save using YAML format with Bukkit's built-in ItemStack serialization
-        try {
-            // Create a map to store the kit data
-            Map<String, Object> kitData = new HashMap<>();
-            
-            // Store items by slot
-            for (int i = 0; i < items.size(); i++) {
-                ItemStack item = items.get(i);
-                if (item != null) {
-                    // Use Bukkit's built-in serialization
-                    kitData.put("slot" + i, item.serialize());
-                }
-            }
-            
-            // Save to YAML
-            kitsYaml.set("kits." + kitName, kitData);
-            saveKitsYaml();
-            
-            plugin.getLogger().info("Saved kit '" + kitName + "' in YAML format");
-        } catch (Exception e) {
-            plugin.getLogger().warning("Error saving kit " + kitName + " in YAML format: " + e.getMessage());
-            // Fallback to legacy JSON format
-            saveKitLegacy(kitName, items);
+            plugin.getLogger().warning("Could not save kits file: " + e.getMessage());
         }
     }
 
@@ -358,7 +365,9 @@ public class ConfigManager {
         // First try to load from YAML format (new format)
         if (kitsYaml.contains("kits." + kitName)) {
             try {
-                Map<String, Object> kitData = kitsYaml.getConfigurationSection("kits." + kitName).getValues(false);
+                // Get the configuration section for the kit
+                org.bukkit.configuration.ConfigurationSection section = kitsYaml.getConfigurationSection("kits." + kitName);
+                Map<String, Object> kitData = section.getValues(false);
                 List<ItemStack> items = new ArrayList<>();
                 
                 // Create a list with 41 slots (36 main inventory + 4 armor + 1 offhand)
@@ -373,10 +382,23 @@ public class ConfigManager {
                             String slotStr = entry.getKey().substring(4); // Remove "slot" prefix
                             int slot = Integer.parseInt(slotStr);
                             if (slot >= 0 && slot < 41) {
-                                @SuppressWarnings("unchecked")
-                                Map<String, Object> itemData = (Map<String, Object>) entry.getValue();
-                                ItemStack item = ItemStack.deserialize(itemData);
-                                items.set(slot, item);
+                                Object raw = entry.getValue();
+                                Map<String, Object> itemDataMap = null;
+                                if (raw instanceof org.bukkit.configuration.ConfigurationSection) {
+                                    itemDataMap = ((org.bukkit.configuration.ConfigurationSection) raw).getValues(true);
+                                } else if (raw instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> tmp = (Map<String, Object>) raw;
+                                    itemDataMap = tmp;
+                                } else {
+                                    // Unexpected type, skip
+                                    plugin.getLogger().warning("Unexpected kit data type for " + entry.getKey() + " in kit " + kitName + ": " + (raw == null ? "null" : raw.getClass().getName()));
+                                }
+
+                                if (itemDataMap != null) {
+                                    ItemStack item = ItemStack.deserialize(itemDataMap);
+                                    items.set(slot, item);
+                                }
                             }
                         } catch (Exception e) {
                             plugin.getLogger().warning("Error deserializing item in slot " + entry.getKey() + " for kit " + kitName + ": " + e.getMessage());

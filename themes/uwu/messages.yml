@@ -58,6 +58,7 @@ event:
   revivedall: "%CORE_ICON% %colorSuccess%Aww pwayers have been wevived! *yay*"
   unrevivedall: "%CORE_ICON% %colorDead%Aww pwayers have been unwevived! *nooo*"
   revive: "%CORE_ICON% %colorAlive%%name% has been wevived! *happy*"
+  reviverandom: "%CORE_ICON% %colorAlive%%name% has been wevived wandomly by %colorPrimary%%player%! *happy*"
   unrevive: "%CORE_ICON% %colorDead%%name% has been unwevived! *crying*"
   noalive: "%colorPrimary%There awe no awive pwayers! *so sad*"
   nodead: "%colorPrimary%There awe no dead pwayers! *yay*"
@@ -311,6 +312,10 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Youw speed has been set to %speed%! ^_^"
   out-of-range: "%colorError%Speed out of wange! (1 to 10) >_<"
+
+skull:
+  # Valid placeholders: %name%
+  received: "%CORE_ICON% %colorSuccess%You have weceived %colorPrimary%%name%'s %colorSuccess%head! *happy*"
 
 rejoin:
   welcome-back: "%CORE_ICON% %colorSuccess%Wewcome back! You wejoined within the awwowed time window! ^_^"

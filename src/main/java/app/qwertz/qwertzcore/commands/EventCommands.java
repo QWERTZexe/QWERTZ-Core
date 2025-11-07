@@ -26,9 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EventCommands implements CommandExecutor {
@@ -47,6 +45,8 @@ public class EventCommands implements CommandExecutor {
                 return handleUnrevive(sender, args);
             case "reviveall":
                 return handleReviveAll(sender);
+            case "reviverandom":
+                return handleReviveRandom(sender);
             case "unreviveall":
                 return handleUnReviveAll(sender);
             case "listalive":
@@ -128,6 +128,42 @@ public class EventCommands implements CommandExecutor {
         localMap.put("%player%", sender.getName());
         plugin.getMessageManager().broadcastMessage("event.revivedall", localMap);
         plugin.getSoundManager().broadcastConfigSound();
+        return true;
+    }
+
+    private boolean handleReviveRandom(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            plugin.getMessageManager().sendMessage(sender, "general.only-player-execute");
+            return true;
+        }
+
+        Player executor = (Player) sender;
+        List<Player> eligibleDeadPlayers = new ArrayList<>();
+        boolean reviveStaff = (Boolean) plugin.getConfigManager().get("reviveStaff");
+
+        // Get all dead players
+        for (UUID deadUUID : plugin.getEventManager().getDeadPlayers()) {
+            Player deadPlayer = Bukkit.getPlayer(deadUUID);
+            if (deadPlayer != null) {
+                // If reviveStaff is false, only include non-staff players
+                if (reviveStaff || !deadPlayer.hasPermission("qwertzcore.staff")) {
+                    eligibleDeadPlayers.add(deadPlayer);
+                }
+            }
+        }
+
+        if (eligibleDeadPlayers.isEmpty()) {
+            plugin.getMessageManager().sendMessage(sender, "event.nodead");
+            plugin.getSoundManager().playSoundToSender(sender);
+            return true;
+        }
+
+        // Pick a random player from eligible dead players
+        Random random = new Random();
+        Player randomPlayer = eligibleDeadPlayers.get(random.nextInt(eligibleDeadPlayers.size()));
+
+        // Revive the random player with custom message
+        plugin.getEventManager().revivePlayer(randomPlayer, executor, "event.reviverandom");
         return true;
     }
 

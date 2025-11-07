@@ -90,6 +90,8 @@ event:
   # Valid placeholders: %player% (Executor), %name% (Target)
   revive: "%CORE_ICON% %colorAlive%%name% has been revived by %colorAlive%%player%!"
   # Valid placeholders: %player% (Executor), %name% (Target)
+  reviverandom: "%CORE_ICON% %colorAlive%%name% has been revived randomly by %colorAlive%%player%!"
+  # Valid placeholders: %player% (Executor), %name% (Target)
   unrevive: "%CORE_ICON% %colorDead%%name% has been unrevived by %colorDead%%player%!"
   noalive: "%colorPrimary%There are no alive players!"
   nodead: "%colorPrimary%There are no dead players!"
@@ -434,6 +436,10 @@ speed:
   # Valid placeholders: %speed%
   changed: "%CORE_ICON% %colorSuccess%Your speed has been set to %speed%"
   out-of-range: "%colorError%Speed out of range! (1 to 10)"
+
+skull:
+  # Valid placeholders: %name%
+  received: "%CORE_ICON% %colorSuccess%You have received %colorAlive%%name%'s %colorSuccess%head!"
 
 rejoin:
   welcome-back: "%CORE_ICON% %colorSuccess%Welcome back! You rejoined within the allowed time window."
