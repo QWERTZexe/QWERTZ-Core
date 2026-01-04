@@ -17,8 +17,6 @@ package app.qwertz.qwertzcore.util;
 import app.qwertz.qwertzcore.QWERTZcore;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import nl.svenar.lib.json.simple.JSONArray;
-import nl.svenar.lib.json.simple.JSONObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -20,11 +20,9 @@ import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.WeightNode;
-import nl.svenar.powerranks.common.structure.PRPlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import nl.svenar.powerranks.api.PowerRanksAPI;
 
 import java.util.List;
 import java.util.Set;
@@ -32,14 +30,11 @@ import java.util.Set;
 public class RankManager {
     private final QWERTZcore plugin;
     private LuckPerms luckPerms;
-    private PowerRanksAPI powerRanksAPI;
     private boolean usingLuckPerms;
-    private boolean usingPowerRanks;
 
     public RankManager(QWERTZcore plugin) {
         this.plugin = plugin;
         this.usingLuckPerms = setupLuckPerms();
-        this.usingPowerRanks = setupPowerRanks();
     }
 
     private boolean setupLuckPerms() {
@@ -53,25 +48,11 @@ public class RankManager {
         return false;
     }
 
-    private boolean setupPowerRanks() {
-        if (plugin.getServer().getPluginManager().getPlugin("PowerRanks") != null) {
-            powerRanksAPI = new PowerRanksAPI();
-            return true;
-        }
-        return false;
-    }
-
     public String getRank(Player player) {
         if (usingLuckPerms) {
             User user = luckPerms.getUserManager().getUser(player.getUniqueId());
             if (user != null) {
                 return user.getPrimaryGroup();
-            }
-        } else if (usingPowerRanks) {
-            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
-            if (!playerRanks.isEmpty()) {
-                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
-                return primaryRank.getName();
             }
         }
         return "default";
@@ -84,12 +65,6 @@ public class RankManager {
             if (user != null) {
                 String tag = user.getCachedData().getMetaData().getMetaValue("tag");
                 return tag != null ? tag : "";
-            }
-        } else if (usingPowerRanks) {
-            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
-            if (!playerRanks.isEmpty()) {
-                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
-                return powerRanksAPI.getRanksAPI().getPrefix(primaryRank.getName());
             }
         }
         return "";
@@ -104,16 +79,6 @@ public class RankManager {
                     return ChatColor.translateAlternateColorCodes('&', prefix);
                 }
             }
-        } else if (usingPowerRanks) {
-            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
-            if (!playerRanks.isEmpty()) {
-                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
-                String prefix = powerRanksAPI.getRanksAPI().getPrefix(primaryRank.getName());
-                if (prefix != null && !prefix.isEmpty()) {
-                    return ChatColor.translateAlternateColorCodes('&', prefix);
-                }
-            }
-
         }
 
         if (player.isOp()) {
@@ -129,15 +94,6 @@ public class RankManager {
             if (user != null) {
                 String suffix = user.getCachedData().getMetaData().getSuffix();
                 if (suffix != null) {
-                    return ChatColor.translateAlternateColorCodes('&', suffix);
-                }
-            }
-        } else if (usingPowerRanks) {
-            Set<PRPlayerRank> playerRanks = powerRanksAPI.getPlayersAPI().getRanks(player.getUniqueId());
-            if (!playerRanks.isEmpty()) {
-                PRPlayerRank primaryRank = playerRanks.iterator().next(); // Get the first rank
-                String suffix = powerRanksAPI.getRanksAPI().getSuffix(primaryRank.getName());
-                if (suffix != null && !suffix.isEmpty()) {
                     return ChatColor.translateAlternateColorCodes('&', suffix);
                 }
             }
@@ -167,9 +123,5 @@ public class RankManager {
 
     public boolean isUsingLuckPerms() {
         return usingLuckPerms;
-    }
-
-    public boolean isUsingPowerRanks() {
-        return usingPowerRanks;
     }
 }
