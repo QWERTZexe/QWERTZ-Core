@@ -49,9 +49,10 @@ specialblocks:
   info: "%colorPrimary%Avaiwabwe bwock types: %types% uwu"
   invalid-material: "%colorError%Inva-wid material! ;o;"
   invalid-type: "%colorError%Inva-wid bwock type! %colorPrimary%Available types: %types%"
-  receive: "%CORE_ICON% %colorSuccess%You got a QWERTZ Core %colorPrimary%%blockType% block! UwU"
-  place: "%CORE_ICON% %colorPrimary%Placed %colorSecondary%%blockType% block! *sparkle* owo"
-  remove: "%CORE_ICON% %colorDead%Removed a speciaw bwock! T^T"
+  set: "%CORE_ICON% %colorSuccess%Set %colorPrimary%%blockType% %colorSuccess%to %colorPrimary%%material% uwu"
+  list-header: "%CORE_ICON% %colorPrimary%Cuwwent event bwock mappings: uwu"
+  # Valid placeholders: %blockType%, %material%
+  list-entry: "%colorPrimary%\u25cf %colorSecondary%%blockType% %colorPrimary%\u2192 %colorSecondary%%material%"
 event:
   alreadyalive: "%colorPrimary%%player% is awweady awive! T_T"
   alreadydead: "%colorPrimary%%player% is awweady dead! >_<"

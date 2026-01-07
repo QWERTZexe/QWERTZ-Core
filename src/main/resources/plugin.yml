@@ -229,7 +229,8 @@ commands:
     permission: qwertzcore.player.listwarps
   eventblock:
     description: Get a special QWERTZ Core event block
-    usage: /eventblock <block> [material]
+    usage: /eventblock <block> <material>
+    aliases: [specialblock]
     permission: qwertzcore.host.eventblock
   createkit:
     description: Sets a kit to the player's items

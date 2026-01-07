@@ -57,7 +57,7 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/createkit <kit>` - Create a kit
 - `/delkit <kit>` - Delete a kit
 - `/setad <platform> <advertisement>` - Set an advertisement for a platform
-- `/eventblock <block> [material]` - Get a QWERTZ Core event block
+- `/eventblock <block> <material>` - Bind a QWERTZ Core event block to a specific minecraft block, run it without args to see current mappings
 - `/kits` - Lists all kits
 - `/speed <speed>` - Sets your speed
 - `/broadcast <message>` - Broadcast a message to all players in bigger form and action bar

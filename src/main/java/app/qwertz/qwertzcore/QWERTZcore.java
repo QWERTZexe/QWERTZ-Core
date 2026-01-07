@@ -108,7 +108,6 @@ public final class QWERTZcore extends JavaPlugin {
         this.scoreboardManager = new ScoreboardManager(this);
         this.tablistManager = new TablistManager(this);
         this.chatManager = new ChatManager(this);
-        this.databaseManager.initializeSpecialBlocks();
         this.soundManager = new SoundManager(this);
         this.updateChecker = new UpdateChecker(this);
         this.blockManager = new BlockManager(this);

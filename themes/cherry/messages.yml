@@ -66,15 +66,10 @@ specialblocks:
   # Valid placeholders: %types%
   invalid-type: "%colorError%\u026a\u0274\u1d20\u1d00\u029f\u026a\u1d05 \u0299\u029f\u1d0f\u1d04\u1d0b \u1d1b\u028f\u1d18\u1d07! %colorPrimary%\u1d00\u1d20\u1d00\u026a\u029f\u1d00\u0299\u029f\u1d07 \u1d1b\u028f\u1d18\u1d07\u0455: %types%"
   # Valid placeholders: %blockType%, %material%
-  receive: "%CORE_ICON% %colorSuccess%\u028f\u1d0f\u1d1c \u029c\u1d00\u1d20\u1d07 \u0280\u1d07\u1d04\u1d07\u026a\u1d20\u1d07\u1d05 \u1d00 \u00a76QWERTZ \u1d04\u1d0f\u0280\u1d07 %colorPrimary%%blockType%
-    %colorSuccess%\u1d21\u026a\u1d1b\u029c \u1d0d\u1d00\u1d1b\u1d07\u0280\u026a\u1d00\u029f %colorPrimary%%material% %colorSuccess%!"
-  # Valid placeholders: %blockType%, %x%, %y%, %z%, %world%
-  place: "%CORE_ICON% %colorPrimary%\u1d18\u029f\u1d00\u1d04\u1d07\u1d05 \u1d00 %colorSecondary%%blockType%%colorPrimary%
-    \u1d00\u1d1b X: %colorSecondary%%x% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z:
-    %colorSecondary%%z% %colorPrimary%\u1d21\u1d0f\u0280\u029f\u1d05: %colorSecondary%%world%"
-  # Valid placeholders:%x%, %y%, %z%, %world%
-  remove: "%CORE_ICON% %colorDead%\u0280\u1d07\u1d0d\u1d0f\u1d20\u1d07\u1d05 \u0455\u1d18\u1d07\u1d04\u026a\u1d00\u029f \u0299\u029f\u1d0f\u1d04\u1d0b \u1d00\u1d1b X: %colorSecondary%%x%%colorDead%
-    Y: %colorSecondary%%y%%colorDead% Z: %colorSecondary%%z%%colorDead% \u1d21\u1d0f\u0280\u029f\u1d05: %colorSecondary%%world%"
+  set: "%CORE_ICON% %colorSuccess%\u0455\u1d07\u1d1b %colorPrimary%%blockType% %colorSuccess%\u1d1b\u1d0f %colorPrimary%%material%"
+  list-header: "%CORE_ICON% %colorPrimary%\u1d04\u1d1c\u0280\u0280\u1d07\u0274\u1d1b \u1d07\u1d20\u1d07\u0274\u1d1b \u0299\u029f\u1d0f\u1d04\u1d0b \u1d0d\u1d00\u1d18\u1d18\u026a\u0274\u0265\u0455:"
+  # Valid placeholders: %blockType%, %material%
+  list-entry: "%colorPrimary%\u25cf %colorSecondary%%blockType% %colorPrimary%\u2192 %colorSecondary%%material%"
 
 event:
   # Valid placeholders: %player%

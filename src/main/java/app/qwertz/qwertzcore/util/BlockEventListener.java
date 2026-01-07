@@ -16,7 +16,6 @@ package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.blocks.QWERTZcoreBlock;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,11 +25,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.HashMap;
-import java.util.Objects;
 
 public class BlockEventListener implements Listener {
     private final QWERTZcore plugin;
@@ -39,68 +33,32 @@ public class BlockEventListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getBlockPlaced();
-        ItemStack item = event.getItemInHand();
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta != null && meta.hasDisplayName()) {
-            String displayName = ChatColor.stripColor(meta.getDisplayName());
-            if (displayName.startsWith(QWERTZcore.CORE_ICON_RAW + " QWERTZ Core ")) {
-                String blockType = displayName.substring((QWERTZcore.CORE_ICON_RAW + " QWERTZ Core ").length());
-                BlockManager blockManager = plugin.getBlockManager();
-                if (blockManager.isValidBlockType(blockType)) {
-                    blockManager.setSpecialBlock(block.getLocation(), blockType, block.getType());
-                    if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                        HashMap<String, String> localMap = new HashMap<>();
-                        localMap.put("%blockType%", blockType);
-                        localMap.put("%x%", String.valueOf(block.getLocation().getBlockX()));
-                        localMap.put("%y%", String.valueOf(block.getLocation().getBlockY()));
-                        localMap.put("%z%", String.valueOf(block.getLocation().getBlockZ()));
-                        localMap.put("%world%", block.getWorld().getName());
-                        plugin.getMessageManager().sendMessage(player, "specialblocks.place", localMap);
-                    }
-                }
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         BlockManager blockManager = plugin.getBlockManager();
-        QWERTZcoreBlock specialBlock = blockManager.getSpecialBlock(block.getLocation());
+        QWERTZcoreBlock specialBlock = blockManager.getSpecialBlock(block.getType());
 
         if (specialBlock != null) {
             // Handle special block actions before the event might be cancelled
             specialBlock.onMine(event.getPlayer(), block);
-
-            // Schedule a task to run after the event has been processed by all plugins
-            plugin.getServer().getScheduler().runTask(plugin, () -> {
-                if (!event.isCancelled()) {
-                    // The block was successfully broken
-                    blockManager.removeSpecialBlock(block.getLocation());
-                    if ((Boolean) plugin.getConfigManager().get("specialBlockOutput")) {
-                        HashMap<String, String> localMap = new HashMap<>();
-                        localMap.put("%x%", String.valueOf(block.getLocation().getBlockX()));
-                        localMap.put("%y%", String.valueOf(block.getLocation().getBlockY()));
-                        localMap.put("%z%", String.valueOf(block.getLocation().getBlockZ()));
-                        localMap.put("%world%", block.getWorld().getName());
-                        plugin.getMessageManager().sendMessage(event.getPlayer(), "specialblocks.remove", localMap);
-                    }
-                }
-            });
         }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        // Only check if player actually moved to a different block
+        if (event.getFrom().getBlockX() == event.getTo().getBlockX() &&
+            event.getFrom().getBlockY() == event.getTo().getBlockY() &&
+            event.getFrom().getBlockZ() == event.getTo().getBlockZ()) {
+            return;
+        }
+        
         Player player = event.getPlayer();
-        Location playerLoc = player.getLocation();
+        Location playerLoc = event.getTo();
         Block blockInside = playerLoc.getBlock();
-        Block blockBelow = playerLoc.subtract(0, 1, 0).getBlock();
+        // Clone location before modifying to avoid corrupting the event
+        Block blockBelow = playerLoc.clone().subtract(0, 1, 0).getBlock();
 
         checkAndTriggerBlock(player, blockInside);
         checkAndTriggerBlock(player, blockBelow);
@@ -108,7 +66,7 @@ public class BlockEventListener implements Listener {
 
     private void checkAndTriggerBlock(Player player, Block block) {
         BlockManager blockManager = plugin.getBlockManager();
-        QWERTZcoreBlock specialBlock = blockManager.getSpecialBlock(block.getLocation());
+        QWERTZcoreBlock specialBlock = blockManager.getSpecialBlock(block.getType());
 
         if (specialBlock != null) {
             specialBlock.onTouch(player, block);

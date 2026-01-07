@@ -40,7 +40,17 @@ public enum QWERTZcoreBlockType {
     public String getName() {
         return name;
     }
-
+    public static Boolean contains(String blockType) {
+        if (blockType == null) {
+            return false;
+        }
+        try {
+            valueOf(blockType.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
     public Material getDefaultMaterial() {
         return defaultMaterial;
     }

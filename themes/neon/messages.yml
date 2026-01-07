@@ -66,11 +66,10 @@ specialblocks:
   # Valid placeholders: %types%
   invalid-type: "%colorError%Invalid block type! %colorPrimary%Available types: %types%"
   # Valid placeholders: %blockType%, %material%
-  receive: "%CORE_ICON% %colorSuccess%You have received a \u00a76QWERTZ Core %colorPrimary%%blockType% %colorSuccess%with material %colorPrimary%%material% %colorSuccess%!"
-  # Valid placeholders: %blockType%, %x%, %y%, %z%, %world%
-  place: "%CORE_ICON% %colorPrimary%Placed a %colorSecondary%%blockType%%colorPrimary% at X: %colorSecondary%%x% %colorPrimary%Y: %colorSecondary%%y% %colorPrimary%Z: %colorSecondary%%z% %colorPrimary%WORLD: %colorSecondary%%world%"
-  # Valid placeholders:%x%, %y%, %z%, %world%
-  remove: "%CORE_ICON% %colorDead%Removed special block at X: %colorSecondary%%x%%colorDead% Y: %colorSecondary%%y%%colorDead% Z: %colorSecondary%%z%%colorDead% WORLD: %colorSecondary%%world%"
+  set: "%CORE_ICON% %colorSuccess%Set %colorPrimary%%blockType% %colorSuccess%to %colorPrimary%%material%"
+  list-header: "%CORE_ICON% %colorPrimary%Current event block mappings:"
+  # Valid placeholders: %blockType%, %material%
+  list-entry: "%colorPrimary%\u25cf %colorSecondary%%blockType% %colorPrimary%\u2192 %colorSecondary%%material%"
 
 event:
   # Valid placeholders: %player%

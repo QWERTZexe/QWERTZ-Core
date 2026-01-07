@@ -15,6 +15,7 @@
 package app.qwertz.qwertzcore.util;
 
 import app.qwertz.qwertzcore.QWERTZcore;
+import app.qwertz.qwertzcore.blocks.QWERTZcoreBlockType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -145,15 +146,23 @@ public class ConfigManager {
         addDefault("suppressVanilla", true);
         addDefault("biggerMessages", true);
         addDefault("chatTimer", true);
-         addDefault("reviveStaff", false);
-         addDefault("emojis", true);
-         addDefault("coloredChat", true);
-         addDefault("allowRejoining", true);
-         addDefault("rejoinTime", 30);
-         addDefault("clearOnJoin", true);
-         addDefault("clearOnTp", true);
-         addDefault("pinging", true);
-
+        addDefault("reviveStaff", false);
+        addDefault("emojis", true);
+        addDefault("coloredChat", true);
+        addDefault("allowRejoining", true);
+        addDefault("rejoinTime", 30);
+        addDefault("clearOnJoin", true);
+        addDefault("clearOnTp", true);
+        addDefault("pinging", true);
+         
+        // Special blocks - each block type maps to a material (or null)
+        Map<String, String> defaultSpecialBlocks = new HashMap<>();
+        defaultSpecialBlocks.put("DAMAGE_BLOCK", null);
+        defaultSpecialBlocks.put("INSTANT_DEATH_BLOCK", null);
+        defaultSpecialBlocks.put("RANDOM_DROP_BLOCK", null);
+        defaultSpecialBlocks.put("GRAVITY_FLIP_BLOCK", null);
+        addDefault("specialBlocks", defaultSpecialBlocks);
+        setUpSpecialBlocks();
         // Garbage collect: Remove keys that are in the file but not defined as defaults
         System.out.print(keep);
         keysToRemove.removeAll(keep); // Remove all defaults that were already in the map
@@ -211,7 +220,27 @@ public class ConfigManager {
         }
     }
 
-
+    public void setUpSpecialBlocks() {
+        Map<String, String> specialBlocks = (Map<String, String>) config.get("specialBlocks");
+        if (specialBlocks == null) {
+            specialBlocks = new HashMap<>();
+        }
+        for (QWERTZcoreBlockType blockType : QWERTZcoreBlockType.values()) {
+            specialBlocks.put(blockType.name(), null);
+        }
+        // if block not in enum remove from map (collect keys to remove first to avoid ConcurrentModificationException)
+        java.util.List<String> keysToRemove = new java.util.ArrayList<>();
+        for (String blockType : specialBlocks.keySet()) {
+            if (!QWERTZcoreBlockType.contains(blockType)) {
+                keysToRemove.add(blockType);
+            }
+        }
+        for (String blockType : keysToRemove) {
+            specialBlocks.remove(blockType);
+        }
+        config.put("specialBlocks", specialBlocks);
+        saveConfig();
+    }
     public Location getSpawnLocation() {
         Map<String, Object> spawnMap = (Map<String, Object>) config.get("spawn");
         if (spawnMap != null) {
@@ -257,6 +286,44 @@ public class ConfigManager {
         config.put(key, value);
         saveConfig();
     }
+    
+    /**
+     * Get the material for a special block type
+     * @param blockType The block type (e.g., "DAMAGE_BLOCK")
+     * @return The material name (e.g., "minecraft:sand") or null if not set
+     */
+    @SuppressWarnings("unchecked")
+    public String getSpecialBlockMaterial(String blockType) {
+        Map<String, String> specialBlocks = (Map<String, String>) config.getOrDefault("specialBlocks", new HashMap<>());
+        return specialBlocks.get(blockType);
+    }
+    
+    /**
+     * Set the material for a special block type
+     * @param blockType The block type (e.g., "DAMAGE_BLOCK")
+     * @param material The material name (e.g., "minecraft:sand") or null to disable
+     */
+    @SuppressWarnings("unchecked")
+    public void setSpecialBlockMaterial(String blockType, String material) {
+        Map<String, String> specialBlocks = (Map<String, String>) config.getOrDefault("specialBlocks", new HashMap<>());
+        if (material == null) {
+            specialBlocks.put(blockType, null);
+        } else {
+            specialBlocks.put(blockType, material);
+        }
+        config.put("specialBlocks", specialBlocks);
+        saveConfig();
+    }
+    
+    /**
+     * Get all special block mappings
+     * @return Map of block type to material name
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getSpecialBlocks() {
+        return new HashMap<>((Map<String, String>) config.getOrDefault("specialBlocks", new HashMap<>()));
+    }
+
     public void saveKit(String kitName, List<ItemStack> items) {
     try {
         // Normalize kit size (ensure 41 slots)

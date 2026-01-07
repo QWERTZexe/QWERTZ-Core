@@ -40,8 +40,15 @@ public class EventBlockTabCompleter implements TabCompleter {
                     .filter(name -> name.startsWith(partialBlockType))
                     .collect(Collectors.toList()));
         } else if (args.length == 2) {
-            // Second argument: materials
+            // Second argument: materials (with "null" as first option)
             String partialMaterial = args[1].toLowerCase();
+            
+            // Add "null" as first option if it matches
+            if ("null".startsWith(partialMaterial)) {
+                completions.add("null");
+            }
+            
+            // Add all block materials
             completions.addAll(Arrays.stream(Material.values())
                     .filter(Material::isBlock)
                     .map(material -> material.getKey().getKey())
@@ -49,6 +56,15 @@ public class EventBlockTabCompleter implements TabCompleter {
                     .collect(Collectors.toList()));
         }
 
-        return StringUtil.copyPartialMatches(args[args.length - 1], completions, new ArrayList<>());
+        // Use copyPartialMatches but ensure "null" stays first if present
+        List<String> result = StringUtil.copyPartialMatches(args[args.length - 1], completions, new ArrayList<>());
+        
+        // Ensure "null" is first if it's in the results
+        if (args.length == 2 && result.contains("null")) {
+            result.remove("null");
+            result.add(0, "null");
+        }
+        
+        return result;
     }
 }
