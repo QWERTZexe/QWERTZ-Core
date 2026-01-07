@@ -238,7 +238,7 @@ commands:
     permission: qwertzcore.config.createkit
   kit:
     description: Gives the player/players the items in the kit
-    usage: /kit <kitname> <alive|dead|all>
+    usage: /kit <kitname> <alive|dead|all|player>
     permission: qwertzcore.host.kit
   delkit:
     description: Removes a kit
@@ -334,7 +334,14 @@ commands:
     description: Manage the rejoin system settings
     usage: /rejoin [enable|disable|time <seconds>]
     permission: qwertzcore.host.rejoin
-
+  freeze:
+    description: Freeze a player or group
+    usage: /freeze <alive|dead|all|player>
+    permission: qwertzcore.host.freeze
+  unfreeze:
+    description: Unfreeze a player or group
+    usage: /freeze <alive|dead|all|player>
+    permission: qwertzcore.host.freeze
 permissions:
   qwertzcore.host.timer:
     description: Allows the user to start and cancel timers
@@ -572,4 +579,7 @@ permissions:
     default: op
   qwertzcore.host.rejoin:
     description: Allows the player to manage rejoin system settings
+    default: op
+  qwertzcore.host.freeze:
+    description: Allows the player to freeze and unfreeze players
     default: op

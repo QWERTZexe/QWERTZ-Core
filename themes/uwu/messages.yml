@@ -318,6 +318,12 @@ skull:
   # Valid placeholders: %name%
   received: "%CORE_ICON% %colorSuccess%You have weceived %colorPrimary%%name%'s %colorSuccess%head! *happy*"
 
+freeze:
+  # Valid placeholders: %amount%
+  frozen: "%CORE_ICON% %colorSuccess%Fwoze %colorPrimary%%amount% %colorSuccess%pwayews! uwu"
+  # Valid placeholders: %amount%
+  unfrozen: "%CORE_ICON% %colorSuccess%Unfwoze %colorPrimary%%amount% %colorSuccess%pwayews! uwu"
+
 rejoin:
   welcome-back: "%CORE_ICON% %colorSuccess%Wewcome back! You wejoined within the awwowed time window! ^_^"
   enabled: "%CORE_ICON% %colorSuccess%Wejoin system has been enabwed! OwO"

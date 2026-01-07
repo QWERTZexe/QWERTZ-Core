@@ -436,6 +436,12 @@ skull:
   # Valid placeholders: %name%
   received: "%CORE_ICON% %colorPrimary%%name%%colorDead%'s %colorPrimary%head %colorDead%has been received!"
 
+freeze:
+  # Valid placeholders: %amount%
+  frozen: "%CORE_ICON% %colorSuccess%Froze %colorPrimary%%amount% %colorSuccess%players!"
+  # Valid placeholders: %amount%
+  unfrozen: "%CORE_ICON% %colorSuccess%Unfroze %colorPrimary%%amount% %colorSuccess%players!"
+
 rejoin:
   welcome-back: "%CORE_ICON% %colorSuccess%Welcome back! You rejoined within the allowed time window."
   enabled: "%CORE_ICON% %colorSuccess%Rejoin system has been enabled!"

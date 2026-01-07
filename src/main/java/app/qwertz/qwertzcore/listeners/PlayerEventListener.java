@@ -12,10 +12,11 @@
         If not, see <http://www.gnu.org/licenses/>.
 */
 
-package app.qwertz.qwertzcore.util;
+package app.qwertz.qwertzcore.listeners;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.HideCommand;
+import app.qwertz.qwertzcore.util.UpdateChecker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;

@@ -107,6 +107,8 @@ QWERTZ Core is an all-in-one event management plugin for Minecraft servers. It p
 - `/kit <kit> <player|alive|dead|all>` - Gives a kit to the selected group
 - `/invsee <player>` - View and modify another player's inventory
 - `/poll <duration> <question> <answer1> <answer2> [answer3] ...` - Create a poll, to use multiword parameters, use "-" instead of " ". Running without arguments opens a GUI
+- `/freeze <player|alive|dead|all>` - Freezes a player / a group of players
+- `/unfreeze <player|alive|dead|all>` - Unfreezes a player / a group of players
 
 ### WorldGuard Management
 

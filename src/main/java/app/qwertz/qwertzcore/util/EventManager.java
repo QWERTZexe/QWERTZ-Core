@@ -25,6 +25,7 @@ public class EventManager {
     private final QWERTZcore plugin;
     private final Set<UUID> deadPlayers;
     private final Set<UUID> alivePlayers;
+    private final Set<UUID> frozenPlayers;
     private final Map<UUID, Long> deathTimes;
 
     public EventManager(QWERTZcore plugin) {
@@ -32,6 +33,7 @@ public class EventManager {
         this.deadPlayers = new HashSet<>();
         initDead();
         this.alivePlayers = new HashSet<>();
+        this.frozenPlayers = new HashSet<>();
         this.deathTimes = new HashMap<>();
     }
 
@@ -194,6 +196,23 @@ public class EventManager {
         UUID playerUUID = player.getUniqueId();
         deadPlayers.remove(playerUUID);
         alivePlayers.remove(playerUUID);
+        frozenPlayers.remove(playerUUID);
+    }
+    
+    public void freezePlayer(Player player) {
+        frozenPlayers.add(player.getUniqueId());
+    }
+    
+    public void unfreezePlayer(Player player) {
+        frozenPlayers.remove(player.getUniqueId());
+    }
+    
+    public boolean isPlayerFrozen(Player player) {
+        return frozenPlayers.contains(player.getUniqueId());
+    }
+    
+    public Set<UUID> getFrozenPlayers() {
+        return new HashSet<>(frozenPlayers);
     }
 
     public List<Player> getRecentlyDeadPlayers(int seconds) {

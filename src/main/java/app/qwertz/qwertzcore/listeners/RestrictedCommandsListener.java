@@ -12,18 +12,15 @@
         If not, see <http://www.gnu.org/licenses/>.
 */
 
-package app.qwertz.qwertzcore.util;
+package app.qwertz.qwertzcore.listeners;
 
 import app.qwertz.qwertzcore.QWERTZcore;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RestrictedCommandsListener implements Listener {

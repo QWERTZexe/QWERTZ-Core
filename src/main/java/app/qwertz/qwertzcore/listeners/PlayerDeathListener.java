@@ -12,7 +12,7 @@
         If not, see <http://www.gnu.org/licenses/>.
 */
 
-package app.qwertz.qwertzcore.util;
+package app.qwertz.qwertzcore.listeners;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import org.bukkit.Location;

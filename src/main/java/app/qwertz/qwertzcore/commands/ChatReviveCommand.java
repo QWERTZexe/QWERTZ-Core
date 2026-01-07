@@ -16,8 +16,7 @@ package app.qwertz.qwertzcore.commands;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.gui.ChatRevivalGUI;
-import app.qwertz.qwertzcore.util.ChatListener;
-import org.bukkit.Bukkit;
+import app.qwertz.qwertzcore.listeners.ChatListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

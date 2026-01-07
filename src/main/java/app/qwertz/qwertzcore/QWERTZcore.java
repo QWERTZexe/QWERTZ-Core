@@ -18,8 +18,7 @@ import app.qwertz.qwertzcore.bstats.Metrics;
 import app.qwertz.qwertzcore.commands.*;
 import app.qwertz.qwertzcore.commands.tab.*;
 import app.qwertz.qwertzcore.gui.ConfigGUI;
-import app.qwertz.qwertzcore.listeners.PollChatListener;
-import app.qwertz.qwertzcore.listeners.ChatRevivalChatListener;
+import app.qwertz.qwertzcore.listeners.*;
 import app.qwertz.qwertzcore.packets.PacketManager;
 import app.qwertz.qwertzcore.papi.Placeholders;
 import app.qwertz.qwertzcore.util.*;
@@ -345,6 +344,12 @@ public final class QWERTZcore extends JavaPlugin {
         getCommand("broadcast").setExecutor(new BroadcastCommand(this));
         getCommand("rejoin").setExecutor(new RejoinCommand(this));
         getCommand("rejoin").setTabCompleter(new RejoinTabCompleter());
+        FreezeCommand freezeCommand = new FreezeCommand(this);
+        getCommand("freeze").setExecutor(freezeCommand);
+        getCommand("unfreeze").setExecutor(freezeCommand);
+        FreezeTabCompleter freezeTabCompleter = new FreezeTabCompleter(this);
+        getCommand("freeze").setTabCompleter(freezeTabCompleter);
+        getCommand("unfreeze").setTabCompleter(freezeTabCompleter);
     }
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEventListener(this, hideCommand, updateChecker), this);
@@ -354,6 +359,7 @@ public final class QWERTZcore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ConfigGUI.ChatInputListener(this), this);
         getServer().getPluginManager().registerEvents(new PollChatListener(this, pollCommand), this);
         getServer().getPluginManager().registerEvents(new ChatRevivalChatListener(this, chatReviveCommand), this);
+        getServer().getPluginManager().registerEvents(new FreezeListener(this), this);
     }
     public EventManager getEventManager() {
         return eventManager;

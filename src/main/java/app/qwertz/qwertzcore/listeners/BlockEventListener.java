@@ -12,10 +12,11 @@
         If not, see <http://www.gnu.org/licenses/>.
 */
 
-package app.qwertz.qwertzcore.util;
+package app.qwertz.qwertzcore.listeners;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.blocks.QWERTZcoreBlock;
+import app.qwertz.qwertzcore.util.BlockManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -23,7 +24,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class BlockEventListener implements Listener {

@@ -12,11 +12,10 @@
         If not, see <http://www.gnu.org/licenses/>.
 */
 
-package app.qwertz.qwertzcore.util;
+package app.qwertz.qwertzcore.listeners;
 
 import app.qwertz.qwertzcore.QWERTZcore;
 import app.qwertz.qwertzcore.commands.ChatReviveCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
