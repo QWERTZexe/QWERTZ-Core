@@ -450,15 +450,8 @@ public class ConfigManager {
                             int slot = Integer.parseInt(slotStr);
                             if (slot >= 0 && slot < 41) {
                                 Object raw = entry.getValue();
-                                Map<String, Object> itemDataMap = null;
-                                if (raw instanceof org.bukkit.configuration.ConfigurationSection) {
-                                    itemDataMap = ((org.bukkit.configuration.ConfigurationSection) raw).getValues(true);
-                                } else if (raw instanceof Map) {
-                                    @SuppressWarnings("unchecked")
-                                    Map<String, Object> tmp = (Map<String, Object>) raw;
-                                    itemDataMap = tmp;
-                                } else {
-                                    // Unexpected type, skip
+                                Map<String, Object> itemDataMap = normalizeSerializedItemData(raw);
+                                if (itemDataMap == null) {
                                     plugin.getLogger().warning("Unexpected kit data type for " + entry.getKey() + " in kit " + kitName + ": " + (raw == null ? "null" : raw.getClass().getName()));
                                 }
 
@@ -499,6 +492,45 @@ public class ConfigManager {
             }
         }
         return items;
+    }
+
+    private Map<String, Object> normalizeSerializedItemData(Object raw) {
+        if (raw instanceof org.bukkit.configuration.ConfigurationSection section) {
+            Map<String, Object> values = new LinkedHashMap<>();
+            for (String key : section.getKeys(false)) {
+                values.put(key, normalizeSerializedYamlValue(section.get(key)));
+            }
+            return values;
+        }
+        if (raw instanceof Map<?, ?> map) {
+            Map<String, Object> values = new LinkedHashMap<>();
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                values.put(String.valueOf(entry.getKey()), normalizeSerializedYamlValue(entry.getValue()));
+            }
+            return values;
+        }
+        return null;
+    }
+
+    private Object normalizeSerializedYamlValue(Object value) {
+        if (value instanceof org.bukkit.configuration.ConfigurationSection section) {
+            return normalizeSerializedItemData(section);
+        }
+        if (value instanceof Map<?, ?> map) {
+            Map<String, Object> values = new LinkedHashMap<>();
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                values.put(String.valueOf(entry.getKey()), normalizeSerializedYamlValue(entry.getValue()));
+            }
+            return values;
+        }
+        if (value instanceof List<?> list) {
+            List<Object> normalized = new ArrayList<>();
+            for (Object entry : list) {
+                normalized.add(normalizeSerializedYamlValue(entry));
+            }
+            return normalized;
+        }
+        return value;
     }
 
     public void deleteKit(String kitName) {
